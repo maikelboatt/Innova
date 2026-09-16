@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Folder Include="GuestManagement\Repositories\"/>
+        <Folder Include="Reservations\Aggregates\"/>
+        <Folder Include="Reservations\Events\"/>
+        <Folder Include="Reservations\Exceptions\"/>
+        <Folder Include="Reservations\Repositories\"/>
+        <Folder Include="Reservations\ValueObjects\"/>
+        <Folder Include="RoomInventory\Events\"/>
+        <Folder Include="RoomInventory\Exceptions\"/>
+        <Folder Include="RoomInventory\Repositories\"/>
+    </ItemGroup>
+
+</Project>
