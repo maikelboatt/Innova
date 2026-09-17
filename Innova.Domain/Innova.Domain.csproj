@@ -8,13 +8,18 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Folder Include="Billing\Aggregates\"/>
+        <Folder Include="Billing\Events\"/>
+        <Folder Include="Billing\Exceptions\"/>
+        <Folder Include="Billing\Repositories\"/>
+        <Folder Include="Billing\ValueObjects\"/>
+        <Folder Include="FrontDesk\Exceptions\"/>
+        <Folder Include="FrontDesk\Repositories\"/>
         <Folder Include="GuestManagement\Repositories\"/>
-        <Folder Include="Reservations\Aggregates\"/>
-        <Folder Include="Reservations\Events\"/>
+        <Folder Include="HouseKeeping\Exceptions\"/>
+        <Folder Include="HouseKeeping\Repositories\"/>
         <Folder Include="Reservations\Exceptions\"/>
         <Folder Include="Reservations\Repositories\"/>
-        <Folder Include="Reservations\ValueObjects\"/>
-        <Folder Include="RoomInventory\Events\"/>
         <Folder Include="RoomInventory\Exceptions\"/>
         <Folder Include="RoomInventory\Repositories\"/>
     </ItemGroup>
