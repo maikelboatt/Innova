@@ -27,7 +27,7 @@ namespace Innova.Domain.GuestManagement.ValueObjects
                 throw new DomainException(
                     "Identity document number cannot exceed 50 characters.");
 
-            return new IdentityDocument(type, number);
+            return new IdentityDocument(type, normalizedNumber);
         }
 
         public override string ToString() => $"{Type}: {Number}";

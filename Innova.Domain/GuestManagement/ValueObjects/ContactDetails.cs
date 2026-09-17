@@ -14,7 +14,7 @@ namespace Innova.Domain.GuestManagement.ValueObjects
         public string? Email { get; }
         public string PhoneNumber { get; }
 
-        public static ContactDetails Create( string phoneNumber, string address, string? email = null )
+        public static ContactDetails Create( string phoneNumber, string? email = null )
         {
             if (string.IsNullOrWhiteSpace(phoneNumber))
                 throw new DomainException("Phone number is required.");

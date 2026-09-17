@@ -7,9 +7,9 @@ namespace Innova.Domain.GuestManagement.ValueObjects
     {
         private PersonName( string firstName, string lastName, string? middleName = null )
         {
-            FirstName = firstName;
-            LastName = lastName;
-            MiddleName = middleName;
+            FirstName = firstName.Trim();
+            LastName = lastName.Trim();
+            MiddleName = middleName?.Trim();
         }
 
         public string FirstName { get; }

@@ -14,13 +14,14 @@ namespace Innova.Domain.GuestManagement.Aggregates
                        PersonName personName,
                        DateOfBirth dateOfBirth,
                        ContactDetails contactDetails,
-                       IdentityDocument identityDocument ):base(guestId)
+                       IdentityDocument identityDocument,
+                       bool isActive ):base(guestId)
         {
             PersonName = personName;
             DateOfBirth = dateOfBirth;
             ContactDetails = contactDetails;
             IdentityDocument = identityDocument;
-            IsActive = true;
+            IsActive = isActive;
         }
 
         public PersonName PersonName { get; private set; }
@@ -44,15 +45,19 @@ namespace Innova.Domain.GuestManagement.Aggregates
             GuestId guestId = GuestId.New();
 
             Guest guest = new(
-                guestId,
-                personName,
-                dateOfBirth,
-                contactDetails,
-                identityDocument);
+                              guestId,
+                              personName,
+                              dateOfBirth,
+                              contactDetails,
+                              identityDocument,
+                              true)
+                          {
+                              CreatedAt = DateTime.UtcNow
+                          };
 
             guest.RaiseDomainEvent(
                 new GuestCreated(
-                    guest.Id,
+                    guestId.Value,
                     personName.FirstName,
                     personName.LastName,
                     personName.MiddleName,
@@ -119,6 +124,7 @@ namespace Innova.Domain.GuestManagement.Aggregates
                                           DateOfBirth dateOfBirth,
                                           ContactDetails contactDetails,
                                           IdentityDocument identityDocument,
+                                          bool isActive,
                                           DateTime createdAt,
                                           DateTime updatedAt )
         {
@@ -127,7 +133,8 @@ namespace Innova.Domain.GuestManagement.Aggregates
                               personName,
                               dateOfBirth,
                               contactDetails,
-                              identityDocument)
+                              identityDocument,
+                              isActive)
                           {
                               CreatedAt = createdAt
                           };

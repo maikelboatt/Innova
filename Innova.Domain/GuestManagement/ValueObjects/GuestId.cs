@@ -21,7 +21,7 @@ namespace Innova.Domain.GuestManagement.ValueObjects
 
         public override string ToString() => Value.ToString();
 
-        protected override IEnumerable<object> GetEqualityComponents()
+        protected override IEnumerable<object?> GetEqualityComponents()
         {
             yield return Value;
         }

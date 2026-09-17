@@ -1,10 +1,9 @@
 ﻿using Innova.Domain.Common;
-using Innova.Domain.GuestManagement.ValueObjects;
 
 namespace Innova.Domain.GuestManagement.Events
 {
     public sealed record GuestCreated(
-        GuestId GuestId,
+        Guid GuestId,
         string FirstName,
         string LastName,
         string? MiddleName,
