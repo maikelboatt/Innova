@@ -25,19 +25,21 @@ namespace Innova.Domain.RoomInventory.ValueObjects
 
                        "OutOfService" => next == Dirty,
 
-                       "Dirty" => next == Vacant,
+                       "Dirty" => next == Vacant
+                                  || next == OutOfService,
 
                        _ => false
                    };
         }
 
-        public static RoomStatus FromValue( string value )
-        {
-            if (string.IsNullOrWhiteSpace(value))
-                throw new DomainException("Room status is required");
-
-            return new RoomStatus(value);
-        }
+        public static RoomStatus FromValue( string value ) => value switch
+                                                              {
+                                                                  "Vacant"       => Vacant,
+                                                                  "Occupied"     => Occupied,
+                                                                  "OutOfService" => OutOfService,
+                                                                  "Dirty"        => Dirty,
+                                                                  _              => throw new DomainException($"'{value}' is not a valid room status.")
+                                                              };
 
         public override string ToString() => Value;
 

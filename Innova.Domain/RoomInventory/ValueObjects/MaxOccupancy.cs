@@ -7,7 +7,7 @@ namespace Innova.Domain.RoomInventory.ValueObjects
     {
         private MaxOccupancy( int value ) => Value = value;
 
-        public int Value { get; set; }
+        public int Value { get; }
 
         public static MaxOccupancy Of( int value )
         {

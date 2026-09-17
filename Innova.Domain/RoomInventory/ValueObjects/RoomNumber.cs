@@ -7,7 +7,7 @@ namespace Innova.Domain.RoomInventory.ValueObjects
     {
         private RoomNumber( string value ) => Value = value;
 
-        public string Value { get; set; }
+        public string Value { get; }
 
         public static RoomNumber Of( string value )
         {

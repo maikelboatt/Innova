@@ -3,7 +3,7 @@ using Innova.Domain.Shared.Exceptions;
 
 namespace Innova.Domain.RoomInventory.ValueObjects
 {
-    public class RoomTypeAllotmentId:ValueObject
+    public sealed class RoomTypeAllotmentId:ValueObject
     {
         private RoomTypeAllotmentId( Guid value ) => Value = value;
 

@@ -1,4 +1,5 @@
 ﻿using Innova.Domain.Common;
+using Innova.Domain.RoomInventory.Events;
 using Innova.Domain.RoomInventory.ValueObjects;
 using Innova.Domain.Shared.Exceptions;
 using Innova.Domain.Shared.ValueObjects;
@@ -19,7 +20,7 @@ namespace Innova.Domain.RoomInventory.Aggregates
             TotalRooms = totalRooms;
         }
 
-        public RoomTypeId RoomTypeId { get; private set; } = null!;
+        public RoomTypeId RoomTypeId { get; } = null!;
         public DateRange Period { get; } = null!;
         public int TotalRooms { get; }
         public int BookedCount { get; private set; }
@@ -38,6 +39,14 @@ namespace Innova.Domain.RoomInventory.Aggregates
                                                   {
                                                       BookedCount = 0
                                                   };
+
+            roomTypeAllotment.RaiseDomainEvent(
+                new RoomTypeAllotmentCreated(
+                    roomTypeAllotmentId.Value,
+                    roomTypeId.Value,
+                    period.Start,
+                    period.End,
+                    totalRooms));
 
 
             return roomTypeAllotment;
@@ -65,13 +74,30 @@ namespace Innova.Domain.RoomInventory.Aggregates
                 throw new DomainException($"Insufficient allotment for {Period.Start}–{Period.End}: {BookedCount}/{TotalRooms} already booked.");
 
             BookedCount += rooms;
+
+            RaiseDomainEvent(
+                new RoomTypeAllotmentReserved(
+                    Id.Value,
+                    RoomTypeId.Value,
+                    Period.Start,
+                    Period.End,
+                    rooms));
         }
 
         public void Release( int rooms = 1 )
         {
             if (BookedCount - rooms < 0)
                 throw new DomainException("Cannot release more rooms than are currently booked.");
+
             BookedCount -= rooms;
+
+            RaiseDomainEvent(
+                new RoomTypeAllotmentReleased(
+                    Id.Value,
+                    RoomTypeId.Value,
+                    Period.Start,
+                    Period.End,
+                    rooms));
         }
     }
 }
