@@ -27,7 +27,7 @@ namespace Innova.Application.Services
 
         public async Task<RoomTypeAllotment> ReserveCapacityAsync( RoomTypeId roomTypeId,
                                                                    DateRange period,
-                                                                   int rooms,
+                                                                   int rooms = 1,
                                                                    CancellationToken ct = default )
         {
             RoomTypeAllotment allotment = await GetAllotmentAsync(
