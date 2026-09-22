@@ -11,10 +11,6 @@ namespace Innova.Domain.GuestManagement.Repositories
 
         Task UpdateAsync( Guest guest, CancellationToken ct = default );
 
-        Task<bool> ExistByIdentityAsync( PersonName personName,
-                                         DateOfBirth dateOfBirth,
-                                         ContactDetails contactDetails,
-                                         IdentityDocument identityDocument,
-                                         CancellationToken ct = default );
+        Task<bool> ExistsWithIdentityDocumentAsync( IdentityDocument identityDocument, CancellationToken ct = default );
     }
 }

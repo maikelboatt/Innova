@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Innova.Domain", "Innova.Domain\Innova.Domain.csproj", "{3EDA6A18-63BF-4777-8289-CD89F1AE66A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{C3A4A28E-4CA5-45CF-AE1E-DE1078B737E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Innova.Application", "Innova.Application\Innova.Application.csproj", "{C3A4A28E-4CA5-45CF-AE1E-DE1078B737E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
