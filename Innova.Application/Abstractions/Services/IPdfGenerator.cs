@@ -1,4 +1,4 @@
-﻿namespace Application.Abstractions.Services
+﻿namespace Innova.Application.Abstractions.Services
 {
     public interface IPdfGenerator
     {

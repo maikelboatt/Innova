@@ -1,4 +1,4 @@
-﻿namespace Application.Abstractions.Messaging
+﻿namespace Innova.Application.Abstractions.Messaging
 {
     public sealed record Unit
     {

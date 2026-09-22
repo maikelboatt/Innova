@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace Application.Abstractions.Validation
+namespace Innova.Application.Abstractions.Validation
 {
     public interface IValidator<in T>
     {

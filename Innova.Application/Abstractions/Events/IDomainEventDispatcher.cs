@@ -1,6 +1,6 @@
 ﻿using Innova.Domain.Common;
 
-namespace Application.Abstractions.Events
+namespace Innova.Application.Abstractions.Events
 {
     public interface IDomainEventDispatcher
     {

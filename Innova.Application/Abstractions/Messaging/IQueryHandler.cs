@@ -1,4 +1,4 @@
-﻿namespace Application.Abstractions.Messaging
+﻿namespace Innova.Application.Abstractions.Messaging
 {
     public interface IQueryHandler<TQuery, TResult> where TQuery : IQuery<TResult>
     {

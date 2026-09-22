@@ -1,4 +1,4 @@
-﻿namespace Application.Abstractions.Messaging
+﻿namespace Innova.Application.Abstractions.Messaging
 {
     /// <summary>
     ///     Marker for the small set of commands that must be reachable

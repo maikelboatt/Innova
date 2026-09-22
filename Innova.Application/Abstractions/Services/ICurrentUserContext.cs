@@ -1,6 +1,6 @@
 ﻿using Innova.Domain.Identity.ValueObjects;
 
-namespace Application.Abstractions.Services
+namespace Innova.Application.Abstractions.Services
 {
     public interface ICurrentUserContext
     {

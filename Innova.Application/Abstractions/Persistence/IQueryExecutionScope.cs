@@ -1,4 +1,4 @@
-﻿namespace Application.Abstractions.Persistence
+﻿namespace Innova.Application.Abstractions.Persistence
 {
     public interface IQueryExecutionScope
     {
