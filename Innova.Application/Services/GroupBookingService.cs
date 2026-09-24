@@ -19,7 +19,6 @@ namespace Innova.Application.Services
         }
 
         public async Task<GroupBooking> AttachReservationAsync( GroupBookingId groupBookingId,
-                                                                GuestId organizerGuestId,
                                                                 ReservationId reservationId,
                                                                 CancellationToken ct = default )
         {
@@ -33,9 +32,8 @@ namespace Innova.Application.Services
         }
 
         public async Task<GroupBooking> DetachReservationAsync( GroupBookingId groupBookingId,
-                                                                  GuestId organizerGuestId,
-                                                                  ReservationId reservationId,
-                                                                  CancellationToken ct = default )
+                                                                ReservationId reservationId,
+                                                                CancellationToken ct = default )
         {
             GroupBooking groupBooking = await GetByIdAsync(groupBookingId, ct);
 
