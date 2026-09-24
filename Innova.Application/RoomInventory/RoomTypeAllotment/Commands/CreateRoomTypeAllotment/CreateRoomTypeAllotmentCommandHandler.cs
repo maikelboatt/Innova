@@ -11,8 +11,8 @@ namespace Innova.Application.RoomInventory.RoomTypeAllotment.Commands.CreateRoom
     {
         public async Task<Guid> HandleAsync( CreateRoomTypeAllotmentCommand command, CancellationToken ct = default )
         {
-            RoomTypeId roomTypeId = RoomTypeId.From(command.RoomTypeId.Value);
-            DateRange stayPeriod = DateRange.Of(command.StayPeriod.Start, command.StayPeriod.End);
+            RoomTypeId roomTypeId = RoomTypeId.From(command.RoomTypeId);
+            DateRange stayPeriod = DateRange.Of(command.CheckIn, command.CheckOut);
 
             Domain.RoomInventory.Aggregates.RoomTypeAllotment roomTypeAllotment =
                 await availabilityService.CreateAsync(

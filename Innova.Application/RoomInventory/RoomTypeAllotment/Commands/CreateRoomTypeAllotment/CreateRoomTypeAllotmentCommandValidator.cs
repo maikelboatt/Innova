@@ -7,12 +7,13 @@ namespace Innova.Application.RoomInventory.RoomTypeAllotment.Commands.CreateRoom
         public CreateRoomTypeAllotmentCommandValidator()
         {
             RuleFor(c => c.RoomTypeId)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("Room type Id is required.");
             RuleFor(c => c.TotalRooms)
                 .GreaterThanOrEqualTo(0);
 
-            RuleFor(c => c.StayPeriod.End)
-                .GreaterThan(c => c.StayPeriod.Start)
+            RuleFor(c => c.CheckOut)
+                .GreaterThan(c => c.CheckIn)
                 .WithMessage("Check-out date must be after check-in date.");
         }
     }

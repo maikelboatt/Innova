@@ -10,7 +10,7 @@ namespace Innova.Application.RoomInventory.Room.Commands.ReturnRoomToService
     {
         public async Task<Unit> HandleAsync( ReturnRoomToServiceCommand command, CancellationToken ct = default )
         {
-            RoomId roomId = RoomId.From(command.RoomId.Value);
+            RoomId roomId = RoomId.From(command.RoomId);
 
             Domain.RoomInventory.Aggregates.Room room = await roomService.ReturnToServiceAsync(roomId, ct);
 

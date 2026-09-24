@@ -7,7 +7,8 @@ namespace Innova.Application.RoomInventory.Room.Commands.ReturnRoomToService
         public ReturnRoomToServiceCommandValidator()
         {
             RuleFor(c => c.RoomId)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("Room Id is required.");
         }
     }
 }

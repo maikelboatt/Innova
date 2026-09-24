@@ -7,10 +7,12 @@ namespace Innova.Application.RoomInventory.Room.Commands.CreateRoom
         public CreateRoomCommandValidator()
         {
             RuleFor(r => r.RoomNumber)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("Room number is required.");
 
             RuleFor(r => r.RoomTypeId)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("Room type is required.");
         }
     }
 }

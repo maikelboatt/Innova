@@ -10,7 +10,7 @@ namespace Innova.Application.RoomInventory.Room.Commands.TakeRoomOutOfService
     {
         public async Task<Unit> HandleAsync( TakeRoomOutOfServiceCommand command, CancellationToken ct = default )
         {
-            RoomId roomId = RoomId.From(command.RoomId.Value);
+            RoomId roomId = RoomId.From(command.RoomId);
 
             Domain.RoomInventory.Aggregates.Room room = await roomService.TakeOutOfServiceAsync(roomId, ct);
 

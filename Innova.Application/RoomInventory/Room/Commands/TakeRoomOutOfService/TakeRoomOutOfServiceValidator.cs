@@ -7,7 +7,8 @@ namespace Innova.Application.RoomInventory.Room.Commands.TakeRoomOutOfService
         public TakeRoomOutOfServiceCommandValidator()
         {
             RuleFor(c => c.RoomId)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("Room Id is required.");
         }
     }
 }

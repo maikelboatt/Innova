@@ -7,9 +7,11 @@ namespace Innova.Application.GuestManagement.Guest.Commands.ChangeGuestIdentityD
         public ChangeGuestIdentityDocumentCommandValidator()
         {
             RuleFor(c => c.GuestId)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("Guest is required.");
             RuleFor(c => c.IdentityDocumentNumber)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("Identity document is required.");
         }
     }
 }

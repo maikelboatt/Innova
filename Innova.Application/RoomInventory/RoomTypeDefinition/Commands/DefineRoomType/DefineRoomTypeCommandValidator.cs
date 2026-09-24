@@ -7,7 +7,8 @@ namespace Innova.Application.RoomInventory.RoomTypeDefinition.Commands.DefineRoo
         public DefineRoomTypeCommandValidator()
         {
             RuleFor(c => c.RoomName)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("Room name is required.");
             RuleFor(c => c.MaxOccupancy)
                 .GreaterThanOrEqualTo(1);
             RuleFor(c => c.BaseRateAmount)

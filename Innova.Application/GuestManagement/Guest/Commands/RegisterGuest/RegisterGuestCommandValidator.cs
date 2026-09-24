@@ -7,7 +7,8 @@ namespace Innova.Application.GuestManagement.Guest.Commands.RegisterGuest
         public RegisterGuestCommandValidator()
         {
             RuleFor(c => c.FirstName)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("First name is required");
             RuleFor(c => c.LastName)
                 .NotEmpty();
 
@@ -16,14 +17,16 @@ namespace Innova.Application.GuestManagement.Guest.Commands.RegisterGuest
                 .WithMessage("Date of birth cannot be in the future.");
 
             RuleFor(c => c.PhoneNumber)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("Phone Number is required.");
 
             RuleFor(c => c.Email)
                 .EmailAddress()
                 .When(c => !string.IsNullOrWhiteSpace(c.Email));
 
             RuleFor(c => c.IdentityDocumentNumber)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("Identity is required.");
         }
     }
 }

@@ -7,9 +7,11 @@ namespace Innova.Application.GuestManagement.Guest.Commands.UpdateGuestContactDe
         public UpdateGuestContactDetailsCommandValidator()
         {
             RuleFor(c => c.GuestId)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("Guest is required.");
             RuleFor(c => c.PhoneNumber)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("Phone Number is required.");
 
             RuleFor(c => c.Email)
                 .EmailAddress()
