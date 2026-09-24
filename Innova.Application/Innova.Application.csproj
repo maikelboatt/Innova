@@ -17,8 +17,14 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="FrontDesk\Reservation\DomainEventHandlers\"/>
+        <Folder Include="FrontDesk\Reservation\Queries\"/>
         <Folder Include="GuestManagement\Guest\DomainEventHandlers\"/>
         <Folder Include="GuestManagement\Guest\Queries\"/>
+        <Folder Include="HouseKeeping\Reservation\Commands\"/>
+        <Folder Include="HouseKeeping\Reservation\DomainEventHandlers\"/>
+        <Folder Include="HouseKeeping\Reservation\Exceptions\"/>
+        <Folder Include="HouseKeeping\Reservation\Queries\"/>
     </ItemGroup>
 
 </Project>
