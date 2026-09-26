@@ -17,16 +17,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Billing\Reservation\Commands\"/>
-        <Folder Include="Billing\Reservation\DomainEventHandlers\"/>
-        <Folder Include="Billing\Reservation\Exceptions\"/>
-        <Folder Include="Billing\Reservation\Queries\"/>
-        <Folder Include="FrontDesk\Reservation\DomainEventHandlers\"/>
-        <Folder Include="FrontDesk\Reservation\Queries\"/>
+        <Folder Include="Billing\Folio\DomainEventHandlers\"/>
+        <Folder Include="FrontDesk\Stay\DomainEventHandlers\"/>
         <Folder Include="GuestManagement\Guest\DomainEventHandlers\"/>
-        <Folder Include="GuestManagement\Guest\Queries\"/>
         <Folder Include="HouseKeeping\HouseKeeping\DomainEventHandlers\"/>
-        <Folder Include="HouseKeeping\HouseKeeping\Queries\"/>
     </ItemGroup>
 
 </Project>
