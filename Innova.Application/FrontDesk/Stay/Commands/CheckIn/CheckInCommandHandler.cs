@@ -1,11 +1,10 @@
 ﻿using Innova.Application.Abstractions.Events;
 using Innova.Application.Abstractions.Messaging;
 using Innova.Application.Abstractions.Services;
-using Innova.Domain.FrontDesk.Aggregates;
 using Innova.Domain.GuestManagement.ValueObjects;
 using Innova.Domain.Reservations.ValueObjects;
 
-namespace Innova.Application.FrontDesk.Reservation.Commands.CheckIn
+namespace Innova.Application.FrontDesk.Stay.Commands.CheckIn
 {
     public sealed class CheckInCommandHandler( IStayService stayService, IDomainEventDispatcher eventDispatcher ):ICommandHandler<CheckInCommand, Guid>
     {
@@ -14,7 +13,7 @@ namespace Innova.Application.FrontDesk.Reservation.Commands.CheckIn
             ReservationId reservationId = ReservationId.From(command.ReservationId);
             GuestId guestId = GuestId.From(command.PrimaryOccupantId);
 
-            Stay stay = await stayService.CheckInAsync(reservationId, guestId, ct);
+            Domain.FrontDesk.Aggregates.Stay stay = await stayService.CheckInAsync(reservationId, guestId, ct);
 
             await eventDispatcher.DispatchAsync(stay.DomainEvents, ct);
             stay.ClearDomainEvents();

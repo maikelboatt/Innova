@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Innova.Application.FrontDesk.Reservation.Commands.CheckOut
+namespace Innova.Application.FrontDesk.Stay.Commands.CheckOut
 {
     public sealed class CheckOutCommandValidator:AbstractValidator<CheckOutCommand>
     {

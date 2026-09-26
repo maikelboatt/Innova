@@ -179,6 +179,8 @@ namespace Innova.Domain.Reservations.Aggregates
 
             Status = ReservationStatus.NoShow;
 
+            Money noShowFee = RatePlan.NightlyRate;
+
             RaiseDomainEvent(
                 new ReservationMarkedNoShow(
                     Id.Value,
@@ -189,6 +191,8 @@ namespace Innova.Domain.Reservations.Aggregates
                     StayPeriod.End,
                     RatePlan.NightlyRate.Amount,
                     RatePlan.NightlyRate.Currency,
+                    noShowFee.Amount,
+                    noShowFee.Currency,
                     DateTime.UtcNow));
         }
     }

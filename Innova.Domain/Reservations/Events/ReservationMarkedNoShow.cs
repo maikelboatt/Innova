@@ -11,6 +11,8 @@ namespace Innova.Domain.Reservations.Events
         DateOnly StayEnd,
         decimal RateAmount,
         string RateCurrency,
+        decimal FeeAmount,
+        string FeeCurrency,
         DateTime MarkedNoShowAt ):IDomainEvent
     {
         public DateTimeOffset OccurredOn { get; } = DateTimeOffset.UtcNow;

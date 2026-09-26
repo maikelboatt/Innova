@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Innova.Application.FrontDesk.Reservation.Commands.AddOccupant
+namespace Innova.Application.FrontDesk.Stay.Commands.AddOccupant
 {
     public sealed class AddOccupantCommandValidator:AbstractValidator<AddOccupantCommand>
     {
