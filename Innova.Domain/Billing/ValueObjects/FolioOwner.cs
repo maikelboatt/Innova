@@ -23,7 +23,18 @@ namespace Innova.Domain.Billing.ValueObjects
 
         public static FolioOwner ForGroupBooking( Guid groupBookingId ) => new(FolioOwnerType.GroupBooking, groupBookingId);
 
+        public static FolioOwner ForGuest( Guid guestId ) => new(FolioOwnerType.Guest, guestId);
+
         public override string ToString() => $"Owner Id: '{OwnerId}' Type: '{Type.ToString()}' ";
+
+        public static FolioOwner Of( FolioOwnerType type, Guid ownerId ) => type switch
+                                                                            {
+                                                                                FolioOwnerType.Stay => ForStay(ownerId),
+                                                                                FolioOwnerType.GuestWithinStay => ForGuestWithinStay(ownerId),
+                                                                                FolioOwnerType.GroupBooking => ForGroupBooking(ownerId),
+                                                                                FolioOwnerType.Guest => ForGuest(ownerId),
+                                                                                _ => throw new DomainException($"'{type}' is not a valid folio owner type.")
+                                                                            };
 
         protected override IEnumerable<object?> GetEqualityComponents()
         {

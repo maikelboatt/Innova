@@ -107,6 +107,7 @@ namespace Innova.Domain.Billing.Aggregates
             if (Balance.Amount != 0)
                 throw new DomainException($"Cannot settle folio with outstanding balance f {Balance.Amount} {Currency}");
 
+
             Status = FolioStatus.Settled;
 
             RaiseDomainEvent(

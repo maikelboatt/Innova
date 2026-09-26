@@ -4,6 +4,7 @@
     {
         Stay,
         GuestWithinStay,
-        GroupBooking
+        GroupBooking,
+        Guest
     }
 }
