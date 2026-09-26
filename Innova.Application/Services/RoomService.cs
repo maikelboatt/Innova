@@ -13,6 +13,11 @@ namespace Innova.Application.Services
                                              RoomTypeId roomTypeId,
                                              CancellationToken ct = default )
         {
+            bool alreadyExist = await roomRepository.ExistsWithRoomNumberAsync(roomNumber, ct);
+
+            if (alreadyExist)
+                throw new DuplicateRoomNumberException(roomNumber);
+
             Room room = Room.Create(roomNumber, floor, roomTypeId);
 
             await roomRepository.SaveAsync(room, ct);

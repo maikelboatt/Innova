@@ -5,8 +5,7 @@ namespace Innova.Domain.RoomInventory.Events
     public sealed record RoomTypeAllotmentReserved(
         Guid RoomTypeAllotmentId,
         Guid RoomTypeId,
-        DateOnly PeriodStart,
-        DateOnly PeriodEnd,
+        DateOnly Date,
         int RoomsReserved ):IDomainEvent
     {
         public DateTimeOffset OccurredOn { get; } = DateTimeOffset.UtcNow;

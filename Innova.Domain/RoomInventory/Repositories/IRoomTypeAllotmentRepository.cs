@@ -10,10 +10,9 @@ namespace Innova.Domain.RoomInventory.Repositories
         // A booking command knows a RoomTypeId and a stay period, not an
         // allotment id — it has to resolve which capacity bucket covers
         // that period before it can call Reserve()/Release() on it.
-        Task<RoomTypeAllotment?> GetByRoomTypeAndPeriodAsync(
+        Task<RoomTypeAllotment?> GetByRoomTypeAndDateAsync(
             RoomTypeId roomTypeId,
-            DateOnly checkIn,
-            DateOnly checkOut,
+            DateOnly date,
             CancellationToken ct = default );
 
         Task SaveAsync( RoomTypeAllotment allotment, CancellationToken ct = default );

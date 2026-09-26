@@ -6,5 +6,5 @@ namespace Innova.Application.RoomInventory.RoomTypeAllotment.Commands.CreateRoom
         Guid RoomTypeId,
         DateOnly CheckIn,
         DateOnly CheckOut,
-        int TotalRooms ):ICommand<Guid>;
+        int TotalRooms ):ICommand<IReadOnlyCollection<Guid>>;
 }

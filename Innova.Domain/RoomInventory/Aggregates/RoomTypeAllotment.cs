@@ -2,7 +2,6 @@
 using Innova.Domain.RoomInventory.Events;
 using Innova.Domain.RoomInventory.ValueObjects;
 using Innova.Domain.Shared.Exceptions;
-using Innova.Domain.Shared.ValueObjects;
 
 namespace Innova.Domain.RoomInventory.Aggregates
 {
@@ -10,68 +9,63 @@ namespace Innova.Domain.RoomInventory.Aggregates
     {
         private RoomTypeAllotment() { }
 
-        private RoomTypeAllotment( RoomTypeAllotmentId roomTypeAllotmentId,
+        private RoomTypeAllotment( RoomTypeAllotmentId id,
                                    RoomTypeId roomTypeId,
-                                   DateRange period,
-                                   int totalRooms ):base(roomTypeAllotmentId)
+                                   DateOnly date,
+                                   int totalRooms,
+                                   int bookedCount ):base(id)
         {
             RoomTypeId = roomTypeId;
-            Period = period;
+            Date = date;
             TotalRooms = totalRooms;
+            BookedCount = bookedCount;
         }
 
         public RoomTypeId RoomTypeId { get; } = null!;
-        public DateRange Period { get; } = null!;
+        public DateOnly Date { get; }
         public int TotalRooms { get; }
         public int BookedCount { get; private set; }
 
-        public static RoomTypeAllotment Create( RoomTypeId roomTypeId, DateRange period, int totalRooms )
+        public static RoomTypeAllotment Create( RoomTypeId roomTypeId, DateOnly date, int totalRooms )
         {
             if (totalRooms < 0)
-                throw new DomainException("Total rooms cannot be negative");
+                throw new DomainException("Total rooms cannot be negative.");
 
-            RoomTypeAllotmentId roomTypeAllotmentId = RoomTypeAllotmentId.New();
-            RoomTypeAllotment roomTypeAllotment = new(
-                                                      roomTypeAllotmentId,
-                                                      roomTypeId,
-                                                      period,
-                                                      totalRooms)
-                                                  {
-                                                      BookedCount = 0
-                                                  };
+            RoomTypeAllotment allotment = new(
+                RoomTypeAllotmentId.New(),
+                roomTypeId,
+                date,
+                totalRooms,
+                0);
 
-            roomTypeAllotment.RaiseDomainEvent(
+            allotment.RaiseDomainEvent(
                 new RoomTypeAllotmentCreated(
-                    roomTypeAllotmentId.Value,
+                    allotment.Id.Value,
                     roomTypeId.Value,
-                    period.Start,
-                    period.End,
+                    date,
                     totalRooms));
 
-
-            return roomTypeAllotment;
+            return allotment;
         }
 
         public static RoomTypeAllotment Reconstitute( RoomTypeAllotmentId id,
                                                       RoomTypeId roomTypeId,
-                                                      DateRange period,
+                                                      DateOnly date,
                                                       int totalRooms,
                                                       int bookedCount ) => new(
-                                                                               id,
-                                                                               roomTypeId,
-                                                                               period,
-                                                                               totalRooms)
-                                                                           {
-                                                                               BookedCount = bookedCount
-                                                                           };
+            id,
+            roomTypeId,
+            date,
+            totalRooms,
+            bookedCount);
 
         public void Reserve( int rooms = 1 )
         {
             if (rooms < 1)
-                throw new DomainException("Must reserve at least one room");
+                throw new DomainException("Must reserve at least one room.");
 
             if (BookedCount + rooms > TotalRooms)
-                throw new DomainException($"Insufficient allotment for {Period.Start}–{Period.End}: {BookedCount}/{TotalRooms} already booked.");
+                throw new DomainException($"Insufficient allotment for {RoomTypeId} on {Date}: {BookedCount}/{TotalRooms} already booked.");
 
             BookedCount += rooms;
 
@@ -79,8 +73,7 @@ namespace Innova.Domain.RoomInventory.Aggregates
                 new RoomTypeAllotmentReserved(
                     Id.Value,
                     RoomTypeId.Value,
-                    Period.Start,
-                    Period.End,
+                    Date,
                     rooms));
         }
 
@@ -95,8 +88,7 @@ namespace Innova.Domain.RoomInventory.Aggregates
                 new RoomTypeAllotmentReleased(
                     Id.Value,
                     RoomTypeId.Value,
-                    Period.Start,
-                    Period.End,
+                    Date,
                     rooms));
         }
     }

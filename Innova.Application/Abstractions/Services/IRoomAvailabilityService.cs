@@ -11,19 +11,19 @@ namespace Innova.Application.Abstractions.Services
     // specifically for the write path that has to be transactionally safe.
     public interface IRoomAvailabilityService
     {
-        Task<RoomTypeAllotment> CreateAsync( RoomTypeId roomTypeId,
-                                             DateRange period,
-                                             int totalRooms,
-                                             CancellationToken ct );
+        Task<IReadOnlyCollection<RoomTypeAllotment>> CreateAsync( RoomTypeId roomTypeId,
+                                                                  DateRange date,
+                                                                  int totalRooms,
+                                                                  CancellationToken ct );
 
-        Task<RoomTypeAllotment> ReserveCapacityAsync( RoomTypeId roomTypeId,
-                                                      DateRange period,
-                                                      int rooms,
-                                                      CancellationToken ct = default );
+        Task<IReadOnlyCollection<RoomTypeAllotment>> ReserveCapacityAsync( RoomTypeId roomTypeId,
+                                                                           DateRange date,
+                                                                           int rooms,
+                                                                           CancellationToken ct = default );
 
-        Task<RoomTypeAllotment> ReleaseCapacityAsync( RoomTypeId roomTypeId,
-                                                      DateRange period,
-                                                      int rooms,
-                                                      CancellationToken ct = default );
+        Task<IReadOnlyCollection<RoomTypeAllotment>> ReleaseCapacityAsync( RoomTypeId roomTypeId,
+                                                                           DateRange stayPeriod,
+                                                                           int rooms,
+                                                                           CancellationToken ct = default );
     }
 }

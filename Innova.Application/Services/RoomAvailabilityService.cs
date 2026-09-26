@@ -11,63 +11,76 @@ namespace Innova.Application.Services
     public sealed class RoomAvailabilityService( IRoomTypeAllotmentRepository allotmentRepository, IRoomTypeDefinitionRepository typeDefinitionRepository )
         :IRoomAvailabilityService
     {
-        public async Task<RoomTypeAllotment> CreateAsync( RoomTypeId roomTypeId,
-                                                          DateRange period,
-                                                          int totalRooms,
-                                                          CancellationToken ct = default )
+        public async Task<IReadOnlyCollection<RoomTypeAllotment>> CreateAsync( RoomTypeId roomTypeId,
+                                                                               DateRange period,
+                                                                               int totalRooms,
+                                                                               CancellationToken ct = default )
         {
             _ = await typeDefinitionRepository.GetByIdAsync(roomTypeId, ct) ?? throw new RoomTypeDefinitionNotFoundException(roomTypeId);
 
-            RoomTypeAllotment allotment = RoomTypeAllotment.Create(roomTypeId, period, totalRooms);
+            List<RoomTypeAllotment> allotments = [];
 
-            await allotmentRepository.SaveAsync(allotment, ct);
+            for (DateOnly date = period.Start; date < period.End; date = date.AddDays(1))
+            {
+                RoomTypeAllotment allotment = RoomTypeAllotment.Create(roomTypeId, date, totalRooms);
+                await allotmentRepository.SaveAsync(allotment, ct);
+                allotments.Add(allotment);
+            }
 
-            return allotment;
+            return allotments;
         }
 
-        public async Task<RoomTypeAllotment> ReserveCapacityAsync( RoomTypeId roomTypeId,
-                                                                   DateRange period,
-                                                                   int rooms = 1,
-                                                                   CancellationToken ct = default )
+        public async Task<IReadOnlyCollection<RoomTypeAllotment>> ReserveCapacityAsync( RoomTypeId roomTypeId,
+                                                                                        DateRange stayPeriod,
+                                                                                        int rooms,
+                                                                                        CancellationToken ct = default )
         {
-            RoomTypeAllotment allotment = await GetAllotmentAsync(
-                                              roomTypeId,
-                                              period,
-                                              rooms,
-                                              ct);
+            List<RoomTypeAllotment> reserved = [];
 
-            allotment.Reserve(rooms);
+            for (DateOnly date = stayPeriod.Start; date < stayPeriod.End; date = date.AddDays(1))
+            {
+                RoomTypeAllotment allotment = await GetAllotmentAsync(
+                                                  roomTypeId,
+                                                  stayPeriod,
+                                                  rooms,
+                                                  ct);
+                allotment.Reserve(rooms);
+                await allotmentRepository.UpdateAsync(allotment, ct);
+                reserved.Add(allotment);
+            }
 
-            await allotmentRepository.UpdateAsync(allotment, ct);
-
-            return allotment;
+            return reserved;
         }
 
-        public async Task<RoomTypeAllotment> ReleaseCapacityAsync( RoomTypeId roomTypeId,
-                                                                   DateRange period,
-                                                                   int rooms,
-                                                                   CancellationToken ct = default )
+        public async Task<IReadOnlyCollection<RoomTypeAllotment>> ReleaseCapacityAsync( RoomTypeId roomTypeId,
+                                                                                        DateRange stayPeriod,
+                                                                                        int rooms,
+                                                                                        CancellationToken ct = default )
         {
-            RoomTypeAllotment allotment = await GetAllotmentAsync(
-                                              roomTypeId,
-                                              period,
-                                              rooms,
-                                              ct);
+            List<RoomTypeAllotment> released = [];
 
-            allotment.Release(rooms);
+            for (DateOnly date = stayPeriod.Start; date < stayPeriod.End; date = date.AddDays(1))
+            {
+                RoomTypeAllotment allotment = await GetAllotmentAsync(
+                                                  roomTypeId,
+                                                  stayPeriod,
+                                                  rooms,
+                                                  ct);
 
-            await allotmentRepository.UpdateAsync(allotment, ct);
+                allotment.Release(rooms);
+                await allotmentRepository.UpdateAsync(allotment, ct);
+                released.Add(allotment);
+            }
 
-            return allotment;
+            return released;
         }
 
         private async Task<RoomTypeAllotment> GetAllotmentAsync( RoomTypeId roomTypeId,
                                                                  DateRange period,
                                                                  int rooms,
-                                                                 CancellationToken ct = default ) => await allotmentRepository.GetByRoomTypeAndPeriodAsync(
+                                                                 CancellationToken ct = default ) => await allotmentRepository.GetByRoomTypeAndDateAsync(
                                                                                                          roomTypeId,
                                                                                                          period.Start,
-                                                                                                         period.End,
                                                                                                          ct) ?? throw new NoAllotmentForTypeAndPeriodException(
                                                                                                          roomTypeId,
                                                                                                          period);

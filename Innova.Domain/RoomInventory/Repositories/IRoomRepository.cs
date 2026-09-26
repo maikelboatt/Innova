@@ -16,5 +16,7 @@ namespace Innova.Domain.RoomInventory.Repositories
         Task SaveAsync( Room room, CancellationToken ct = default );
 
         Task UpdateAsync( Room room, CancellationToken ct = default );
+
+        Task<bool> ExistsWithRoomNumberAsync( RoomNumber roomNumber, CancellationToken ct = default );
     }
 }
