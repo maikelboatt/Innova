@@ -7,6 +7,8 @@ namespace Innova.Domain.HouseKeeping.Repositories
     {
         Task<HouseKeepingTask?> GetByIdAsync( HouseKeepingTaskId id, CancellationToken ct = default );
 
+        Task<HouseKeepingTask?> GetByRoomIdAsync( Guid roomId, CancellationToken ct = default );
+
         Task SaveAsync( HouseKeepingTask task, CancellationToken ct = default );
 
         Task UpdateAsync( HouseKeepingTask task, CancellationToken ct = default );

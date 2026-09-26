@@ -11,6 +11,7 @@ namespace Innova.Application.Services
     {
         public async Task<HouseKeepingTask> ScheduleAsync( Guid roomId, HouseKeepingTaskType type, CancellationToken ct = default )
         {
+            await EnsureNoActiveTaskAsync(roomId, ct);
             HouseKeepingTask houseKeepingTask = HouseKeepingTask.Schedule(roomId, type);
 
             await houseKeepingTaskRepository.SaveAsync(houseKeepingTask, ct);
@@ -43,7 +44,23 @@ namespace Innova.Application.Services
             return task;
         }
 
+        private async Task<HouseKeepingTask?> GetByRoomIdAsync( Guid roomId, CancellationToken ct = default ) =>
+            await houseKeepingTaskRepository.GetByRoomIdAsync(roomId, ct);
+
         private async Task<HouseKeepingTask> GetByIdAsync( HouseKeepingTaskId taskId, CancellationToken ct = default ) =>
             await houseKeepingTaskRepository.GetByIdAsync(taskId, ct) ?? throw new HouseKeepingTaskNotFoundException(taskId);
+
+        private async Task EnsureNoActiveTaskAsync( Guid roomId, CancellationToken ct = default )
+        {
+            HouseKeepingTask? task =
+                await GetByRoomIdAsync(roomId, ct);
+
+            if (task is not null &&
+                (task.Status == HouseKeepingTaskStatus.InProgress ||
+                 task.Status == HouseKeepingTaskStatus.Pending))
+            {
+                throw new DuplicateHouseKeepingTaskException(roomId, task.Id);
+            }
+        }
     }
 }

@@ -9,7 +9,10 @@ using Innova.Domain.Shared.ValueObjects;
 
 namespace Innova.Application.Services
 {
-    public sealed class ReservationService( IReservationRepository reservationRepository, IRoomAvailabilityService roomAvailabilityService ):IReservationService
+    public sealed class ReservationService(
+        IReservationRepository reservationRepository,
+        IRoomAvailabilityService roomAvailabilityService,
+        IBillingAssemblyService billingAssemblyService ):IReservationService
     {
         public async Task<Reservation> BookAsync( GuestId guestId,
                                                   RoomTypeId roomTypeRequested,
@@ -73,7 +76,7 @@ namespace Innova.Application.Services
         {
             Reservation reservation = await GetByIdAsync(reservationId, ct);
 
-            reservation.MarkCheckedIn();
+            reservation.Cancel();
 
             await reservationRepository.UpdateAsync(reservation, ct);
 
@@ -83,8 +86,21 @@ namespace Innova.Application.Services
                 1,
                 ct);
 
+            Money feeAmount = reservation.RatePlan.CancellationPolicy.FeeFor(DateTime.UtcNow, reservation.StayPeriod.Start);
+
+            if (feeAmount.Amount > 0)
+            {
+                await billingAssemblyService.PostGuestFeeAsync(
+                    reservation.GuestId.Value,
+                    feeAmount,
+                    "Cancellation Fee",
+                    $"Cancellation fee for reservation {reservationId}",
+                    ct);
+            }
+
             return reservation;
         }
+
 
         public async Task<Reservation> MarkNoShowAsync( ReservationId reservationId, CancellationToken ct = default )
         {
@@ -93,6 +109,18 @@ namespace Innova.Application.Services
             reservation.MarkNoShow();
 
             await reservationRepository.UpdateAsync(reservation, ct);
+
+            Money feeAmount = reservation.RatePlan.NightlyRate;
+
+            if (feeAmount.Amount > 0)
+            {
+                await billingAssemblyService.PostGuestFeeAsync(
+                    reservation.GuestId.Value,
+                    feeAmount,
+                    "No-show Fee",
+                    $"No-show fee for reservation {reservationId}",
+                    ct);
+            }
 
             return reservation;
         }

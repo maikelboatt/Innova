@@ -1,5 +1,5 @@
 ﻿using Innova.Application.Abstractions.Services;
-using Innova.Application.FrontDesk.Reservation.Exceptions;
+using Innova.Application.FrontDesk.Stay.Exceptions;
 using Innova.Domain.FrontDesk.Aggregates;
 using Innova.Domain.FrontDesk.Repositories;
 using Innova.Domain.FrontDesk.ValueObjects;
@@ -8,7 +8,6 @@ using Innova.Domain.HouseKeeping.ValueObjects;
 using Innova.Domain.Reservations.Aggregates;
 using Innova.Domain.Reservations.ValueObjects;
 using Innova.Domain.RoomInventory.Aggregates;
-using Innova.Domain.Shared.ValueObjects;
 
 namespace Innova.Application.Services
 {
@@ -62,23 +61,15 @@ namespace Innova.Application.Services
 
             Stay stay = await GetByIdAsync(stayId, ct);
 
-            // NOTE: currency is hardcoded here rather than resolved from
-            // anywhere — fine for a single-currency, single-property
-            // deployment, which is the only thing this domain currently
-            // models. A multi-currency setup would need this resolved from
-            // hotel configuration instead, not assumed.
-            Money outstandingBalance = await billingAssemblyService.GetTotalOutstandingBalanceAsync(
-                                           stay.Id.Value,
-                                           stay
-                                               .Occupants.Select(g => g.Value)
-                                               .ToList(),
-                                           stay.GroupBookingId?.Value,
-                                           "GHS",
-                                           ct);
-
-            if (outstandingBalance.Amount != 0)
-
-                throw new OutstandingBalanceException(stayId, outstandingBalance);
+            await billingAssemblyService.SettleAllForStayAsync(
+                stayId.Value,
+                [
+                    .. stay
+                       .Occupants.Select(g => g.Value)
+                ],
+                stay.GroupBookingId?.Value,
+                "GHS",
+                ct);
 
             stay.CheckOut();
 
