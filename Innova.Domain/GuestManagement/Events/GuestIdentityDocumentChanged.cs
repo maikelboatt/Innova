@@ -8,5 +8,6 @@ namespace Innova.Domain.GuestManagement.Events
         string IAuditableEvent.EntityType => "Guest";
         string IAuditableEvent.Summary => $"Guest  {GuestId} has successfully changed their identity document at {OccurredOn:g}.";
         public DateTimeOffset OccurredOn { get; } = DateTime.UtcNow;
+        public Guid EventId { get; } = Guid.NewGuid();
     }
 }

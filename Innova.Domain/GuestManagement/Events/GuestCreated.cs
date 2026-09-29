@@ -17,5 +17,6 @@ namespace Innova.Domain.GuestManagement.Events
         string IAuditableEvent.EntityType => "Guest";
         string IAuditableEvent.Summary => $"Guest {FirstName} {LastName} | {GuestId} has been created successfully at {OccurredOn:g}.";
         public DateTimeOffset OccurredOn { get; } = DateTimeOffset.UtcNow;
+        public Guid EventId { get; } = Guid.NewGuid();
     }
 }
