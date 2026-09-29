@@ -13,8 +13,11 @@ namespace Innova.Domain.Reservations.Events
         string RateCurrency,
         decimal FeeAmount,
         string FeeCurrency,
-        DateTime CancelledAt ):IDomainEvent
+        DateTime CancelledAt ):IDomainEvent, IAuditableEvent
     {
+        Guid IAuditableEvent.EntityId => ReservationId;
+        string IAuditableEvent.EntityType => "Reservation";
+        string IAuditableEvent.Summary => $"Cancelled at {CancelledAt:g}; fee of {FeeAmount} {FeeCurrency}.";
         public DateTimeOffset OccurredOn { get; } = DateTimeOffset.UtcNow;
     }
 }
