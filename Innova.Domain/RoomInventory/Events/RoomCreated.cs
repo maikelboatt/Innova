@@ -7,8 +7,12 @@ namespace Innova.Domain.RoomInventory.Events
         string RoomNumber,
         int FloorLevel,
         string? FloorWing,
-        Guid RoomTypeId ):IDomainEvent
+        Guid RoomTypeId ):IDomainEvent, IAuditableEvent
     {
+        Guid IAuditableEvent.EntityId => RoomId;
+        string IAuditableEvent.EntityType => "Room";
+        string IAuditableEvent.Summary => $"Room '{RoomNumber}' | '{RoomId}' has successfully been created for room type {RoomTypeId} at {OccurredOn:g}.";
         public DateTimeOffset OccurredOn { get; } = DateTimeOffset.UtcNow;
+        public Guid EventId { get; } = Guid.NewGuid();
     }
 }

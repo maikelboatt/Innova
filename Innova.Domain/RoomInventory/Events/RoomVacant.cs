@@ -8,8 +8,12 @@ namespace Innova.Domain.RoomInventory.Events
         int FloorLevel,
         string? FloorWing,
         Guid RoomTypeId,
-        DateTime VacantAt ):IDomainEvent
+        DateTime VacantAt ):IDomainEvent, IAuditableEvent
     {
+        Guid IAuditableEvent.EntityId => RoomId;
+        string IAuditableEvent.EntityType => "Room";
+        string IAuditableEvent.Summary => $"Room '{RoomNumber}' | '{RoomId}' is currently vacant at {OccurredOn:g}.";
         public DateTimeOffset OccurredOn { get; } = DateTimeOffset.UtcNow;
+        public Guid EventId { get; } = Guid.NewGuid();
     }
 }
