@@ -10,8 +10,12 @@ namespace Innova.Domain.FrontDesk.Events
         int MaxOccupancy,
         Guid PrimaryOccupant,
         Guid? GroupBookingId,
-        DateTime CheckedIn ):IDomainEvent
+        DateTime CheckedIn ):IDomainEvent, IAuditableEvent
     {
+        Guid IAuditableEvent.EntityId => StayId;
+        string IAuditableEvent.EntityType => "Stay";
+        string IAuditableEvent.Summary => $"Stay {StayId} for room {RoomId} has Checked-in at {CheckedIn:g}.";
         public DateTimeOffset OccurredOn { get; } = DateTimeOffset.UtcNow;
+        public Guid EventId { get; } = Guid.NewGuid();
     }
 }
