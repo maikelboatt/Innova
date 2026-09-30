@@ -8,7 +8,7 @@ namespace Innova.Application.GuestManagement.Guest.Commands.UpdateGuestContactDe
         {
             RuleFor(c => c.GuestId)
                 .NotEmpty()
-                .WithMessage("Guest is required.");
+                .WithMessage("GuestId is required.");
             RuleFor(c => c.PhoneNumber)
                 .NotEmpty()
                 .WithMessage("Phone Number is required.");
