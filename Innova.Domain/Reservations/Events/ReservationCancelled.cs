@@ -19,5 +19,6 @@ namespace Innova.Domain.Reservations.Events
         string IAuditableEvent.EntityType => "Reservation";
         string IAuditableEvent.Summary => $"Cancelled at {CancelledAt:g}; fee of {FeeAmount} {FeeCurrency}.";
         public DateTimeOffset OccurredOn { get; } = DateTimeOffset.UtcNow;
+        public Guid EventId { get; } = Guid.NewGuid();
     }
 }

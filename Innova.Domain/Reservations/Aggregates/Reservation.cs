@@ -68,13 +68,13 @@ namespace Innova.Domain.Reservations.Aggregates
             return reservation;
         }
 
-        public static Reservation Reconstitution( ReservationId reservationId,
-                                                  GuestId guestId,
-                                                  GroupBookingId groupBookingId,
-                                                  RoomTypeId roomTypeRequested,
-                                                  DateRange stayPeriod,
-                                                  RatePlan ratePlan,
-                                                  ReservationStatus status ) => new(
+        public static Reservation Reconstitute( ReservationId reservationId,
+                                                GuestId guestId,
+                                                GroupBookingId? groupBookingId,
+                                                RoomTypeId roomTypeRequested,
+                                                DateRange stayPeriod,
+                                                RatePlan ratePlan,
+                                                ReservationStatus status ) => new(
             reservationId,
             guestId,
             groupBookingId,
