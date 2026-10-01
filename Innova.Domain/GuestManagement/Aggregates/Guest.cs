@@ -125,8 +125,7 @@ namespace Innova.Domain.GuestManagement.Aggregates
                                           ContactDetails contactDetails,
                                           IdentityDocument identityDocument,
                                           bool isActive,
-                                          DateTime createdAt,
-                                          DateTime updatedAt )
+                                          DateTime createdAt )
         {
             Guest guest = new(
                               guestId,

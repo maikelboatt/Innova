@@ -1,6 +1,4 @@
-﻿using Innova.Domain.GuestManagement.ValueObjects;
-
-namespace Innova.Application.GuestManagement.Guest.DTO
+﻿namespace Innova.Application.GuestManagement.Guest.DTO
 {
     public record GuestDto(
         Guid GuestId,
@@ -10,7 +8,7 @@ namespace Innova.Application.GuestManagement.Guest.DTO
         DateOnly DateOfBirth,
         string PhoneNumber,
         string? Email,
-        IdentityDocumentType IdentityDocumentType,
+        string IdentityDocumentType,
         string IdentityDocumentNumber,
         bool IsActive,
         DateTime CreatedAt );
