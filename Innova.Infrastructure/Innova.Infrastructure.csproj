@@ -28,4 +28,15 @@
         <ProjectReference Include="..\Innova.Application\Innova.Application.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Folder Include="Reservations\GroupBooking\Mapping\"/>
+        <Folder Include="Reservations\GroupBooking\Queries\"/>
+        <Folder Include="Reservations\GroupBooking\Repository\"/>
+        <Folder Include="Reservations\GroupBooking\Sql\"/>
+        <Folder Include="Reservations\Reservation\Mapping\"/>
+        <Folder Include="Reservations\Reservation\Queries\"/>
+        <Folder Include="Reservations\Reservation\Repository\"/>
+        <Folder Include="Reservations\Reservation\Sql\"/>
+    </ItemGroup>
+
 </Project>

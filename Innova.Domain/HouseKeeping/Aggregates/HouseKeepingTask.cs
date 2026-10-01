@@ -13,12 +13,12 @@ namespace Innova.Domain.HouseKeeping.Aggregates
 
         private HouseKeepingTask( HouseKeepingTaskId houseKeepingTaskId,
                                   Guid roomId,
-                                  StaffId assignedStaffId,
+                                  StaffId? assignedStaffId,
                                   HouseKeepingTaskType type,
                                   HouseKeepingTaskStatus status,
                                   DateTime createdAt,
                                   DateTime? completedAt,
-                                  InspectionResult inspection ):base(houseKeepingTaskId)
+                                  InspectionResult? inspection ):base(houseKeepingTaskId)
         {
             RoomId = roomId;
             AssignedStaffId = assignedStaffId;
@@ -59,12 +59,12 @@ namespace Innova.Domain.HouseKeeping.Aggregates
 
         public static HouseKeepingTask Reconstitute( HouseKeepingTaskId houseKeepingTaskId,
                                                      Guid roomId,
-                                                     StaffId assignedStaffId,
+                                                     StaffId? assignedStaffId,
                                                      HouseKeepingTaskType type,
                                                      HouseKeepingTaskStatus status,
                                                      DateTime createdAt,
                                                      DateTime? completedAt,
-                                                     InspectionResult inspection ) => new(
+                                                     InspectionResult? inspection ) => new(
             houseKeepingTaskId,
             roomId,
             assignedStaffId,
