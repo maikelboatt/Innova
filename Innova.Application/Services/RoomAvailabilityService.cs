@@ -41,7 +41,7 @@ namespace Innova.Application.Services
             {
                 RoomTypeAllotment allotment = await GetAllotmentAsync(
                                                   roomTypeId,
-                                                  stayPeriod,
+                                                  date,
                                                   rooms,
                                                   ct);
                 allotment.Reserve(rooms);
@@ -63,7 +63,7 @@ namespace Innova.Application.Services
             {
                 RoomTypeAllotment allotment = await GetAllotmentAsync(
                                                   roomTypeId,
-                                                  stayPeriod,
+                                                  date,
                                                   rooms,
                                                   ct);
 
@@ -76,13 +76,13 @@ namespace Innova.Application.Services
         }
 
         private async Task<RoomTypeAllotment> GetAllotmentAsync( RoomTypeId roomTypeId,
-                                                                 DateRange period,
+                                                                 DateOnly date,
                                                                  int rooms,
                                                                  CancellationToken ct = default ) => await allotmentRepository.GetByRoomTypeAndDateAsync(
                                                                                                          roomTypeId,
-                                                                                                         period.Start,
-                                                                                                         ct) ?? throw new NoAllotmentForTypeAndPeriodException(
+                                                                                                         date,
+                                                                                                         ct) ?? throw new NoAllotmentForDateException(
                                                                                                          roomTypeId,
-                                                                                                         period);
+                                                                                                         date);
     }
 }
