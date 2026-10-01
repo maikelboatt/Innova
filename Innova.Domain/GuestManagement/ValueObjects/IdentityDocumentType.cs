@@ -6,7 +6,7 @@
         NationalId = 2,
         GhanaCard = 3,
         DriversLicense = 4,
-        VoterId = 5,
+        VotersId = 5,
         Other = 99
     }
 }
