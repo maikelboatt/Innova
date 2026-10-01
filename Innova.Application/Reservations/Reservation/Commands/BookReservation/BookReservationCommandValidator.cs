@@ -8,7 +8,7 @@ namespace Innova.Application.Reservations.Reservation.Commands.BookReservation
         {
             RuleFor(x => x.GuestId)
                 .NotEmpty()
-                .WithMessage("Guest is required.");
+                .WithMessage("Guest Id is required.");
 
             RuleFor(x => x.RoomTypeRequested)
                 .NotEmpty()

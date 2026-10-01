@@ -8,7 +8,7 @@ namespace Innova.Application.GuestManagement.Guest.Commands.DeactivateGuest
         {
             RuleFor(c => c.GuestId)
                 .NotEmpty()
-                .WithMessage("Guest is required.");
+                .WithMessage("Guest Id is required.");
         }
     }
 }

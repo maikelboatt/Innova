@@ -8,7 +8,7 @@ namespace Innova.Application.GuestManagement.Guest.Commands.ChangeGuestIdentityD
         {
             RuleFor(c => c.GuestId)
                 .NotEmpty()
-                .WithMessage("Guest is required.");
+                .WithMessage("Guest Id is required.");
             RuleFor(c => c.IdentityDocumentNumber)
                 .NotEmpty()
                 .WithMessage("Identity document is required.");
