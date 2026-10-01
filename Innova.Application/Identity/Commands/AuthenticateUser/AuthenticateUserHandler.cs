@@ -3,7 +3,6 @@ using Innova.Application.Abstractions.Services;
 using Innova.Application.Identity.Exceptions;
 using Innova.Domain.Identity.Aggregates;
 using Innova.Domain.Identity.Repositories;
-using MediCore.Application.Abstractions.Services;
 
 namespace Innova.Application.Identity.Commands.AuthenticateUser
 {

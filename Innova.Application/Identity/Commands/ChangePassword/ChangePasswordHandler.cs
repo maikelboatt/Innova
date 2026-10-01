@@ -5,7 +5,6 @@ using Innova.Application.Identity.Exceptions;
 using Innova.Domain.Identity.Aggregates;
 using Innova.Domain.Identity.Repositories;
 using Innova.Domain.Shared.ValueObjects;
-using MediCore.Application.Abstractions.Services;
 
 namespace Innova.Application.Identity.Commands.ChangePassword
 {

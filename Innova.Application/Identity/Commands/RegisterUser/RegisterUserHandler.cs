@@ -1,9 +1,9 @@
 ﻿using Innova.Application.Abstractions.Messaging;
+using Innova.Application.Abstractions.Services;
 using Innova.Application.Identity.Exceptions;
 using Innova.Domain.Identity.Aggregates;
 using Innova.Domain.Identity.Repositories;
 using Innova.Domain.Identity.ValueObjects;
-using MediCore.Application.Abstractions.Services;
 
 namespace Innova.Application.Identity.Commands.RegisterUser
 {
