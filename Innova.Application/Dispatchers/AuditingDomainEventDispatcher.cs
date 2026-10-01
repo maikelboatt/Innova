@@ -41,9 +41,10 @@ namespace Innova.Application.Dispatchers
         private void LogEvent( IDomainEvent domainEvent )
         {
             logger.LogInformation(
-                "Domain event dispatched: {EventType} | OccurredOn: {OccurredOn}",
+                "Domain event dispatched: {EventType} | EventId: {EventId} | OccurredOn: {OccurredOn}",
                 domainEvent.GetType()
                            .Name,
+                domainEvent.EventId,
                 domainEvent.OccurredOn);
         }
     }
