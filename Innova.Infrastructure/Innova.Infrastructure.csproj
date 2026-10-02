@@ -29,14 +29,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Reservations\GroupBooking\Mapping\"/>
-        <Folder Include="Reservations\GroupBooking\Queries\"/>
-        <Folder Include="Reservations\GroupBooking\Repository\"/>
-        <Folder Include="Reservations\GroupBooking\Sql\"/>
-        <Folder Include="Reservations\Reservation\Mapping\"/>
-        <Folder Include="Reservations\Reservation\Queries\"/>
-        <Folder Include="Reservations\Reservation\Repository\"/>
-        <Folder Include="Reservations\Reservation\Sql\"/>
+        <Folder Include="Billing\Folio\Mapping\"/>
+        <Folder Include="Billing\Folio\Queries\"/>
+        <Folder Include="Billing\Folio\Repository\"/>
+        <Folder Include="Billing\Folio\Sql\"/>
     </ItemGroup>
 
 </Project>

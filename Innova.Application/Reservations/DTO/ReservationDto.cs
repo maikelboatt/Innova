@@ -4,7 +4,7 @@
         Guid ReservationId,
         Guid GuestId,
         Guid? GroupBookingId,
-        Guid RootTypeRequested,
+        Guid RoomTypeRequested,
         DateOnly CheckIn,
         DateOnly CheckOut,
         decimal NightlyRateAmount,

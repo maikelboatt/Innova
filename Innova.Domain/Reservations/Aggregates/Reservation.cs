@@ -27,7 +27,7 @@ namespace Innova.Domain.Reservations.Aggregates
         }
 
         public GuestId GuestId { get; }
-        public GroupBookingId? GroupBookingId { get; }
+        public GroupBookingId? GroupBookingId { get; private set; }
         public RoomTypeId RoomTypeRequested { get; }
         public DateRange StayPeriod { get; }
         public RatePlan RatePlan { get; }
@@ -194,6 +194,19 @@ namespace Innova.Domain.Reservations.Aggregates
                     noShowFee.Amount,
                     noShowFee.Currency,
                     DateTime.UtcNow));
+        }
+
+        public void AttachToGroup( GroupBookingId groupBookingId )
+        {
+            if (GroupBookingId is not null)
+                throw new DomainException("This reservation already belongs to a group booking.");
+
+            GroupBookingId = groupBookingId;
+        }
+
+        public void DetachFromGroup()
+        {
+            GroupBookingId = null;
         }
     }
 }
