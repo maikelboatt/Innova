@@ -39,8 +39,16 @@ namespace Innova.Domain.Reservations.Aggregates
             return groupBooking;
         }
 
-        public static GroupBooking Reconstitute( GroupBookingId groupBookingId, GuestId organizerGuestId, string groupName ) =>
-            new(groupBookingId, organizerGuestId, groupName);
+        public static GroupBooking Reconstitute( GroupBookingId groupBookingId,
+                                                 GuestId organizerGuestId,
+                                                 string groupName,
+                                                 IReadOnlyCollection<ReservationId> reservationIds )
+        {
+            GroupBooking booking = new(groupBookingId, organizerGuestId, groupName);
+            booking._reservationIds.AddRange(reservationIds);
+
+            return booking;
+        }
 
         public void DetachReservation( ReservationId reservationId )
         {
