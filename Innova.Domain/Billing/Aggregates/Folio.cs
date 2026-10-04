@@ -66,7 +66,8 @@ namespace Innova.Domain.Billing.Aggregates
                                           string currency,
                                           FolioStatus status,
                                           IEnumerable<Charge> charges,
-                                          IEnumerable<Payment> payments )
+                                          IEnumerable<Payment> payments,
+                                          IEnumerable<Adjustment> adjustments )
         {
             Folio folio = new(
                 folioId,
@@ -76,6 +77,7 @@ namespace Innova.Domain.Billing.Aggregates
 
             folio._charges.AddRange(charges);
             folio._payments.AddRange(payments);
+            folio._adjustments.AddRange(adjustments);
 
             return folio;
         }

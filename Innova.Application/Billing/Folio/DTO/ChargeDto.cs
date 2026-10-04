@@ -4,6 +4,6 @@
         decimal Amount,
         string Currency,
         string Category,
-        string Description,
+        string? Description,
         DateTime PostedAt );
 }

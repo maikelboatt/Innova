@@ -8,7 +8,7 @@ namespace Innova.Domain.Billing.ValueObjects
     {
         private Charge( Money amount,
                         string category,
-                        string description,
+                        string? description,
                         DateTime postedAt )
         {
             Amount = amount;
@@ -20,10 +20,10 @@ namespace Innova.Domain.Billing.ValueObjects
 
         public Money Amount { get; }
         public string Category { get; }
-        public string Description { get; }
+        public string? Description { get; }
         public DateTime PostedAt { get; }
 
-        public static Charge Of( Money amount, string category, string description )
+        public static Charge Of( Money amount, string category, string? description )
         {
             if (amount.Amount < 0)
                 throw new DomainException("Charges cannot be negative — model refunds as a separate Adjustment.");

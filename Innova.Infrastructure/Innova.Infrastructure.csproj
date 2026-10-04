@@ -28,11 +28,4 @@
         <ProjectReference Include="..\Innova.Application\Innova.Application.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Billing\Folio\Mapping\"/>
-        <Folder Include="Billing\Folio\Queries\"/>
-        <Folder Include="Billing\Folio\Repository\"/>
-        <Folder Include="Billing\Folio\Sql\"/>
-    </ItemGroup>
-
 </Project>
