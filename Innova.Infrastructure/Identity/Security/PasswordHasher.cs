@@ -41,9 +41,19 @@ namespace Innova.Infrastructure.Identity.Security
             if (parts.Length != 3)
                 return false;
 
-            int iterations = int.Parse(parts[0]);
-            byte[] salt = Convert.FromBase64String(parts[1]);
-            byte[] expectedHash = Convert.FromBase64String(parts[2]);
+            if (!int.TryParse(parts[0], out int iterations))
+                return false;
+
+            byte[] salt, expectedHash;
+            try
+            {
+                salt = Convert.FromBase64String(parts[1]);
+                expectedHash = Convert.FromBase64String(parts[2]);
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
 
             byte[] actualHash = KeyDerivation.Pbkdf2(
                 providedPassword,
@@ -51,9 +61,6 @@ namespace Innova.Infrastructure.Identity.Security
                 KeyDerivationPrf.HMACSHA256,
                 iterations,
                 expectedHash.Length);
-
-            // Constant-time comparison — prevents timing attacks that
-            // could otherwise leak how many leading bytes matched.
             return CryptographicOperations.FixedTimeEquals(actualHash, expectedHash);
         }
     }

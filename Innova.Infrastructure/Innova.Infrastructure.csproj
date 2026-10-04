@@ -11,7 +11,7 @@
         <PackageReference Include="Dapper" Version="2.1.89"/>
         <PackageReference Include="dbup-sqlserver" Version="7.2.0"/>
         <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="10.0.12"/>
-        <PackageReference Include="Microsoft.Data.SqlClient" Version="7.1.0"/>
+        <PackageReference Include="Microsoft.Data.SqlClient" Version="7.1.1"/>
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.12"/>
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.12"/>
         <PackageReference Include="MvvmCross" Version="10.1.2"/>
