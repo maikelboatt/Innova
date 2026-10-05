@@ -12,7 +12,7 @@ namespace Innova.Application.HouseKeeping.HouseKeeping.Commands.AssignTask
         public async Task<Guid> HandleAsync( AssignTaskCommand command, CancellationToken ct = default )
         {
             HouseKeepingTaskId taskId = HouseKeepingTaskId.From(command.HouseKeepingTaskId);
-            StaffId staffId = StaffId.From(command.HouseKeepingTaskId);
+            StaffId staffId = StaffId.From(command.StaffId);
 
             HouseKeepingTask task = await taskService.AssignAsync(taskId, staffId, ct);
 

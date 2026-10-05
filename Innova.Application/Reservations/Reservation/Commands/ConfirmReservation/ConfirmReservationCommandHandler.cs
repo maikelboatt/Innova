@@ -5,7 +5,7 @@ using Innova.Domain.Reservations.ValueObjects;
 
 namespace Innova.Application.Reservations.Reservation.Commands.ConfirmReservation
 {
-    public class ConfirmReservationCommandHandler( IReservationService reservationService, IDomainEventDispatcher eventDispatcher )
+    public sealed class ConfirmReservationCommandHandler( IReservationService reservationService, IDomainEventDispatcher eventDispatcher )
         :ICommandHandler<ConfirmReservationCommand, Unit>
     {
         public async Task<Unit> HandleAsync( ConfirmReservationCommand command, CancellationToken ct = default )

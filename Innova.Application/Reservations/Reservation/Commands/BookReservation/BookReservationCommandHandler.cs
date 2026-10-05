@@ -20,7 +20,9 @@ namespace Innova.Application.Reservations.Reservation.Commands.BookReservation
                 command.FreeCancellationWindowHours,
                 Money.Of(command.CancellationFeeAmount, command.CancellationFeeCurrency));
             RatePlan ratePlan = RatePlan.Of(Money.Of(command.NightlyRateAmount, command.NightlyRateCurrency), cancellationPolicy);
-            GroupBookingId groupBookingId = GroupBookingId.From(command.GroupBookingId.Value);
+            GroupBookingId? groupBookingId = command.GroupBookingId.HasValue
+                                                 ? GroupBookingId.From(command.GroupBookingId.Value)
+                                                 : null;
 
             Domain.Reservations.Aggregates.Reservation reservation = await reservationService.BookAsync(
                                                                          guestId,

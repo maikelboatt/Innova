@@ -1,16 +1,15 @@
 ﻿using Innova.Application.Abstractions.Events;
 using Innova.Application.Abstractions.Messaging;
 using Innova.Application.Abstractions.Services;
-using Innova.Application.FrontDesk.Stay.Commands.CheckIn;
 using Innova.Domain.FrontDesk.ValueObjects;
 
 namespace Innova.Application.FrontDesk.Stay.Commands.CheckOut
 {
-    public sealed class CheckOutCommandHandler( IStayService stayService, IDomainEventDispatcher eventDispatcher ):ICommandHandler<CheckInCommand, Guid>
+    public sealed class CheckOutCommandHandler( IStayService stayService, IDomainEventDispatcher eventDispatcher ):ICommandHandler<CheckOutCommand, Guid>
     {
-        public async Task<Guid> HandleAsync( CheckInCommand command, CancellationToken ct = default )
+        public async Task<Guid> HandleAsync( CheckOutCommand command, CancellationToken ct = default )
         {
-            StayId stayId = StayId.From(command.ReservationId);
+            StayId stayId = StayId.From(command.StayId);
 
             Domain.FrontDesk.Aggregates.Stay stay = await stayService.CheckOutAsync(stayId, ct);
 

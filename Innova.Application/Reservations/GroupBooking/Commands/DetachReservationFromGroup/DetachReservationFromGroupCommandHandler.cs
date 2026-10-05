@@ -1,11 +1,11 @@
 ﻿using Innova.Application.Abstractions.Events;
 using Innova.Application.Abstractions.Messaging;
-using Innova.Application.Services;
+using Innova.Application.Abstractions.Services;
 using Innova.Domain.Reservations.ValueObjects;
 
 namespace Innova.Application.Reservations.GroupBooking.Commands.DetachReservationFromGroup
 {
-    public class DetachReservationFromGroupCommandHandler( GroupBookingService groupBookingService, IDomainEventDispatcher eventDispatcher )
+    public sealed class DetachReservationFromGroupCommandHandler( IGroupBookingService groupBookingService, IDomainEventDispatcher eventDispatcher )
         :ICommandHandler<DetachReservationFromGroupCommand, Unit>
     {
         public async Task<Unit> HandleAsync( DetachReservationFromGroupCommand command, CancellationToken ct = default )

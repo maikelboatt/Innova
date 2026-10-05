@@ -1,9 +1,8 @@
 ﻿using FluentValidation;
-using Innova.Application.Reservations.Reservation.Commands.CancelReservation;
 
 namespace Innova.Application.Reservations.Reservation.Commands.MarkNoShow
 {
-    public sealed class MarkNoShowCommandValidator:AbstractValidator<CancelReservationCommand>
+    public sealed class MarkNoShowCommandValidator:AbstractValidator<MarkNoShowCommand>
     {
         public MarkNoShowCommandValidator()
         {

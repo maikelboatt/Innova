@@ -4,9 +4,9 @@ namespace Innova.Application.Reservations.GroupBooking.Commands.AttachReservatio
 {
     namespace Innova.Application.Reservations.GroupBooking.Commands.DetachReservationFromGroup
     {
-        public sealed class DetachReservationFromGroupCommandValidator:AbstractValidator<AttachReservationToGroupCommand>
+        public sealed class AttachReservationToGroupCommandValidator:AbstractValidator<AttachReservationToGroupCommand>
         {
-            public DetachReservationFromGroupCommandValidator()
+            public AttachReservationToGroupCommandValidator()
             {
                 RuleFor(gb => gb.GroupBookingId)
                     .NotEmpty()
