@@ -1,0 +1,104 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+        ══════════════════════════════════════════════════════════════════
+        MediCore ViewModel → View DataTemplate Registry
+        
+        Maps every ViewModel type to its View so any ContentControl
+        bound to a ViewModel instance (the Shell's content area via
+        IContentService, and ModalService's modal host) renders the
+        right XAML automatically — no manual DataTemplateSelector,
+        no switch statement in code-behind.
+        
+        IMPORTANT: This dictionary must be merged into Application
+        resources (see App.xaml), NOT into a single View's resources.
+        Implicit DataTemplates (keyed by DataType, no x:Key) are only
+        picked up by a ContentPresenter if they're visible somewhere
+        in the resource lookup chain above it — merging at App level
+        guarantees both ShellView's content area AND ModalService's
+        modal host (a separate ContentControl) can resolve them.
+        Previously this lived in ShellView.Resources, which happened
+        to work only because both content areas were nested inside
+        Shell — fragile if that ever changes.
+        ══════════════════════════════════════════════════════════════════
+    -->
+
+    <!--  ── Main content area templates (via IContentService) ────  -->
+
+    <!--  Login  -->
+    <!-- <DataTemplate DataType="{x:Type identityVm:LoginViewModel}"> -->
+    <!--     <identityV:LoginView /> -->
+    <!-- </DataTemplate> -->
+    <!--    -->
+    <!--  ~1~  Register User  @1@  -->
+    <!-- <DataTemplate DataType="{x:Type identityFormsVm:RegisterUserViewModel}"> -->
+    <!--     <identityFormsV:RegisterUserView /> -->
+    <!-- </DataTemplate> -->
+    <!--    -->
+    <!--  ~1~  Change Password  @1@  -->
+    <!-- <DataTemplate DataType="{x:Type identityFormsVm:ChangePasswordViewModel}"> -->
+    <!--     <identityFormsV:ChangePasswordView /> -->
+    <!-- </DataTemplate> -->
+    <!--    -->
+    <!-- <DataTemplate DataType="{x:Type dashboardVm:DashboardViewModel}"> -->
+    <!--     <dashboard:DashboardView /> -->
+    <!-- </DataTemplate> -->
+    <!--    -->
+    <!--  ~1~  Patient Registration  @1@  -->
+    <!-- <DataTemplate DataType="{x:Type patientsListVm:PatientListViewModel}"> -->
+    <!--     <patientListV:PatientListView /> -->
+    <!-- </DataTemplate> -->
+    <!--    -->
+    <!--  ~1~  Scheduling  @1@  -->
+    <!-- <DataTemplate DataType="{x:Type scheduleListVm:AppointmentListViewModel}"> -->
+    <!--     <scheduleListV:AppointmentListView /> -->
+    <!-- </DataTemplate> -->
+    <!--    -->
+    <!--  ~1~  Consultation  @1@  -->
+    <!-- <DataTemplate DataType="{x:Type consultationListVm:ConsultationListViewModel}"> -->
+    <!--     <consultationListV:ConsultationListView /> -->
+    <!-- </DataTemplate> -->
+    <!--    -->
+    <!--  ~1~  Pharmacy  @1@  -->
+    <!-- <DataTemplate DataType="{x:Type prescriptionListVm:PrescriptionListViewModel}"> -->
+    <!--     <prescriptionListV:PrescriptionListView /> -->
+    <!-- </DataTemplate> -->
+    <!--    -->
+    <!--  ~1~  Billing  @1@  -->
+    <!-- <DataTemplate DataType="{x:Type billListVm:BillListViewModel}"> -->
+    <!--     <billListV:BillListView /> -->
+    <!-- </DataTemplate> -->
+    <!--    -->
+    <!--  ~1~  Doctors  @1@  -->
+    <!-- <DataTemplate DataType="{x:Type doctorListVm:DoctorListViewModel}"> -->
+    <!--     <doctorListV:DoctorListView /> -->
+    <!-- </DataTemplate> -->
+    <!--    -->
+    <!--  ~1~  Settings  @1@  -->
+    <!-- <DataTemplate DataType="{x:Type settingsVm:SettingsViewModel}"> -->
+    <!--     <settingsV:SettingsView /> -->
+    <!-- </DataTemplate> -->
+    <!--  ── Modal / dialog templates (via IModalService) ─────────  -->
+
+    <!-- <DataTemplate DataType="{x:Type dialogs:ConfirmationDialogViewModel}"> -->
+    <!--     <dialogViews:ConfirmationDialogView /> -->
+    <!-- </DataTemplate> -->
+    <!-- <DataTemplate DataType="{x:Type dialogs:ErrorDialogViewModel}"> -->
+    <!--     <dialogViews:ErrorDialogView /> -->
+    <!-- </DataTemplate> -->
+
+    <!--  Patient details + forms, all modal  -->
+    <!-- <DataTemplate DataType="{x:Type patientDetailsVm:PatientDetailsViewModel}"> -->
+    <!--     <patientDetailsV:PatientDetailsView /> -->
+    <!-- </DataTemplate> -->
+    <!-- <DataTemplate DataType="{x:Type patientFormsVm:RegisterPatientViewModel}"> -->
+    <!--     <patiengFormsV:RegisterPatientView /> -->
+    <!-- </DataTemplate> -->
+    <!-- <DataTemplate DataType="{x:Type patientFormsVm:UpdatePatientViewModel}"> -->
+    <!--     <patiengFormsV:UpdatePatientView /> -->
+    <!-- </DataTemplate> -->
+    <!-- <DataTemplate DataType="{x:Type patientJourneyVm:PatientJourneyViewModel}"> -->
+    <!--     <patientJourneyV:PatientJourneyView /> -->
+    <!-- </DataTemplate> -->
+
+</ResourceDictionary>

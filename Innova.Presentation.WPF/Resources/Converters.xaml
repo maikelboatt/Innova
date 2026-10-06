@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:resources="clr-namespace:Innova.Presentation.WPF.Resources">
+    <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    <resources:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+    <resources:EditModeToTextConverter x:Key="EditModeToTextConverter" />
+    <resources:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+    <resources:InverseNullToVisibilityConverter x:Key="InverseNullToVisibilityConverter" />
+    <resources:NullToBoolConverter x:Key="NullToBoolConverter" />
+    <resources:TimeSpanToDisplayConverter x:Key="TimeSpanToDisplayConverter" />
+    <resources:ErrorConverter x:Key="ErrorConverter" />
+    <resources:IntToVisibilityConverter x:Key="IntToVisibilityConverter" />
+    <resources:LongDateConverter x:Key="LongDateConverter" />
+    <resources:ShortDateConverter x:Key="ShortDateConverter" />
+    <resources:RadioButtonConverter x:Key="RadioButtonConverter" />
+</ResourceDictionary>
