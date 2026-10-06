@@ -1,13 +1,12 @@
 ﻿// MediCore.Presentation.Core/Base/DetailsViewModel.cs
 
 using Innova.Application.Dispatchers;
-using Innova.Presentation.Core.Base;
 using Innova.Presentation.Core.Services.Abstractions;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using Serilog;
 
-namespace MediCore.Presentation.Core.Base
+namespace Innova.Presentation.Core.Base
 {
     /// <summary>
     ///     Base class for read-only "details" ViewModels shown as a

@@ -1,5 +1,4 @@
-﻿// MediCore.Presentation.Core/Base/ViewModelBase.cs
-
+﻿
 using Application.Exceptions;
 using Innova.Application.Abstractions.Messaging;
 using Innova.Application.Dispatchers;

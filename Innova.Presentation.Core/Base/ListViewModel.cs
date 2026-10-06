@@ -1,5 +1,4 @@
-﻿// MediCore.Presentation.Core/Base/ListViewModel.cs
-
+﻿
 using System.Collections.ObjectModel;
 using Innova.Application.Dispatchers;
 using Innova.Presentation.Core.Services.Abstractions;

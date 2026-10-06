@@ -1,5 +1,4 @@
-﻿// MediCore.Presentation.Core/Base/FormViewModel.cs
-
+﻿
 using Innova.Application.Dispatchers;
 using Innova.Presentation.Core.Services.Abstractions;
 using MvvmCross.Commands;
