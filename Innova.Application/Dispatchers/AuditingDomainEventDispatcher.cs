@@ -14,7 +14,7 @@ namespace Innova.Application.Dispatchers
     ///     auditing to a new event means implementing three expression-
     ///     bodied members on that event's record — not writing a new class.
     /// </summary>
-    public sealed class AuditingDomainEventDispatcher( IDomainEventDispatcher inner, IAuditLogger auditLogger, ILogger<AuditingDomainEventDispatcher> logger )
+    public sealed class AuditingDomainEventDispatcher( IAuditLogger auditLogger, ILogger<AuditingDomainEventDispatcher> logger )
         :IDomainEventDispatcher
     {
         public async Task DispatchAsync( IReadOnlyCollection<IDomainEvent> domainEvents, CancellationToken ct = default )
@@ -34,8 +34,6 @@ namespace Innova.Application.Dispatchers
                         ct);
                 }
             }
-
-            await inner.DispatchAsync(domainEvents, ct);
         }
 
         private void LogEvent( IDomainEvent domainEvent )
