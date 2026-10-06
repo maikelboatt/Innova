@@ -1,0 +1,167 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Brushes.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--
+        ══════════════════════════════════════════════════════════════════
+        MediCore Typography System
+        
+        Font family: Segoe UI (ships with Windows, professional, readable)
+        Fallback:    sans-serif
+        
+        Scale (px → WPF device-independent units are equivalent):
+        Caption   11   — table metadata, timestamps, helper hints
+        Label     12   — form field labels, column headers
+        Body      14   — default reading text
+        BodyLg    15   — slightly larger body for cards
+        Subtitle  16   — section subheadings
+        Heading   20   — page / workspace headings
+        Title     26   — dashboard figures, stat numbers
+        Display   32   — hero numbers (total patients, etc.)
+        
+        Weights:
+        Regular  400
+        Medium   500
+        SemiBold 600  (use sparingly — headings only)
+        ══════════════════════════════════════════════════════════════════
+    -->
+
+    <!--  ── Font family ────────────────────────────────────────────  -->
+    <FontFamily x:Key="FontPrimary">SegoeUI</FontFamily>
+    <FontFamily x:Key="FontMono">Consolas, Courier New</FontFamily>
+    <FontFamily x:Key="FontStylish">Amita</FontFamily>
+
+    <!--  ── Font sizes ─────────────────────────────────────────────  -->
+    <System:Double xmlns:System="clr-namespace:System;assembly=mscorlib" x:Key="FontSizeCaption">11</System:Double>
+    <System:Double xmlns:System="clr-namespace:System;assembly=mscorlib" x:Key="FontSizeLabel">12</System:Double>
+    <System:Double xmlns:System="clr-namespace:System;assembly=mscorlib" x:Key="FontSizeBody">14</System:Double>
+    <System:Double xmlns:System="clr-namespace:System;assembly=mscorlib" x:Key="FontSizeBodyLg">15</System:Double>
+    <System:Double xmlns:System="clr-namespace:System;assembly=mscorlib" x:Key="FontSizeSubtitle">16</System:Double>
+    <System:Double xmlns:System="clr-namespace:System;assembly=mscorlib" x:Key="FontSizeHeading">20</System:Double>
+    <System:Double xmlns:System="clr-namespace:System;assembly=mscorlib" x:Key="FontSizeTitle">26</System:Double>
+    <System:Double xmlns:System="clr-namespace:System;assembly=mscorlib" x:Key="FontSizeDisplay">32</System:Double>
+
+    <!--  ── Font weights ───────────────────────────────────────────  -->
+    <FontWeight x:Key="WeightRegular">Regular</FontWeight>
+    <FontWeight x:Key="WeightMedium">Medium</FontWeight>
+    <FontWeight x:Key="WeightSemiBold">SemiBold</FontWeight>
+
+    <!--
+        ══════════════════════════════════════════════════════════════════
+        Named TextBlock Styles
+        Apply as Style="{StaticResource TextDisplay}" etc.
+        ══════════════════════════════════════════════════════════════════
+    -->
+
+    <!--  Caption — timestamps, helper text, metadata  -->
+    <Style x:Key="TextCaption" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontPrimary}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeCaption}" />
+        <Setter Property="FontWeight" Value="Regular" />
+        <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}" />
+        <Setter Property="LineHeight" Value="16" />
+    </Style>
+
+    <!--  Label — field labels, column headers  -->
+    <Style x:Key="TextLabel" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontPrimary}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeLabel}" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+        <Setter Property="LineHeight" Value="18" />
+    </Style>
+
+    <!--  Body — default paragraph text  -->
+    <Style x:Key="TextBody" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontPrimary}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeBody}" />
+        <Setter Property="FontWeight" Value="Regular" />
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+        <Setter Property="LineHeight" Value="22" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <!--  Body secondary — supporting body text  -->
+    <Style x:Key="TextBodySecondary"
+           BasedOn="{StaticResource TextBody}"
+           TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+        <Setter Property="FontFamily" Value="{StaticResource FontStylish}" />
+    </Style>
+
+    <!--  Body large — slightly bigger for card content  -->
+    <Style x:Key="TextBodyLg" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontPrimary}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeBodyLg}" />
+        <Setter Property="FontWeight" Value="Regular" />
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+        <Setter Property="LineHeight" Value="24" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <!--  Subtitle — section groupings, card headings  -->
+    <Style x:Key="TextSubtitle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontPrimary}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeSubtitle}" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+        <Setter Property="LineHeight" Value="24" />
+    </Style>
+
+    <!--  Heading — workspace / page title  -->
+    <Style x:Key="TextHeading" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontPrimary}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeHeading}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+        <Setter Property="LineHeight" Value="28" />
+    </Style>
+
+    <!--  Title — dashboard stat numbers  -->
+    <Style x:Key="TextTitle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontPrimary}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeTitle}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+        <Setter Property="LineHeight" Value="32" />
+    </Style>
+
+    <!--  Display — hero stat numbers  -->
+    <Style x:Key="TextDisplay" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontPrimary}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeDisplay}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+        <Setter Property="LineHeight" Value="40" />
+    </Style>
+
+    <!--  Sidebar nav label — on dark background  -->
+    <Style x:Key="TextNavLabel" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontPrimary}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeBody}" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="Foreground" Value="{StaticResource SidebarTextBrush}" />
+        <Setter Property="LineHeight" Value="22" />
+    </Style>
+
+    <!--  Error text — validation messages below inputs  -->
+    <Style x:Key="TextError" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontPrimary}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeCaption}" />
+        <Setter Property="FontWeight" Value="Regular" />
+        <Setter Property="Foreground" Value="{StaticResource TextDangerBrush}" />
+        <Setter Property="LineHeight" Value="16" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <!--  Monospace — IDs, codes, reference numbers  -->
+    <Style x:Key="TextMono" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontMono}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeLabel}" />
+        <Setter Property="FontWeight" Value="Regular" />
+        <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+    </Style>
+
+</ResourceDictionary>

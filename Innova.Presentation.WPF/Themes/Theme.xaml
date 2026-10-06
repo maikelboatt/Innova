@@ -1,0 +1,50 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--
+        ══════════════════════════════════════════════════════════════════
+        MediCore Theme — single entry point.
+        
+        Merge order matters: each file below only depends on files
+        ABOVE it in this list (Colors has no deps; Brushes needs
+        Colors; Buttons/TextBoxes/ComboBoxes/DataGrid need Brushes +
+        Typography + Icons). Reference this one dictionary from
+        App.xaml rather than merging each file individually, so the
+        dependency order is defined in exactly one place.
+        ══════════════════════════════════════════════════════════════════
+    -->
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Colors.xaml" />
+        <ResourceDictionary Source="Brushes.xaml" />
+        <ResourceDictionary Source="Typography.xaml" />
+        <ResourceDictionary Source="Icons.xaml" />
+        <ResourceDictionary Source="Buttons.xaml" />
+        <ResourceDictionary Source="TextBoxes.xaml" />
+        <ResourceDictionary Source="ComboBoxes.xaml" />
+        <ResourceDictionary Source="DataGrid.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--
+        ══════════════════════════════════════════════════════════════════
+        Implicit (type-targeted, no x:Key) styles — applied automatically
+        to every control of that type in the app unless a View overrides
+        it locally. Keep this list short and only for truly global
+        defaults; everything variant-specific belongs in the keyed
+        styles above (ButtonPrimary, TextBoxSearch, etc.).
+        ══════════════════════════════════════════════════════════════════
+    -->
+
+    <Style TargetType="Window">
+        <Setter Property="FontFamily" Value="{StaticResource FontPrimary}" />
+        <Setter Property="Background" Value="{StaticResource Surface1Brush}" />
+        <Setter Property="TextElement.Foreground" Value="{StaticResource TextPrimaryBrush}" />
+    </Style>
+
+    <Style TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontPrimary}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeBody}" />
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+    </Style>
+
+    <Style BasedOn="{StaticResource TextBoxDefault}" TargetType="TextBox" />
+    <Style BasedOn="{StaticResource ComboBoxDefault}" TargetType="ComboBox" />
+</ResourceDictionary>
