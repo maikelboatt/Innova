@@ -6,6 +6,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Innova.Application", "Innov
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Innova.Infrastructure", "Innova.Infrastructure\Innova.Infrastructure.csproj", "{9B29CDAA-312C-437F-BC0A-F547EC69640C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Innova.Presentation.Core", "Innova.Presentation.Core\Innova.Presentation.Core.csproj", "{5FC618BA-C0BE-43EF-84CB-0E6B3133694B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Innova.Presentation.WPF", "Innova.Presentation.WPF\Innova.Presentation.WPF.csproj", "{AD030EF2-DB7F-4628-830B-C1C568D13A29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModalDialogControl", "ModalDialogControl\ModalDialogControl.csproj", "{D6A7A537-2B6C-4BB6-9BD9-9320C77AC67E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +30,17 @@ Global
 		{9B29CDAA-312C-437F-BC0A-F547EC69640C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B29CDAA-312C-437F-BC0A-F547EC69640C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B29CDAA-312C-437F-BC0A-F547EC69640C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FC618BA-C0BE-43EF-84CB-0E6B3133694B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FC618BA-C0BE-43EF-84CB-0E6B3133694B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FC618BA-C0BE-43EF-84CB-0E6B3133694B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FC618BA-C0BE-43EF-84CB-0E6B3133694B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD030EF2-DB7F-4628-830B-C1C568D13A29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD030EF2-DB7F-4628-830B-C1C568D13A29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD030EF2-DB7F-4628-830B-C1C568D13A29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD030EF2-DB7F-4628-830B-C1C568D13A29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6A7A537-2B6C-4BB6-9BD9-9320C77AC67E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6A7A537-2B6C-4BB6-9BD9-9320C77AC67E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6A7A537-2B6C-4BB6-9BD9-9320C77AC67E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6A7A537-2B6C-4BB6-9BD9-9320C77AC67E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
