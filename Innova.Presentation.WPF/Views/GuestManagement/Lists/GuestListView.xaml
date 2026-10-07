@@ -1,0 +1,238 @@
+﻿<views:MvxWpfView x:Class="Innova.Presentation.WPF.Views.GuestManagement.Lists.GuestListView"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:lists="clr-namespace:Innova.Presentation.Core.GuestManagement.Lists;assembly=Innova.Presentation.Core"
+                  xmlns:loadingSpinnerControl="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+                  d:DataContext="{d:DesignInstance Type=lists:GuestListViewModel,
+                                                   IsDesignTimeCreatable=True}"
+                  d:DesignHeight="600"
+                  d:DesignWidth="1000"
+                  mc:Ignorable="d">
+    <Grid Background="{StaticResource Surface1Brush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!--  Header  -->
+            <RowDefinition Height="Auto" />
+            <!--  Toolbar: search + actions  -->
+            <RowDefinition Height="*" />
+            <!--  Grid / empty state  -->
+        </Grid.RowDefinitions>
+
+        <!--  ── Header ───────────────────────────────────────────  -->
+        <Grid Grid.Row="0" Margin="24,20,24,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       Style="{StaticResource TextHeading}"
+                       Text="{Binding Title}" />
+
+            <Button Grid.Column="1"
+                    Command="{Binding NewGuestCommand}"
+                    Content="+ New Guest"
+                    Style="{StaticResource ButtonPrimary}" />
+        </Grid>
+
+        <!--  ── Toolbar: search + refresh ───────────────────────────  -->
+        <Grid Grid.Row="1" Margin="24,0,24,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="320" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0"
+                     Style="{StaticResource TextBoxSearch}"
+                     Tag="Search by name, phone, or email"
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button Grid.Column="2"
+                    Command="{Binding RefreshCommand}"
+                    Style="{StaticResource ButtonIcon}"
+                    ToolTip="Refresh">
+                <Path Width="18"
+                      Height="18"
+                      Data="{StaticResource IconRefresh}"
+                      Fill="{StaticResource TextSecondaryBrush}"
+                      Stretch="Uniform" />
+            </Button>
+        </Grid>
+
+        <!--  ── Content: grid or empty state ────────────────────────  -->
+        <Grid Grid.Row="2" Margin="24,0,24,24">
+
+            <!--  Loading skeleton overlay  -->
+            <Border Background="{StaticResource Surface1Brush}"
+                    Opacity="0.85"
+                    Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Vertical">
+                    <loadingSpinnerControl:LoadingSpinner Diameter="100"
+                                                          IsLoading="{Binding IsLoading}"
+                                                          Thickness="3" />
+
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Style="{StaticResource TextBodySecondary}"
+                               Text="Loading info..." />
+                </StackPanel>
+            </Border>
+
+            <!--  Data grid  -->
+            <DataGrid ItemsSource="{Binding Items}"
+                      SelectedItem="{Binding SelectedItem}"
+                      Style="{StaticResource DataGridDefault}"
+                      Visibility="{Binding HasItems, Converter={StaticResource BoolToVisibilityConverter}}">
+                <DataGrid.InputBindings>
+                    <MouseBinding Command="{Binding SelectCommand}"
+                                  CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                  MouseAction="LeftDoubleClick" />
+                </DataGrid.InputBindings>
+
+                <DataGrid.Columns>
+
+                    <DataGridTextColumn Width="2*"
+                                        Binding="{Binding FullName}"
+                                        Header="Name" />
+
+                    <DataGridTextColumn Width="60"
+                                        Binding="{Binding DateOfBirth}"
+                                        Header="Date of birth" />
+
+                    <DataGridTextColumn Width="130"
+                                        Binding="{Binding PhoneNumber}"
+                                        Header="Phone" />
+
+                    <DataGridTextColumn Width="1.5*"
+                                        Binding="{Binding Email}"
+                                        Header="Email" />
+
+                    <DataGridTextColumn Width="1.5*"
+                                        Binding="{Binding IdentityDocumentType}"
+                                        Header="Identity Document Type" />
+
+                    <DataGridTextColumn Width="1.5*"
+                                        Binding="{Binding IdentityDocumentNumber}"
+                                        Header="Identity Document Number" />
+
+
+                    <!--  Status badge  -->
+                    <DataGridTemplateColumn Width="80" Header="Status">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border HorizontalAlignment="Left">
+                                    <Border.Style>
+                                        <Style BasedOn="{StaticResource BadgeDefault}" TargetType="Border">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding StatusBadge}" Value="Success">
+                                                    <Setter Property="Background" Value="{StaticResource StatusSuccessFillBrush}" />
+                                                    <Setter Property="BorderBrush" Value="{StaticResource StatusSuccessBorderBrush}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding StatusBadge}" Value="Danger">
+                                                    <Setter Property="Background" Value="{StaticResource StatusDangerFillBrush}" />
+                                                    <Setter Property="BorderBrush" Value="{StaticResource StatusDangerBorderBrush}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock FontSize="{StaticResource FontSizeCaption}"
+                                               FontWeight="Medium"
+                                               Text="{Binding StatusLabel}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding StatusBadge}" Value="Success">
+                                                        <Setter Property="Foreground" Value="{StaticResource StatusSuccessTextBrush}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding StatusBadge}" Value="Danger">
+                                                        <Setter Property="Foreground" Value="{StaticResource StatusDangerTextBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn Width="140"
+                                        Binding="{Binding RegisteredDisplay}"
+                                        Header="Registered" />
+
+                    <!--  Operations column  -->
+                    <DataGridTemplateColumn Width="Auto" Header="Operations">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+
+                                    <Button Margin="0,0,4,0"
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.OpenGuestDetailsCommand}"
+                                            CommandParameter="{Binding GuestId}"
+                                            Style="{StaticResource ButtonRowActionView}"
+                                            ToolTip="View Details">
+                                        <Path Width="14"
+                                              Height="14"
+                                              Data="{StaticResource IconEyeOn}"
+                                              Fill="{StaticResource WhiteBrush}"
+                                              Stretch="Uniform" />
+                                    </Button>
+
+                                    <Button Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.OpenGuestEditCommand}"
+                                            CommandParameter="{Binding GuestId}"
+                                            Style="{StaticResource ButtonRowActionEdit}"
+                                            ToolTip="Edit Patient">
+                                        <Path Width="14"
+                                              Height="14"
+                                              Data="{StaticResource IconEdit}"
+                                              Fill="{StaticResource WhiteBrush}"
+                                              Stretch="Uniform" />
+                                    </Button>
+
+                                    <Button Margin="4,0,6,0"
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.BookReservationCommand}"
+                                            CommandParameter="{Binding GuestId}"
+                                            Style="{StaticResource ButtonRowActionBook}"
+                                            ToolTip="Book Appointment">
+                                        <Path Width="14"
+                                              Height="14"
+                                              Data="{StaticResource IconCalendar}"
+                                              Fill="{StaticResource WhiteBrush}"
+                                              Stretch="Uniform" />
+                                    </Button>
+
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!--  Loading skeleton overlay  -->
+            <Border Background="{StaticResource Surface1Brush}"
+                    Opacity="0.85"
+                    Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Vertical">
+                    <loadingSpinnerControl:LoadingSpinner Diameter="100"
+                                                          IsLoading="{Binding IsLoading}"
+                                                          Thickness="3" />
+
+
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Style="{StaticResource TextBodySecondary}"
+                               Text="Loading guests..." />
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</views:MvxWpfView>
