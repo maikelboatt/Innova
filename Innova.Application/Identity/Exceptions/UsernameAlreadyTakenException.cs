@@ -1,4 +1,4 @@
-﻿using Application.Exceptions;
+﻿using Innova.Application.Exceptions;
 
 namespace Innova.Application.Identity.Exceptions
 {

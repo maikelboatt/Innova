@@ -1,7 +1,8 @@
-﻿using Innova.Domain.RoomInventory.ValueObjects;
+﻿using Innova.Application.Exceptions;
+using Innova.Domain.RoomInventory.ValueObjects;
 
 namespace Innova.Application.RoomInventory.RoomTypeDefinition.Exceptions
 {
     public sealed class RoomTypeDefinitionNotFoundException( RoomTypeId roomTypeDefinitionId )
-        :ApplicationException($"Room type '{roomTypeDefinitionId}' was not found.");
+        :ApplicationExceptions($"Room type '{roomTypeDefinitionId}' was not found.");
 }

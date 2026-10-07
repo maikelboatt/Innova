@@ -1,4 +1,4 @@
-﻿using Application.Exceptions;
+﻿using Innova.Application.Exceptions;
 using Innova.Domain.Shared.ValueObjects;
 
 namespace Innova.Application.Identity.Exceptions
