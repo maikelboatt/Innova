@@ -7,11 +7,10 @@ using Innova.Domain.GuestManagement.ValueObjects;
 
 namespace Innova.Application.GuestManagement.Guest.Commands.ReactivateGuest
 {
-    public sealed class DeactivateGuestCommandHandler(
+    public sealed class ReactivateGuestCommandHandler(
         IGuestManagementService guestManagementService,
         IDomainEventDispatcher eventDispatcher,
-        IGuestRepository guestRepository )
-        :ICommandHandler<ReactivateGuestCommand, Unit>
+        IGuestRepository guestRepository ):ICommandHandler<ReactivateGuestCommand, Unit>
     {
         public async Task<Unit> HandleAsync( ReactivateGuestCommand command, CancellationToken ct = default )
         {
