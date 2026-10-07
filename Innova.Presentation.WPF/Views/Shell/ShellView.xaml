@@ -1,0 +1,786 @@
+﻿<views:MvxWpfView x:Class="Innova.Presentation.WPF.Views.Shell.ShellView"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:modalDialogControl="clr-namespace:ModalDialogControl;assembly=ModalDialogControl"
+                  xmlns:shell="clr-namespace:Innova.Presentation.Core.Shell;assembly=Innova.Presentation.Core"
+                  xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+                  x:Name="Shell"
+                  d:DataContext="{d:DesignInstance Type=shell:ShellViewModel,
+                                                   IsDesignTimeCreatable=True}"
+                  d:DesignHeight="750"
+                  d:DesignWidth="1200"
+                  Loaded="ShellView_OnLoaded"
+                  mc:Ignorable="d">
+    <!--
+        ══════════════════════════════════════════════════════════════
+        Root — outer border with corner radius for frameless window
+        ══════════════════════════════════════════════════════════════════
+    -->
+    <Border Background="{StaticResource Surface1Brush}"
+            CornerRadius="10"
+            UseLayoutRounding="True">
+
+        <Grid>
+            <Grid.OpacityMask>
+                <VisualBrush Visual="{Binding ElementName=Border}" />
+            </Grid.OpacityMask>
+
+            <modalDialogControl:ModalDialog MinWidth="0"
+                                            MaxWidth="640"
+                                            Panel.ZIndex="10"
+                                            CornerRadius="10"
+                                            IsOpen="{Binding IsModalOpen}"
+                                            TheBackground="{StaticResource Surface2Brush}"
+                                            TheShadow="{StaticResource BlackBrush}">
+                <ContentControl HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                Content="{Binding CurrentModalContent}" />
+            </modalDialogControl:ModalDialog>
+
+            <!--
+                ══════════════════════════════════════════════════════════════
+                TOAST HOST — transient notifications (Notifications.ShowError,
+                ShowSuccess, etc.), rendered independently of any modal system.
+                Fixed to the top-right corner; each toast auto-dismisses via
+                NotificationService's own Task.Delay, or manually via the X
+                button → DismissNotificationCommand. Panel.ZIndex="30" — above
+                every modal overlay, since a toast should stay visible even
+                while a form or confirm dialog is open on screen.
+                
+                IsHitTestVisible="False" on the outer Grid but "True" on each
+                toast Border: lets clicks pass through the empty space around
+                toasts to whatever's underneath, while toasts themselves remain
+                clickable (for their dismiss button).
+                ══════════════════════════════════════════════════════════════
+            -->
+            <Grid Panel.ZIndex="30" IsHitTestVisible="False">
+                <ItemsControl Margin="0,20,20,0"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Top"
+                              IsHitTestVisible="True"
+                              ItemsSource="{Binding Toasts}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Width="340"
+                                    Margin="0,0,0,10"
+                                    Padding="14,12"
+                                    BorderThickness="1"
+                                    CornerRadius="8">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="16"
+                                                      Direction="270"
+                                                      Opacity="0.15"
+                                                      ShadowDepth="4"
+                                                      Color="{StaticResource Black}" />
+                                </Border.Effect>
+
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="{StaticResource StatusActiveFillBrush}" />
+                                        <Setter Property="BorderBrush" Value="{StaticResource StatusActiveBorderBrush}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Type}" Value="Success">
+                                                <Setter Property="Background" Value="{StaticResource StatusSuccessFillBrush}" />
+                                                <Setter Property="BorderBrush" Value="{StaticResource StatusSuccessBorderBrush}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Type}" Value="Warning">
+                                                <Setter Property="Background" Value="{StaticResource StatusWarningFillBrush}" />
+                                                <Setter Property="BorderBrush" Value="{StaticResource StatusWarningBorderBrush}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Type}" Value="Error">
+                                                <Setter Property="Background" Value="{StaticResource StatusDangerFillBrush}" />
+                                                <Setter Property="BorderBrush" Value="{StaticResource StatusDangerBorderBrush}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Path Grid.Column="0"
+                                          Width="18"
+                                          Height="18"
+                                          Margin="0,1,10,0"
+                                          VerticalAlignment="Top"
+                                          Stretch="Uniform">
+                                        <Path.Style>
+                                            <Style TargetType="Path">
+                                                <Setter Property="Data" Value="{StaticResource IconInfo}" />
+                                                <Setter Property="Fill" Value="{StaticResource StatusActiveTextBrush}" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Type}" Value="Success">
+                                                        <Setter Property="Data" Value="{StaticResource IconSuccess}" />
+                                                        <Setter Property="Fill" Value="{StaticResource StatusSuccessTextBrush}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Type}" Value="Warning">
+                                                        <Setter Property="Data" Value="{StaticResource IconWarning}" />
+                                                        <Setter Property="Fill" Value="{StaticResource StatusWarningTextBrush}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Type}" Value="Error">
+                                                        <Setter Property="Data" Value="{StaticResource IconError}" />
+                                                        <Setter Property="Fill" Value="{StaticResource StatusDangerTextBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Path.Style>
+                                    </Path>
+
+                                    <TextBlock Grid.Column="1"
+                                               VerticalAlignment="Center"
+                                               Style="{StaticResource TextBody}"
+                                               Text="{Binding Message}" />
+
+                                    <Button Grid.Column="2"
+                                            Width="24"
+                                            Height="24"
+                                            Padding="4"
+                                            VerticalAlignment="Top"
+                                            Command="{Binding DataContext.DismissNotificationCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding Id}"
+                                            Style="{StaticResource ButtonIcon}">
+                                        <Path Width="10"
+                                              Height="10"
+                                              Data="{StaticResource IconClose}"
+                                              Fill="{StaticResource TextMutedBrush}"
+                                              Stretch="Uniform" />
+                                    </Button>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+
+            <!--
+                ══════════════════════════════════════════════════════
+                MAIN LAYOUT — two columns: nav rail | content
+                ══════════════════════════════════════════════════════════
+            -->
+            <Border x:Name="Border" CornerRadius="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <!--  Nav column — Width animated by hamburger toggle  -->
+                        <ColumnDefinition x:Name="NavColumn" Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--
+                        ══════════════════════════════════════════════════
+                        LEFT NAV RAIL
+                        ══════════════════════════════════════════════════════
+                    -->
+                    <Border Grid.Column="0"
+                            Background="{StaticResource SidebarBackgroundBrush}"
+                            CornerRadius="10,0,0,10">
+
+                        <Grid x:Name="GridNav" Width="240">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="64" />
+                                <!--  Logo / brand  -->
+                                <RowDefinition Height="*" />
+
+                                <RowDefinition Height="64" />
+                                <!--  User / bottom  -->
+                            </Grid.RowDefinitions>
+
+                            <!--  ── Logo area ───────────────────────────  -->
+                            <Border Grid.Row="0"
+                                    Padding="16,0"
+                                    VerticalAlignment="Center"
+                                    MouseDown="LogoArea_OnMouseDown">
+                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+
+                                    <!--  Logo mark  -->
+                                    <Border Width="32"
+                                            Height="32"
+                                            Background="{StaticResource PrimaryBlue600Brush}"
+                                            CornerRadius="8">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="18"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{StaticResource WhiteBrush}"
+                                                   Text="M" />
+                                    </Border>
+
+                                    <!--  App name — hidden when nav is collapsed  -->
+                                    <TextBlock x:Name="AppNameLabel"
+                                               Margin="12,0,0,0"
+                                               VerticalAlignment="Center"
+                                               FontSize="18"
+                                               FontWeight="SemiBold"
+                                               Foreground="{StaticResource WhiteBrush}"
+                                               Text="MediCore" />
+                                </StackPanel>
+                            </Border>
+
+                            <!--  ── Nav items ───────────────────────────  -->
+                            <ScrollViewer Grid.Row="1"
+                                          Padding="0,8,0,8"
+                                          HorizontalScrollBarVisibility="Disabled"
+                                          VerticalScrollBarVisibility="Auto">
+                                <StackPanel x:Name="NavButtonsPanel">
+
+                                    <!--  Dashboard  -->
+                                    <Button Command="{Binding NavigateToDashboardCommand}">
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource ButtonNav}" TargetType="Button">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsDashboardActive}" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource SidebarNavItemActiveBrush}" />
+                                                        <Setter Property="Foreground" Value="{StaticResource SidebarTextActiveBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Path Grid.Column="0"
+                                                  Width="18"
+                                                  Height="18"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  Data="{StaticResource IconDashboard}"
+                                                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                                  Stretch="Uniform" />
+
+                                            <TextBlock x:Name="LabelDashboard"
+                                                       Grid.Column="1"
+                                                       Margin="0,0,12,0"
+                                                       VerticalAlignment="Center"
+                                                       Style="{StaticResource TextNavLabel}"
+                                                       Text="Dashboard" />
+                                        </Grid>
+                                    </Button>
+
+                                    <!--  Separator  -->
+                                    <Separator Margin="16,8,16,8" Background="{StaticResource SidebarDividerBrush}" />
+
+                                    <!--  Patients  -->
+                                    <Button Command="{Binding NavigateToPatientsCommand}">
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource ButtonNav}" TargetType="Button">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsPatientsActive}" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource SidebarNavItemActiveBrush}" />
+                                                        <Setter Property="Foreground" Value="{StaticResource SidebarTextActiveBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Path Grid.Column="0"
+                                                  Width="18"
+                                                  Height="18"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  Data="{StaticResource IconPatients}"
+                                                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                                  Stretch="Uniform" />
+
+                                            <TextBlock x:Name="LabelPatients"
+                                                       Grid.Column="1"
+                                                       Margin="0,0,12,0"
+                                                       VerticalAlignment="Center"
+                                                       Style="{StaticResource TextNavLabel}"
+                                                       Text="Patients" />
+                                        </Grid>
+                                    </Button>
+
+                                    <!--  Scheduling  -->
+                                    <Button Command="{Binding NavigateToSchedulingCommand}">
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource ButtonNav}" TargetType="Button">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsSchedulingActive}" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource SidebarNavItemActiveBrush}" />
+                                                        <Setter Property="Foreground" Value="{StaticResource SidebarTextActiveBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Path Grid.Column="0"
+                                                  Width="18"
+                                                  Height="18"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  Data="{StaticResource IconScheduling}"
+                                                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                                  Stretch="Uniform" />
+
+                                            <TextBlock x:Name="LabelScheduling"
+                                                       Grid.Column="1"
+                                                       Margin="0,0,12,0"
+                                                       VerticalAlignment="Center"
+                                                       Style="{StaticResource TextNavLabel}"
+                                                       Text="Scheduling" />
+                                        </Grid>
+                                    </Button>
+
+                                    <!--  Consultation  -->
+                                    <Button Command="{Binding NavigateToConsultationCommand}">
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource ButtonNav}" TargetType="Button">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsConsultationActive}" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource SidebarNavItemActiveBrush}" />
+                                                        <Setter Property="Foreground" Value="{StaticResource SidebarTextActiveBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Path Grid.Column="0"
+                                                  Width="18"
+                                                  Height="18"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  Data="{StaticResource IconConsultation}"
+                                                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                                  Stretch="Uniform" />
+
+                                            <TextBlock x:Name="LabelConsultation"
+                                                       Grid.Column="1"
+                                                       Margin="0,0,12,0"
+                                                       VerticalAlignment="Center"
+                                                       Style="{StaticResource TextNavLabel}"
+                                                       Text="Consultation" />
+                                        </Grid>
+                                    </Button>
+
+                                    <!--  Pharmacy  -->
+                                    <Button Command="{Binding NavigateToPharmacyCommand}">
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource ButtonNav}" TargetType="Button">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsPharmacyActive}" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource SidebarNavItemActiveBrush}" />
+                                                        <Setter Property="Foreground" Value="{StaticResource SidebarTextActiveBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Path Grid.Column="0"
+                                                  Width="18"
+                                                  Height="18"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  Data="{StaticResource IconPharmacy}"
+                                                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                                  Stretch="Uniform" />
+
+                                            <TextBlock x:Name="LabelPharmacy"
+                                                       Grid.Column="1"
+                                                       Margin="0,0,12,0"
+                                                       VerticalAlignment="Center"
+                                                       Style="{StaticResource TextNavLabel}"
+                                                       Text="Pharmacy" />
+                                        </Grid>
+                                    </Button>
+
+                                    <!--  Billing  -->
+                                    <Button Command="{Binding NavigateToBillingCommand}">
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource ButtonNav}" TargetType="Button">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsBillingActive}" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource SidebarNavItemActiveBrush}" />
+                                                        <Setter Property="Foreground" Value="{StaticResource SidebarTextActiveBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Path Grid.Column="0"
+                                                  Width="18"
+                                                  Height="18"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  Data="{StaticResource IconBilling}"
+                                                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                                  Stretch="Uniform" />
+
+                                            <TextBlock x:Name="LabelBilling"
+                                                       Grid.Column="1"
+                                                       Margin="0,0,12,0"
+                                                       VerticalAlignment="Center"
+                                                       Style="{StaticResource TextNavLabel}"
+                                                       Text="Billing" />
+                                        </Grid>
+                                    </Button>
+
+                                    <!--  Doctors  -->
+                                    <Button Command="{Binding NavigateToDoctorsCommand}">
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource ButtonNav}" TargetType="Button">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsDoctorsActive}" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource SidebarNavItemActiveBrush}" />
+                                                        <Setter Property="Foreground" Value="{StaticResource SidebarTextActiveBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Path Grid.Column="0"
+                                                  Width="18"
+                                                  Height="18"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  Data="{StaticResource IconDoctor}"
+                                                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                                  Stretch="Uniform" />
+
+                                            <TextBlock x:Name="LabelDoctor"
+                                                       Grid.Column="1"
+                                                       Margin="0,0,12,0"
+                                                       VerticalAlignment="Center"
+                                                       Style="{StaticResource TextNavLabel}"
+                                                       Text="Doctors" />
+                                        </Grid>
+                                    </Button>
+
+                                    <!--  Separator  -->
+                                    <Separator Margin="16,8,16,8" Background="{StaticResource SidebarDividerBrush}" />
+
+                                    <!--  Settings  -->
+                                    <Button Command="{Binding NavigateToSettingsCommand}">
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource ButtonNav}" TargetType="Button">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsSettingsActive}" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource SidebarNavItemActiveBrush}" />
+                                                        <Setter Property="Foreground" Value="{StaticResource SidebarTextActiveBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Path Grid.Column="0"
+                                                  Width="18"
+                                                  Height="18"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  Data="{StaticResource IconSettings}"
+                                                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                                  Stretch="Uniform" />
+
+                                            <TextBlock x:Name="LabelSettings"
+                                                       Grid.Column="1"
+                                                       Margin="0,0,12,0"
+                                                       VerticalAlignment="Center"
+                                                       Style="{StaticResource TextNavLabel}"
+                                                       Text="Settings" />
+                                        </Grid>
+                                    </Button>
+
+                                </StackPanel>
+                            </ScrollViewer>
+
+                            <!--  ── Bottom bar — settings + version ─────  -->
+                            <Border Grid.Row="2"
+                                    Padding="16,0"
+                                    BorderBrush="{StaticResource SidebarDividerBrush}"
+                                    BorderThickness="0,1,0,0">
+
+                                <Grid VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!--  Clinic initials avatar  -->
+                                    <Border Grid.Column="0"
+                                            Width="32"
+                                            Height="32"
+                                            Background="{StaticResource ClinicalTeal600Brush}"
+                                            CornerRadius="16">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="11"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{StaticResource WhiteBrush}"
+                                                   Text="MC" />
+                                    </Border>
+
+                                    <!--  Clinic name + version — hidden when collapsed  -->
+                                    <StackPanel x:Name="ClinicInfo"
+                                                Grid.Column="1"
+                                                Margin="10,0,0,0"
+                                                VerticalAlignment="Center">
+                                        <TextBlock FontSize="12"
+                                                   FontWeight="Medium"
+                                                   Foreground="{StaticResource SidebarTextActiveBrush}"
+                                                   Text="MediCore Clinic" />
+                                        <TextBlock FontSize="10"
+                                                   Foreground="{StaticResource SidebarTextBrush}"
+                                                   Text="v1.0.0" />
+                                    </StackPanel>
+                                </Grid>
+
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!--
+                        ══════════════════════════════════════════════════
+                        RIGHT SIDE — top bar + content area
+                        ══════════════════════════════════════════════════════
+                    -->
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="56" />
+                            <!--  Top bar  -->
+                            <RowDefinition Height="*" />
+                            <!--  Content  -->
+                        </Grid.RowDefinitions>
+
+                        <!--  ── Top bar ──────────────────────────────────  -->
+                        <Border Grid.Row="0"
+                                Padding="8,0,12,0"
+                                Background="{StaticResource Surface2Brush}"
+                                BorderBrush="{StaticResource BorderDefaultBrush}"
+                                BorderThickness="0,0,0,1"
+                                MouseDown="TopBar_OnMouseDown">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <!--  Hamburger  -->
+                                    <ColumnDefinition Width="*" />
+                                    <!--  Breadcrumb  -->
+                                    <ColumnDefinition Width="Auto" />
+                                    <!--  Window chrome  -->
+                                </Grid.ColumnDefinitions>
+
+                                <!--  Hamburger toggle — animates nav width  -->
+                                <ToggleButton x:Name="TgBtn"
+                                              Grid.Column="0"
+                                              Margin="4,0,0,0"
+                                              VerticalAlignment="Center"
+                                              Command="{Binding ToggleNavCommand}"
+                                              IsChecked="True"
+                                              Style="{StaticResource ToggleButtonIcon}">
+                                    <Path Width="18"
+                                          Height="18"
+                                          Data="{StaticResource IconMenu}"
+                                          Fill="{StaticResource NeutralGray600Brush}"
+                                          Stretch="Uniform" />
+                                    <!--  Nav expand/collapse animation  -->
+                                    <ToggleButton.Triggers>
+                                        <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetName="GridNav"
+                                                                     Storyboard.TargetProperty="Width"
+                                                                     From="240"
+                                                                     To="60"
+                                                                     Duration="0:0:0.25">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseInOut" />
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="AppNameLabel" Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}" />
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LabelDashboard" Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="{x:Static Visibility.Collapsed}" />
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LabelPatients" Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="{x:Static Visibility.Collapsed}" />
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LabelScheduling" Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="{x:Static Visibility.Collapsed}" />
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LabelConsultation" Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="{x:Static Visibility.Collapsed}" />
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LabelPharmacy" Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="{x:Static Visibility.Collapsed}" />
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LabelBilling" Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="{x:Static Visibility.Collapsed}" />
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ClinicInfo" Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="{x:Static Visibility.Collapsed}" />
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                        <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetName="GridNav"
+                                                                     Storyboard.TargetProperty="Width"
+                                                                     From="60"
+                                                                     To="240"
+                                                                     Duration="0:0:0.25">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseInOut" />
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="AppNameLabel" Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Visible}" />
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LabelDashboard" Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Visible}" />
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LabelPatients" Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Visible}" />
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LabelScheduling" Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Visible}" />
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LabelConsultation" Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Visible}" />
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LabelPharmacy" Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Visible}" />
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LabelBilling" Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Visible}" />
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ClinicInfo" Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Visible}" />
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </ToggleButton.Triggers>
+                                </ToggleButton>
+
+                                <!--  Breadcrumb  -->
+                                <TextBlock Grid.Column="1"
+                                           Margin="12,0,0,0"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource TextBodySecondary}"
+                                           Text="{Binding Breadcrumb}" />
+
+                                <!--  Window chrome — minimize / maximize / close  -->
+                                <StackPanel Grid.Column="2"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+
+                                    <Button Click="MinimizeButton_OnClick"
+                                            Style="{StaticResource ButtonIcon}"
+                                            ToolTip="Minimise">
+                                        <Path Width="14"
+                                              Height="14"
+                                              Data="{StaticResource IconWindowMinimize}"
+                                              Fill="{StaticResource NeutralGray600Brush}"
+                                              Stretch="Uniform" />
+                                    </Button>
+
+                                    <Button x:Name="RestoreButton"
+                                            Margin="2,0"
+                                            Click="RestoreButton_OnClick"
+                                            ToolTip="Maximise">
+                                        <Path x:Name="RestoreIcon"
+                                              Width="14"
+                                              Height="14"
+                                              Data="{StaticResource IconWindowMaximize}"
+                                              Fill="{StaticResource NeutralGray600Brush}"
+                                              Stretch="Uniform" />
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource ButtonIcon}" TargetType="Button" />
+                                        </Button.Style>
+                                    </Button>
+
+                                    <Button Click="CloseButton_OnClick" ToolTip="Close">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="CloseBg"
+                                                        Padding="6"
+                                                        Background="Transparent"
+                                                        CornerRadius="6">
+                                                    <Path Width="14"
+                                                          Height="14"
+                                                          Data="{StaticResource IconClose}"
+                                                          Fill="{StaticResource NeutralGray600Brush}"
+                                                          Stretch="Uniform" />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="CloseBg" Property="Background" Value="{StaticResource DangerRed600Brush}" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!--  ── Dynamic content area ─────────────────────  -->
+                        <!--
+                            CurrentMainContent is set by IContentService.
+                            DataTemplate in Resources above resolves the
+                            correct View for each ViewModel type.
+                            No code-behind needed for content switching.
+                        -->
+                        <ContentControl Grid.Row="1"
+                                        Margin="0"
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Stretch"
+                                        Content="{Binding CurrentMainContent}" />
+
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</views:MvxWpfView>
