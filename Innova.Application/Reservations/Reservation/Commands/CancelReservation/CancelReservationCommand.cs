@@ -2,5 +2,5 @@
 
 namespace Innova.Application.Reservations.Reservation.Commands.CancelReservation
 {
-    public sealed record CancelReservationCommand( Guid ReservationId ):ICommand<Unit>;
+    public sealed record CancelReservationCommand( Guid ReservationId ):ICommand;
 }

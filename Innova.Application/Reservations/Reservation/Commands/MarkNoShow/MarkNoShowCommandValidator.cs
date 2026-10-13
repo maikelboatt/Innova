@@ -2,7 +2,7 @@
 
 namespace Innova.Application.Reservations.Reservation.Commands.MarkNoShow
 {
-    public sealed class MarkNoShowCommandValidator:AbstractValidator<MarkNoShowCommand>
+    public sealed class MarkNoShowCommandValidator:AbstractValidator<MarkReservationNoShowCommand>
     {
         public MarkNoShowCommandValidator()
         {

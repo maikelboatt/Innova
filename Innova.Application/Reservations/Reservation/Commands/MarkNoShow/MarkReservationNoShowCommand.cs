@@ -2,5 +2,5 @@
 
 namespace Innova.Application.Reservations.Reservation.Commands.MarkNoShow
 {
-    public sealed record MarkNoShowCommand( Guid ReservationId ):ICommand<Unit>;
+    public sealed record MarkReservationNoShowCommand( Guid ReservationId ):ICommand;
 }

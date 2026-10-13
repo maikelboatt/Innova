@@ -5,10 +5,10 @@ using Innova.Domain.Reservations.ValueObjects;
 
 namespace Innova.Application.Reservations.Reservation.Commands.MarkNoShow
 {
-    public sealed class MarkNoShowCommandHandler( IReservationService reservationService, IDomainEventDispatcher eventDispatcher )
-        :ICommandHandler<MarkNoShowCommand, Unit>
+    public sealed class MarkReservationNoShowCommandHandler( IReservationService reservationService, IDomainEventDispatcher eventDispatcher )
+        :ICommandHandler<MarkReservationNoShowCommand, Unit>
     {
-        public async Task<Unit> HandleAsync( MarkNoShowCommand command, CancellationToken ct = default )
+        public async Task<Unit> HandleAsync( MarkReservationNoShowCommand command, CancellationToken ct = default )
         {
             ReservationId reservationId = ReservationId.From(command.ReservationId);
 

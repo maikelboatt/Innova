@@ -5,6 +5,8 @@
         Guid GuestId,
         Guid? GroupBookingId,
         Guid RoomTypeRequested,
+        string RoomTypeName,
+        string GuestName,
         DateOnly CheckIn,
         DateOnly CheckOut,
         decimal NightlyRateAmount,

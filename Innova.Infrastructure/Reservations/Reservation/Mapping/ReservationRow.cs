@@ -10,6 +10,10 @@
 
         public Guid RoomTypeRequestedId { get; init; }
 
+        public string RoomTypeName { get; init; } = string.Empty;
+
+        public string GuestName { get; init; } = string.Empty;
+
         public DateOnly StayStart { get; init; }
 
         public DateOnly StayEnd { get; init; }
