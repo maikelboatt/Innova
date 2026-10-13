@@ -16,7 +16,7 @@ namespace Innova.Infrastructure.HouseKeeping.HouseKeeping.Queries
 
         public async Task<IReadOnlyCollection<HouseKeepingTaskSummaryDto>> HandleAsync( ListHouseKeepingTasksQuery query, CancellationToken ct = default )
         {
-            string sql = SqlLoader.Load(Assembly, "Innova.Infrastructure.HouseKeeping.HouseKeeping.Queries.Sql.ListHouseKeepingTasksQuery.sql");
+            string sql = SqlLoader.Load(Assembly, "Innova.Infrastructure.HouseKeeping.HouseKeeping.Queries.Sql.ListHouseKeepingTasks.sql");
 
             IEnumerable<HouseKeepingTaskSummaryRow> rows =
                 await connectionProvider.Connection.QueryAsync<HouseKeepingTaskSummaryRow>(

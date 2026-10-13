@@ -3,7 +3,7 @@
 UPDATE housekeeping.HouseKeepingTask
 SET Status           = @Status,
     AssignedStaffId  = @AssignedStaffId,
-    CompletedAt      = @CompletedAt,
+    CompletedAt      = SYSUTCDATETIME(),
     InspectionPassed = @InspectionPassed,
     InspectionNotes  = @InspectionNotes
 WHERE Id = @Id;
