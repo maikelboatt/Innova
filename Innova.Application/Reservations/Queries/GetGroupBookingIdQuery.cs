@@ -3,5 +3,5 @@ using Innova.Application.Reservations.DTO;
 
 namespace Innova.Application.Reservations.Queries
 {
-    public sealed record GetGroupBookingByIdQuery( Guid GroupBookingId ):IQuery<GroupBookingDto?>;
+    public sealed record GetGroupBookingByIdQuery( Guid GroupBookingId ):IQuery<GroupBookingDto>;
 }

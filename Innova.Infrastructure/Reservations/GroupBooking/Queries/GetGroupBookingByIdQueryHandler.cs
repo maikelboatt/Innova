@@ -10,11 +10,11 @@ using Innova.Infrastructure.Reservations.GroupBooking.Mapping;
 namespace Innova.Infrastructure.Reservations.GroupBooking.Queries
 {
     public sealed class GetGroupBookingByIdQueryHandler( IDbConnectionProvider connectionProvider )
-        :IQueryHandler<GetGroupBookingByIdQuery, GroupBookingDto?>
+        :IQueryHandler<GetGroupBookingByIdQuery, GroupBookingDto>
     {
         private static readonly Assembly Assembly = typeof(GetGroupBookingByIdQueryHandler).Assembly;
 
-        public async Task<GroupBookingDto?> HandleAsync( GetGroupBookingByIdQuery query, CancellationToken cancellationToken = default )
+        public async Task<GroupBookingDto> HandleAsync( GetGroupBookingByIdQuery query, CancellationToken cancellationToken = default )
         {
             string sql = SqlLoader.Load(Assembly, "Innova.Infrastructure.Reservations.GroupBooking.Sql.GetById.sql");
 
@@ -34,10 +34,9 @@ namespace Innova.Infrastructure.Reservations.GroupBooking.Queries
                 await multi.ReadSingleOrDefaultAsync<GroupBookingRow>();
 
             if (groupBookingRow is null)
-                return null;
+                throw new KeyNotFoundException($"Group Booking with Id '{query.GroupBookingId}' does not exist.");
 
-            IEnumerable<GroupBookingReservationRow> reservationRows =
-                await multi.ReadAsync<GroupBookingReservationRow>();
+            IEnumerable<GroupBookingReservationRow> reservationRows = await multi.ReadAsync<GroupBookingReservationRow>();
 
             GroupBookingRow completeRow = new()
                                           {

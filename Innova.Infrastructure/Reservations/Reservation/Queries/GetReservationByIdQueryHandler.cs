@@ -9,11 +9,11 @@ using Innova.Infrastructure.Reservations.Reservation.Mapping;
 
 namespace Innova.Infrastructure.Reservations.Reservation.Queries
 {
-    public sealed class GetReservationByIdQueryHandler( IDbConnectionProvider connectionProvider ):IQueryHandler<GetReservationByIdQuery, ReservationDto?>
+    public sealed class GetReservationByIdQueryHandler( IDbConnectionProvider connectionProvider ):IQueryHandler<GetReservationByIdQuery, ReservationDto>
     {
         private static readonly Assembly Assembly = typeof(GetReservationByIdQueryHandler).Assembly;
 
-        public async Task<ReservationDto?> HandleAsync( GetReservationByIdQuery query, CancellationToken cancellationToken = default )
+        public async Task<ReservationDto> HandleAsync( GetReservationByIdQuery query, CancellationToken cancellationToken = default )
         {
             string sql = SqlLoader.Load(Assembly, "Innova.Infrastructure.Reservations.Reservation.Sql.GetById.sql");
 
@@ -31,7 +31,7 @@ namespace Innova.Infrastructure.Reservations.Reservation.Queries
                                         .QuerySingleOrDefaultAsync<ReservationRow>(command);
 
             return row is null
-                       ? null
+                       ? throw new KeyNotFoundException($"Reservation with Id '{query.ReservationId}' does not exists.")
                        : ReservationQueryHandlerMapper.ToDto(row);
         }
     }

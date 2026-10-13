@@ -11,6 +11,12 @@ SELECT r.Id,
        r.FreeCancellationWindowHrs,
        r.CancellationFeeAmount,
        r.CancellationFeeCurrency,
-       r.Status
+       r.Status,
+       rtd.Name                       AS RoomTypeName,
+       g.FirstName + ' ' + g.LastName AS GuestName
 FROM reservations.Reservation r
+         INNER JOIN roominventory.RoomTypeDefinition rtd
+                    ON r.RoomTypeRequestedId = rtd.Id
+         INNER JOIN guestmgmt.Guest g
+                    ON r.GuestId = g.Id
 ORDER BY r.StayStart, r.Id;
