@@ -4,6 +4,7 @@
     {
         public Guid Id { get; init; }
         public Guid OrganizerGuestId { get; init; }
+        public string OrganizerName { get; init; } = string.Empty;
         public string GroupName { get; init; } = string.Empty;
         public IReadOnlyCollection<Guid> ReservationIds { get; init; } = [];
     }
