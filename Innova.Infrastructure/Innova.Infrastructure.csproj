@@ -28,4 +28,315 @@
         <ProjectReference Include="..\Innova.Application\Innova.Application.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <None Remove="Persistence\Migrations\0001_CreateGuestManagmentSchema.sql"/>
+        <None Remove="Persistence\Migrations\0002_CreateIdentitySchema.sql"/>
+        <EmbeddedResource Include="Persistence\Migrations\0002_CreateIdentitySchema.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Persistence\Migrations\0003_CreateRoomTypeDefinitionSchema.sql"/>
+        <EmbeddedResource Include="Persistence\Migrations\0003_CreateRoomTypeDefinitionSchema.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Persistence\Migrations\0004_CreateRoomSchema.sql"/>
+        <EmbeddedResource Include="Persistence\Migrations\0004_CreateRoomSchema.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Persistence\Migrations\0005_CreateRoomTypeAllotmentSchema.sql"/>
+        <EmbeddedResource Include="Persistence\Migrations\0005_CreateRoomTypeAllotmentSchema.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Persistence\Migrations\0006_CreateGroupBookingSchema.sql"/>
+        <EmbeddedResource Include="Persistence\Migrations\0006_CreateGroupBookingSchema.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Persistence\Migrations\0007_CreateReservationSchema.sql"/>
+        <EmbeddedResource Include="Persistence\Migrations\0007_CreateReservationSchema.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Persistence\Migrations\0008_CreateFrontDeskSchema.sql"/>
+        <EmbeddedResource Include="Persistence\Migrations\0008_CreateFrontDeskSchema.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Persistence\Migrations\0009_CreateHouseKeepingSchema.sql"/>
+        <EmbeddedResource Include="Persistence\Migrations\0009_CreateHouseKeepingSchema.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Persistence\Migrations\0010_CreateBillingSchema.sql"/>
+        <EmbeddedResource Include="Persistence\Migrations\0010_CreateBillingSchema.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Persistence\Migrations\0011_CreateAuditSchema.sql"/>
+        <EmbeddedResource Include="Persistence\Migrations\0011_CreateAuditSchema.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Persistence\Migrations\0001_CreateGuestSchema.sql"/>
+        <EmbeddedResource Include="Persistence\Migrations\0001_CreateGuestSchema.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Persistence\Migrations\0012_AlterHouseKeepingForAutomaticCreationTimeStamp.sql"/>
+        <EmbeddedResource Include="Persistence\Migrations\0012_AlterHouseKeepingForAutomaticCreationTimeStamp.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="GuestManagement\Guest\Sql\GetAll.sql"/>
+        <EmbeddedResource Include="GuestManagement\Guest\Sql\GetAll.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="GuestManagement\Guest\Sql\GetById.sql"/>
+        <EmbeddedResource Include="GuestManagement\Guest\Sql\GetById.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\Room\Sql\GetAllRoomsQuery.sql"/>
+        <EmbeddedResource Include="RoomInventory\Room\Sql\GetAllRoomsQuery.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\Room\Sql\GetRoomByIdQuery.sql"/>
+        <EmbeddedResource Include="RoomInventory\Room\Sql\GetRoomByIdQuery.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\Room\Sql\ListRoomsQuery.sql"/>
+        <EmbeddedResource Include="RoomInventory\Room\Sql\ListRoomsQuery.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\RoomType\Sql\ListRoomTypesQuery.sql"/>
+        <EmbeddedResource Include="RoomInventory\RoomType\Sql\ListRoomTypesQuery.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\RoomType\Sql\GetById.sql"/>
+        <EmbeddedResource Include="RoomInventory\RoomType\Sql\GetById.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\RoomType\Sql\GetRoomTypeByIdQuery.sql"/>
+        <EmbeddedResource Include="RoomInventory\RoomType\Sql\GetRoomTypeByIdQuery.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Persistence\Migrations\0013_SeedDemoData.sql"/>
+        <EmbeddedResource Include="Persistence\Migrations\0013_SeedDemoData.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\RoomTypeAllotment\Sql\GetRoomTypeAllotmentCalendarQuery.sql"/>
+        <EmbeddedResource Include="RoomInventory\RoomTypeAllotment\Sql\GetRoomTypeAllotmentCalendarQuery.sql"/>
+        <None Remove="Billing\Folio\Sql\DeleteAdjustment.sql"/>
+        <EmbeddedResource Include="Billing\Folio\Sql\DeleteAdjustment.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Billing\Folio\Sql\DeleteCharges.sql"/>
+        <EmbeddedResource Include="Billing\Folio\Sql\DeleteCharges.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Billing\Folio\Sql\DeletePayments.sql"/>
+        <EmbeddedResource Include="Billing\Folio\Sql\DeletePayments.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Billing\Folio\Sql\GetById.sql"/>
+        <EmbeddedResource Include="Billing\Folio\Sql\GetById.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Billing\Folio\Sql\GetByOwner.sql"/>
+        <EmbeddedResource Include="Billing\Folio\Sql\GetByOwner.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Billing\Folio\Sql\Insert.sql"/>
+        <EmbeddedResource Include="Billing\Folio\Sql\Insert.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Billing\Folio\Sql\InsertAdjustment.sql"/>
+        <EmbeddedResource Include="Billing\Folio\Sql\InsertAdjustment.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Billing\Folio\Sql\InsertCharge.sql"/>
+        <EmbeddedResource Include="Billing\Folio\Sql\InsertCharge.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Billing\Folio\Sql\Update.sql"/>
+        <EmbeddedResource Include="Billing\Folio\Sql\Update.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Billing\Folio\Sql\InsertPayment.sql"/>
+        <EmbeddedResource Include="Billing\Folio\Sql\InsertPayment.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="FrontDesk\Stay\Sql\DeleteOccupantsByStayId.sql"/>
+        <EmbeddedResource Include="FrontDesk\Stay\Sql\DeleteOccupantsByStayId.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="FrontDesk\Stay\Sql\GetActiveStayByRoom.sql"/>
+        <EmbeddedResource Include="FrontDesk\Stay\Sql\GetActiveStayByRoom.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="FrontDesk\Stay\Sql\GetById.sql"/>
+        <EmbeddedResource Include="FrontDesk\Stay\Sql\GetById.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="FrontDesk\Stay\Sql\GetCurrentStays.sql"/>
+        <EmbeddedResource Include="FrontDesk\Stay\Sql\GetCurrentStays.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="FrontDesk\Stay\Sql\GetOccupantsByStayId.sql"/>
+        <EmbeddedResource Include="FrontDesk\Stay\Sql\GetOccupantsByStayId.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="FrontDesk\Stay\Sql\Insert.sql"/>
+        <EmbeddedResource Include="FrontDesk\Stay\Sql\Insert.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="FrontDesk\Stay\Sql\InsertOccupant.sql"/>
+        <EmbeddedResource Include="FrontDesk\Stay\Sql\InsertOccupant.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="FrontDesk\Stay\Sql\Update.sql"/>
+        <EmbeddedResource Include="FrontDesk\Stay\Sql\Update.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="GuestManagement\Guest\Sql\ExistByIdentityDocument.sql"/>
+        <EmbeddedResource Include="GuestManagement\Guest\Sql\ExistByIdentityDocument.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="GuestManagement\Guest\Sql\Insert.sql"/>
+        <EmbeddedResource Include="GuestManagement\Guest\Sql\Insert.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="GuestManagement\Guest\Sql\SearchQuery.sql"/>
+        <EmbeddedResource Include="GuestManagement\Guest\Sql\SearchQuery.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="GuestManagement\Guest\Sql\Update.sql"/>
+        <EmbeddedResource Include="GuestManagement\Guest\Sql\Update.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="HouseKeeping\HouseKeeping\Sql\GetById.sql"/>
+        <EmbeddedResource Include="HouseKeeping\HouseKeeping\Sql\GetById.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="HouseKeeping\HouseKeeping\Sql\GetByRoomId.sql"/>
+        <EmbeddedResource Include="HouseKeeping\HouseKeeping\Sql\GetByRoomId.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="HouseKeeping\HouseKeeping\Sql\Insert.sql"/>
+        <EmbeddedResource Include="HouseKeeping\HouseKeeping\Sql\Insert.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="HouseKeeping\HouseKeeping\Sql\ListHouseKeepingTasksQuery.sql"/>
+        <None Remove="HouseKeeping\HouseKeeping\Sql\Update.sql"/>
+        <EmbeddedResource Include="HouseKeeping\HouseKeeping\Sql\Update.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Identity\User\Sql\GetAll.sql"/>
+        <EmbeddedResource Include="Identity\User\Sql\GetAll.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Identity\User\Sql\GetById.sql"/>
+        <EmbeddedResource Include="Identity\User\Sql\GetById.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Identity\User\Sql\GetByUsername.sql"/>
+        <EmbeddedResource Include="Identity\User\Sql\GetByUsername.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Identity\User\Sql\Insert.sql"/>
+        <EmbeddedResource Include="Identity\User\Sql\Insert.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Identity\User\Sql\Update.sql"/>
+        <EmbeddedResource Include="Identity\User\Sql\Update.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Reservations\GroupBooking\Sql\GetAll.sql"/>
+        <EmbeddedResource Include="Reservations\GroupBooking\Sql\GetAll.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Reservations\GroupBooking\Sql\GetById.sql"/>
+        <EmbeddedResource Include="Reservations\GroupBooking\Sql\GetById.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Reservations\GroupBooking\Sql\Insert.sql"/>
+        <EmbeddedResource Include="Reservations\GroupBooking\Sql\Insert.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Reservations\GroupBooking\Sql\Update.sql"/>
+        <EmbeddedResource Include="Reservations\GroupBooking\Sql\Update.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Reservations\Reservation\Sql\GetAll.sql"/>
+        <EmbeddedResource Include="Reservations\Reservation\Sql\GetAll.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Reservations\Reservation\Sql\GetById.sql"/>
+        <EmbeddedResource Include="Reservations\Reservation\Sql\GetById.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Reservations\Reservation\Sql\Insert.sql"/>
+        <EmbeddedResource Include="Reservations\Reservation\Sql\Insert.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Reservations\Reservation\Sql\List.sql"/>
+        <EmbeddedResource Include="Reservations\Reservation\Sql\List.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Reservations\Reservation\Sql\Update.sql"/>
+        <EmbeddedResource Include="Reservations\Reservation\Sql\Update.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\Room\Sql\ExistsWithRoomNumber.sql"/>
+        <EmbeddedResource Include="RoomInventory\Room\Sql\ExistsWithRoomNumber.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\Room\Sql\FindVacantRoom.sql"/>
+        <EmbeddedResource Include="RoomInventory\Room\Sql\FindVacantRoom.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\Room\Sql\Insert.sql"/>
+        <EmbeddedResource Include="RoomInventory\Room\Sql\Insert.sql">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\Room\Sql\Update.sql"/>
+        <EmbeddedResource Include="RoomInventory\Room\Sql\Update.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\RoomType\Sql\ExistsByName.sql"/>
+        <EmbeddedResource Include="RoomInventory\RoomType\Sql\ExistsByName.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\RoomType\Sql\Insert.sql"/>
+        <EmbeddedResource Include="RoomInventory\RoomType\Sql\Insert.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\RoomType\Sql\Update.sql"/>
+        <EmbeddedResource Include="RoomInventory\RoomType\Sql\Update.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\RoomTypeAllotment\Sql\CheckAvailabilityQuery.sql"/>
+        <EmbeddedResource Include="RoomInventory\RoomTypeAllotment\Sql\CheckAvailabilityQuery.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\RoomTypeAllotment\Sql\GetByRoomTypeAndDate.sql"/>
+        <EmbeddedResource Include="RoomInventory\RoomTypeAllotment\Sql\GetByRoomTypeAndDate.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\RoomTypeAllotment\Sql\Insert.sql"/>
+        <EmbeddedResource Include="RoomInventory\RoomTypeAllotment\Sql\Insert.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\RoomTypeAllotment\Sql\Update.sql"/>
+        <EmbeddedResource Include="RoomInventory\RoomTypeAllotment\Sql\Update.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="RoomInventory\RoomTypeAllotment\Sql\GetById.sql"/>
+        <EmbeddedResource Include="RoomInventory\RoomTypeAllotment\Sql\GetById.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="HouseKeeping\HouseKeeping\Sql\ListHouseKeepingTasks.sql"/>
+        <EmbeddedResource Include="HouseKeeping\HouseKeeping\Sql\ListHouseKeepingTasks.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Billing\Folio\Sql\List.sql"/>
+        <EmbeddedResource Include="Billing\Folio\Sql\List.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Billing\Folio\Sql\OwnerOptions.sql"/>
+        <EmbeddedResource Include="Billing\Folio\Sql\OwnerOptions.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+    </ItemGroup>
+
 </Project>

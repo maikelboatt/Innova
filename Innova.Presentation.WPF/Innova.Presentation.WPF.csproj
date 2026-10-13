@@ -9,7 +9,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Extended.Wpf.Toolkit" Version="5.1.2"/>
         <PackageReference Include="LoadingSpinner.WPF" Version="1.0.0"/>
+        <PackageReference Include="MahApps.Metro.IconPacks" Version="6.2.1"/>
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.12"/>
         <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.12"/>
         <PackageReference Include="MvvmCross" Version="10.1.2"/>
@@ -29,14 +31,28 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Views\GuestManagement\Details\"/>
-        <Folder Include="Views\GuestManagement\Forms\"/>
+        <Folder Include="Views\Billing\Folio\Details\"/>
+        <Folder Include="Views\FrontDesk\Stay\Details\"/>
+        <Folder Include="Views\FrontDesk\Stay\Forms\"/>
+        <Folder Include="Views\HouseKeeping\HouseKeeping\Details\"/>
+        <Folder Include="Views\HouseKeeping\HouseKeeping\Forms\"/>
+        <Folder Include="Views\Reservations\GroupBooking\Details\"/>
+        <Folder Include="Views\Reservations\GroupBooking\Forms\"/>
+        <Folder Include="Views\Reservations\Reservations\Details\"/>
+        <Folder Include="Views\Reservations\Reservations\Forms\"/>
     </ItemGroup>
 
     <ItemGroup>
         <Page Update="Views\Shell\ShellView.xaml">
             <Generator>MSBuild:Compile</Generator>
         </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="appsettings.json"/>
+        <Content Include="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>
