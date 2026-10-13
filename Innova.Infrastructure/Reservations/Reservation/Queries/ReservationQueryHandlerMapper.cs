@@ -10,6 +10,8 @@ namespace Innova.Infrastructure.Reservations.Reservation.Queries
             row.GuestId,
             row.GroupBookingId,
             row.RoomTypeRequestedId,
+            row.RoomTypeName,
+            row.GuestName,
             row.StayStart,
             row.StayEnd,
             row.NightlyRateAmount,

@@ -10,11 +10,11 @@ using Innova.Infrastructure.Persistence.Connections;
 namespace Innova.Infrastructure.HouseKeeping.HouseKeeping.Queries
 {
     public sealed class GetHouseKeepingTaskByIdQueryHandler( IDbConnectionProvider connectionProvider )
-        :IQueryHandler<GetHouseKeepingTaskByIdQuery, HouseKeepingTaskDto?>
+        :IQueryHandler<GetHouseKeepingTaskByIdQuery, HouseKeepingTaskDto>
     {
         private static readonly Assembly Assembly = typeof(GetHouseKeepingTaskByIdQueryHandler).Assembly;
 
-        public async Task<HouseKeepingTaskDto?> HandleAsync( GetHouseKeepingTaskByIdQuery query, CancellationToken ct = default )
+        public async Task<HouseKeepingTaskDto> HandleAsync( GetHouseKeepingTaskByIdQuery query, CancellationToken ct = default )
         {
             string sql = SqlLoader.Load(Assembly, "Innova.Infrastructure.HouseKeeping.HouseKeeping.Sql.GetById.sql");
 
@@ -30,7 +30,7 @@ namespace Innova.Infrastructure.HouseKeeping.HouseKeeping.Queries
                         cancellationToken: ct));
 
             return row is null
-                       ? null
+                       ? throw new KeyNotFoundException($"House Keeping with Id '{query.TaskId}' not found.")
                        : HouseKeepingTaskQueryHandlerMapper.ToDto(row);
         }
     }

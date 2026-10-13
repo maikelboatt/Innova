@@ -1,4 +1,4 @@
--- ListHouseKeepingTasksQuery.sql - HouseKeeping
+-- ListHouseKeepingTasks.sql - HouseKeeping
 
 SELECT h.Id,
        h.RoomId,

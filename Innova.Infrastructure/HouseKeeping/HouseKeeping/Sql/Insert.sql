@@ -6,8 +6,6 @@ INSERT INTO housekeeping.HouseKeepingTask
  Type,
  Status,
  AssignedStaffId,
- CreatedAt,
- CompletedAt,
  InspectionPassed,
  InspectionNotes)
 VALUES (@Id,
@@ -15,7 +13,5 @@ VALUES (@Id,
         @Type,
         @Status,
         @AssignedStaffId,
-        @CreatedAt,
-        @CompletedAt,
         @InspectionPassed,
         @InspectionNotes);

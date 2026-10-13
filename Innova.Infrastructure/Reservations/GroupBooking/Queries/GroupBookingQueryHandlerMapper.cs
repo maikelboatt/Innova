@@ -8,6 +8,7 @@ namespace Innova.Infrastructure.Reservations.GroupBooking.Queries
         public static GroupBookingDto ToDto( GroupBookingRow row ) => new(
             row.Id,
             row.OrganizerGuestId,
+            row.OrganizerName,
             row.GroupName,
             row.ReservationIds);
 
