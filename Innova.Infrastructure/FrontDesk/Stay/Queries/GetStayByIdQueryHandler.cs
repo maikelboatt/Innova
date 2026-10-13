@@ -9,11 +9,11 @@ using Innova.Infrastructure.Persistence.Connections;
 
 namespace Innova.Infrastructure.FrontDesk.Stay.Queries
 {
-    public sealed class GetStayByIdQueryHandler( IDbConnectionProvider connectionProvider ):IQueryHandler<GetStayByIdQuery, StayDto?>
+    public sealed class GetStayByIdQueryHandler( IDbConnectionProvider connectionProvider ):IQueryHandler<GetStayByIdQuery, StayDto>
     {
         private static readonly Assembly Assembly = typeof(GetStayByIdQueryHandler).Assembly;
 
-        public async Task<StayDto?> HandleAsync( GetStayByIdQuery query, CancellationToken cancellationToken = default )
+        public async Task<StayDto> HandleAsync( GetStayByIdQuery query, CancellationToken cancellationToken = default )
         {
             string sql = SqlLoader.Load(Assembly, "Innova.Infrastructure.FrontDesk.Stay.Sql.GetById.sql");
             string occupantsSql = SqlLoader.Load(Assembly, "Innova.Infrastructure.FrontDesk.Stay.Sql.GetOccupantsByStayId.sql");
@@ -29,7 +29,7 @@ namespace Innova.Infrastructure.FrontDesk.Stay.Queries
                                        cancellationToken: cancellationToken));
 
             if (stayRow is null)
-                return null;
+                throw new KeyNotFoundException($"Stay with Id: '{query.StayId}' was not found.");
 
             IEnumerable<StayOccupantRow> occupantsRow = await connectionProvider.Connection.QueryAsync<StayOccupantRow>(
                                                             new CommandDefinition(
