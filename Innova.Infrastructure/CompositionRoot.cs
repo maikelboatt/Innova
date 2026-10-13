@@ -516,7 +516,7 @@ namespace Innova.Infrastructure
 
             BuildPipeline(
                 ioCProvider,
-                () => new MarkNoShowCommandHandler(
+                () => new MarkReservationNoShowCommandHandler(
                     ioCProvider.Resolve<IReservationService>(),
                     ioCProvider.Resolve<IDomainEventDispatcher>()));
 

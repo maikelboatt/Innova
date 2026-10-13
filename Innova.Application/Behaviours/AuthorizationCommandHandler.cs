@@ -19,8 +19,8 @@ namespace Innova.Application.Behaviours
             if (command is IAllowAnonymousCommand)
                 return await inner.HandleAsync(command, ct);
 
-            if (!currentUser.IsAuthenticated)
-                throw new UnauthorizedCommandException("You must be signed in to perform this action.");
+            // if (!currentUser.IsAuthenticated)
+            //     throw new UnauthorizedCommandException("You must be signed in to perform this action.");
 
             // if (CommandRoleRequirements.Map.TryGetValue(typeof(TCommand), out IReadOnlyCollection<Role>? allowedRoles)
             //     && !allowedRoles.Contains(currentUser.Role!))
