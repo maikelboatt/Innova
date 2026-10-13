@@ -3,5 +3,5 @@ using Innova.Application.RoomInventory.DTO;
 
 namespace Innova.Application.RoomInventory.Queries
 {
-    public sealed record GetRoomByIdQuery( Guid RoomId ):IQuery<RoomDto?>;
+    public sealed record GetRoomByIdQuery( Guid RoomId ):IQuery<RoomDto>;
 }

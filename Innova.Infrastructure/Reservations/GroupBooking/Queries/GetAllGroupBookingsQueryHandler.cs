@@ -45,6 +45,7 @@ namespace Innova.Infrastructure.Reservations.GroupBooking.Queries
                                      {
                                          Id = group.Id,
                                          OrganizerGuestId = group.OrganizerGuestId,
+                                         OrganizerName = group.OrganizerName,
                                          GroupName = group.GroupName,
                                          ReservationIds =
                                              reservationsByGroup.TryGetValue(

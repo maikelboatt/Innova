@@ -10,11 +10,11 @@ using Innova.Infrastructure.RoomInventory.RoomType.Mapping;
 namespace Innova.Infrastructure.RoomInventory.RoomType.Queries
 {
     public sealed class GetRoomTypeByIdQueryHandler( IDbConnectionProvider connectionProvider )
-        :IQueryHandler<GetRoomTypeByIdQuery, RoomTypeDto?>
+        :IQueryHandler<GetRoomTypeByIdQuery, RoomTypeDto>
     {
         private static readonly Assembly Assembly = typeof(GetRoomTypeByIdQueryHandler).Assembly;
 
-        public async Task<RoomTypeDto?> HandleAsync( GetRoomTypeByIdQuery query, CancellationToken ct = default )
+        public async Task<RoomTypeDto> HandleAsync( GetRoomTypeByIdQuery query, CancellationToken ct = default )
         {
             string sql = SqlLoader.Load(Assembly, "Innova.Infrastructure.RoomInventory.RoomType.Sql.GetById.sql");
 
@@ -30,7 +30,7 @@ namespace Innova.Infrastructure.RoomInventory.RoomType.Queries
                         cancellationToken: ct));
 
             return row is null
-                       ? null
+                       ? throw new KeyNotFoundException($"Room Type with ID {query.RoomTypeId} not found.")
                        : RoomTypeQueryHandlerMapper.ToDto(row);
         }
     }

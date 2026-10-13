@@ -14,6 +14,7 @@ namespace Innova.Infrastructure.RoomInventory.Room.Queries
         public static RoomDto ToDto( RoomRow roomRow ) => new(
             roomRow.Id,
             roomRow.RoomNumber,
+            roomRow.RoomTypeName,
             roomRow.FloorLevel,
             roomRow.FloorWing,
             roomRow.RoomTypeId,

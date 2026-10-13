@@ -2,5 +2,5 @@
 
 namespace Innova.Application.RoomInventory.Room.Commands.TakeRoomOutOfService
 {
-    public sealed record TakeRoomOutOfServiceCommand( Guid RoomId ):ICommand<Unit>;
+    public sealed record TakeRoomOutOfServiceCommand( Guid RoomId ):ICommand;
 }

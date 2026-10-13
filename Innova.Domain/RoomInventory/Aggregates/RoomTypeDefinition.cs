@@ -64,5 +64,26 @@ namespace Innova.Domain.RoomInventory.Aggregates
             name,
             maxOccupancy,
             baseRate);
+
+        public void UpdateDetails( string name, MaxOccupancy maxOccupancy, Money baseRate )
+        {
+            ArgumentNullException.ThrowIfNull(maxOccupancy);
+            ArgumentNullException.ThrowIfNull(baseRate);
+
+            if (string.IsNullOrWhiteSpace(name))
+                throw new DomainException("Room type name is required.");
+
+            Name = name.Trim();
+            MaxOccupancy = maxOccupancy;
+            BaseRate = baseRate;
+
+            RaiseDomainEvent(
+                new RoomTypeDefinitionUpdated(
+                    Id.Value,
+                    Name,
+                    MaxOccupancy.Value,
+                    BaseRate.Amount,
+                    BaseRate.Currency));
+        }
     }
 }
