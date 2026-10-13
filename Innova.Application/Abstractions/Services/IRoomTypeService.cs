@@ -12,5 +12,11 @@ namespace Innova.Application.Abstractions.Services
                                               CancellationToken ct = default );
 
         Task<RoomTypeDefinition> GetByIdAsync( RoomTypeId roomTypeId, CancellationToken ct = default );
+
+        Task UpdateAsync( RoomTypeId roomTypeId,
+                          string name,
+                          MaxOccupancy maxOccupancy,
+                          Money baseRate,
+                          CancellationToken ct = default );
     }
 }

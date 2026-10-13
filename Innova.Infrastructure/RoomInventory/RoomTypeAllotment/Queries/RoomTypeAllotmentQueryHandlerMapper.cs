@@ -11,6 +11,8 @@ namespace Innova.Infrastructure.RoomInventory.RoomTypeAllotment.Queries
             .AsReadOnly();
 
         public static AllotmentNightDto ToDto( AllotmentNightRow row ) => new(
+            row.RoomTypeId,
+            row.RoomTypeName,
             row.Date,
             row.TotalRooms,
             row.BookedCount,
