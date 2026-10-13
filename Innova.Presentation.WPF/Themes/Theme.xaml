@@ -21,6 +21,12 @@
         <ResourceDictionary Source="TextBoxes.xaml" />
         <ResourceDictionary Source="ComboBoxes.xaml" />
         <ResourceDictionary Source="DataGrid.xaml" />
+        <ResourceDictionary Source="NavigationButtons.xaml" />
+        <ResourceDictionary Source="RadioButtonStyle.xaml" />
+        <ResourceDictionary Source="CommonCtrls.xaml" />
+        <ResourceDictionary Source="ButtonStyle.xaml" />
+        <ResourceDictionary Source="CollectionItemsStyle.xaml" />
+        <ResourceDictionary Source="OrderFormStyles.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!--
