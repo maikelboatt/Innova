@@ -2,6 +2,9 @@
 {
     public sealed class AllotmentNightRow
     {
+        public Guid RoomTypeId { get; init; }
+
+        public string RoomTypeName { get; init; } = string.Empty;
         public DateOnly Date { get; init; }
 
         public int TotalRooms { get; init; }

@@ -1,0 +1,191 @@
+﻿<views:MvxWpfView x:Class="Innova.Presentation.WPF.Views.RoomInventory.RoomType.Lists.RoomTypeListView"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:lists="clr-namespace:Innova.Presentation.Core.RoomInventory.RoomType.Lists;assembly=Innova.Presentation.Core"
+                  xmlns:loadingSpinnerControl="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+                  d:DataContext="{d:DesignInstance Type=lists:RoomTypeListViewModel,
+                                                   IsDesignTimeCreatable=False}"
+                  d:DesignHeight="600"
+                  d:DesignWidth="1000"
+                  mc:Ignorable="d">
+    <Grid Background="{StaticResource Surface1Brush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!--  Header  -->
+            <RowDefinition Height="Auto" />
+            <!--  Toolbar: search + refresh  -->
+            <RowDefinition Height="*" />
+            <!--  Grid / empty state / loading  -->
+        </Grid.RowDefinitions>
+
+        <!--  ── Header ───────────────────────────────────────────  -->
+        <Grid Grid.Row="0" Margin="24,20,24,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       Style="{StaticResource TextHeading}"
+                       Text="{Binding Title}" />
+
+            <Button Grid.Column="1"
+                    Command="{Binding NewRoomTypeCommand}"
+                    Content="+ New Room Type"
+                    Style="{StaticResource ButtonPrimary}" />
+        </Grid>
+
+        <!--  ── Toolbar: search + refresh ───────────────────────────  -->
+        <Grid Grid.Row="1" Margin="24,0,24,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="360" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!--  Placeholder lists exactly the fields RoomListViewModel.ApplyFilter searches (typing "dirty" filters by status)  -->
+            <TextBox Grid.Column="0"
+                     Style="{StaticResource TextBoxSearch}"
+                     Tag="Search by room type name"
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button Grid.Column="2"
+                    Command="{Binding RefreshCommand}"
+                    Style="{StaticResource ButtonIcon}"
+                    ToolTip="Refresh">
+                <Path Width="18"
+                      Height="18"
+                      Data="{StaticResource IconRefresh}"
+                      Fill="{StaticResource TextSecondaryBrush}"
+                      Stretch="Uniform" />
+            </Button>
+        </Grid>
+
+        <!--  ── Content: grid, empty state, loading overlay (z-order = declaration order) ──  -->
+        <Grid Grid.Row="2" Margin="24,0,24,24">
+
+            <!--  Data grid  -->
+            <DataGrid ItemsSource="{Binding Items}"
+                      SelectedItem="{Binding SelectedItem}"
+                      Style="{StaticResource DataGridDefault}"
+                      Visibility="{Binding HasItems, Converter={StaticResource BoolToVisibilityConverter}}">
+
+                <DataGrid.InputBindings>
+                    <MouseBinding Command="{Binding SelectCommand}"
+                                  CommandParameter="{Binding SelectedItem}"
+                                  MouseAction="LeftDoubleClick" />
+                </DataGrid.InputBindings>
+
+                <DataGrid.Columns>
+
+                    <DataGridTextColumn Width="1.5*"
+                                        Binding="{Binding Name}"
+                                        Header="Room" />
+
+                    <DataGridTextColumn Width="1.2*"
+                                        Binding="{Binding OccupancyDisplay}"
+                                        Header="Max Occupancy" />
+
+                    <DataGridTextColumn Width="1.5*"
+                                        Binding="{Binding BaseRateDisplay}"
+                                        Header="Rate" />
+
+
+                    <!--
+                        Operations: View only. A Room has no edit operation (number, floor and type are
+                        immutable; only its status changes) and status changes live in the details modal,
+                        so there is deliberately no Edit button here.
+                    -->
+                    <DataGridTemplateColumn Width="Auto"
+                                            CanUserSort="False"
+                                            Header="Operations">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.OpenRoomTypeDetailsCommand}"
+                                            CommandParameter="{Binding RoomTypeId}"
+                                            Style="{StaticResource ButtonRowActionView}"
+                                            ToolTip="View Details">
+                                        <Path Width="14"
+                                              Height="14"
+                                              Data="{StaticResource IconEyeOn}"
+                                              Fill="{StaticResource WhiteBrush}"
+                                              Stretch="Uniform" />
+                                    </Button>
+
+                                    <Button Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.OpenRoomTypeEditCommand}"
+                                            CommandParameter="{Binding RoomTypeId}"
+                                            Style="{StaticResource ButtonRowActionEdit}"
+                                            ToolTip="Edit Room Type">
+                                        <Path Width="14"
+                                              Height="14"
+                                              Data="{StaticResource IconEdit}"
+                                              Fill="{StaticResource WhiteBrush}"
+                                              Stretch="Uniform" />
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!--  Empty state: only when there is nothing to show AND we are not loading  -->
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Vertical">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsEmpty}" Value="True" />
+                                    <Condition Binding="{Binding IsLoading}" Value="False" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+
+                <Path Width="48"
+                      Height="48"
+                      Margin="0,0,0,12"
+                      HorizontalAlignment="Center"
+                      Data="{StaticResource RoomDefinitionIcon}"
+                      Fill="{StaticResource TextMutedBrush}"
+                      Stretch="Uniform" />
+                <TextBlock HorizontalAlignment="Center"
+                           FontWeight="SemiBold"
+                           Style="{StaticResource TextBody}"
+                           Text="No rooms types found" />
+                <TextBlock Margin="0,4,0,0"
+                           HorizontalAlignment="Center"
+                           Style="{StaticResource TextBodySecondary}"
+                           Text="Try a different search, or add a new room type." />
+            </StackPanel>
+
+            <!--  Loading overlay (single instance, on top)  -->
+            <Border Background="{StaticResource Surface1Brush}"
+                    Opacity="0.85"
+                    Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Vertical">
+                    <loadingSpinnerControl:LoadingSpinner Diameter="100"
+                                                          IsLoading="{Binding IsLoading}"
+                                                          Thickness="3" />
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Style="{StaticResource TextBodySecondary}"
+                               Text="Loading room types..." />
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</views:MvxWpfView>
