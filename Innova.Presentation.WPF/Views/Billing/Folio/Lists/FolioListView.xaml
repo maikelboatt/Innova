@@ -1,0 +1,363 @@
+﻿<views:MvxWpfView x:Class="Innova.Presentation.WPF.Views.Billing.Folio.Lists.FolioListView"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:lists="clr-namespace:Innova.Presentation.Core.Billing.Folio.Lists;assembly=Innova.Presentation.Core"
+                  xmlns:loadingSpinnerControl="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+                  d:DataContext="{d:DesignInstance Type=lists:FolioListViewModel,
+                                                   IsDesignTimeCreatable=False}"
+                  d:DesignHeight="600"
+                  d:DesignWidth="1100"
+                  mc:Ignorable="d">
+
+    <views:MvxWpfView.Resources>
+
+        <!--  Status chip above the grid; the active one is tinted  -->
+        <Style x:Key="FilterChip" TargetType="Button">
+            <Setter Property="Margin" Value="0,0,8,0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Chip"
+                                Padding="12,5"
+                                Background="{StaticResource Surface2Brush}"
+                                BorderBrush="{StaticResource BorderDefaultBrush}"
+                                BorderThickness="1"
+                                CornerRadius="14">
+                            <TextBlock x:Name="ChipText"
+                                       FontFamily="{StaticResource FontPrimary}"
+                                       FontSize="{StaticResource FontSizeLabel}"
+                                       FontWeight="Medium"
+                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                       Text="{Binding Label}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Chip" Property="BorderBrush" Value="{StaticResource BorderStrongBrush}" />
+                            </Trigger>
+                            <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                <Setter TargetName="Chip" Property="Background" Value="{StaticResource PrimaryBlue50Brush}" />
+                                <Setter TargetName="Chip" Property="BorderBrush" Value="{StaticResource PrimaryBlue600Brush}" />
+                                <Setter TargetName="ChipText" Property="Foreground" Value="{StaticResource PrimaryBlue600Brush}" />
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--  Money columns read better right-aligned  -->
+        <Style x:Key="RightAlignedCell"
+               BasedOn="{StaticResource TextBody}"
+               TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="TextAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+    </views:MvxWpfView.Resources>
+
+    <Grid Background="{StaticResource Surface1Brush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!--  Header  -->
+            <RowDefinition Height="Auto" />
+            <!--  Toolbar: search, status chips, summary, refresh  -->
+            <RowDefinition Height="*" />
+            <!--  Grid / empty state / loading  -->
+        </Grid.RowDefinitions>
+
+        <!--  ── Header ───────────────────────────────────────────  -->
+        <Grid Grid.Row="0" Margin="24,20,24,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource TextHeading}"
+                       Text="{Binding Title}" />
+
+            <Button Grid.Column="1"
+                    Command="{Binding NewFolioCommand}"
+                    Content="+ Open Folio"
+                    Style="{StaticResource ButtonPrimary}" />
+        </Grid>
+
+        <!--  ── Toolbar ──────────────────────────────────────────  -->
+        <Grid Grid.Row="1" Margin="24,0,24,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="320" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!--  Placeholder lists exactly the fields FolioListViewModel.ApplyFilter searches  -->
+            <TextBox Grid.Column="0"
+                     Style="{StaticResource TextBoxSearch}"
+                     Tag="Search by name, room, type, or status"
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+
+            <ItemsControl Grid.Column="1"
+                          Margin="16,0,0,0"
+                          VerticalAlignment="Center"
+                          ItemsSource="{Binding StatusFilters}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Command="{Binding DataContext.SetStatusFilterCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                CommandParameter="{Binding}"
+                                Style="{StaticResource FilterChip}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <TextBlock Grid.Column="2"
+                       Margin="0,0,12,0"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource TextCaption}"
+                       Text="{Binding SummaryDisplay}" />
+
+            <Button Grid.Column="3"
+                    Command="{Binding RefreshCommand}"
+                    Style="{StaticResource ButtonIcon}"
+                    ToolTip="Refresh">
+                <Path Width="18"
+                      Height="18"
+                      Data="{StaticResource IconRefresh}"
+                      Fill="{StaticResource TextSecondaryBrush}"
+                      Stretch="Uniform" />
+            </Button>
+        </Grid>
+
+        <!--  ── Content: grid, empty state, loading overlay (z-order = declaration order) ──  -->
+        <Grid Grid.Row="2" Margin="24,0,24,24">
+
+            <DataGrid ItemsSource="{Binding Items}"
+                      SelectedItem="{Binding SelectedItem}"
+                      Style="{StaticResource DataGridDefault}"
+                      Visibility="{Binding HasItems, Converter={StaticResource BoolToVisibilityConverter}}">
+
+                <!--  InputBindings inherit the DataContext but are not in the visual tree (see GuestListView)  -->
+                <DataGrid.InputBindings>
+                    <MouseBinding Command="{Binding SelectCommand}"
+                                  CommandParameter="{Binding SelectedItem}"
+                                  MouseAction="LeftDoubleClick" />
+                </DataGrid.InputBindings>
+
+                <DataGrid.Columns>
+
+                    <!--  Billed to: name over detail (room, guest, organizer or phone, depending on the type)  -->
+                    <DataGridTemplateColumn Width="2*"
+                                            Header="Billed to"
+                                            SortMemberPath="OwnerName">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock FontWeight="Medium"
+                                               Style="{StaticResource TextBody}"
+                                               Text="{Binding OwnerName}" />
+                                    <TextBlock Style="{StaticResource TextCaption}" Text="{Binding OwnerDetail}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn Width="130"
+                                        Binding="{Binding OwnerTypeLabel}"
+                                        Header="Type" />
+
+                    <!--  Status badge: Open = Info, Settled = Success, Void = neutral  -->
+                    <DataGridTemplateColumn Width="100"
+                                            Header="Status"
+                                            SortMemberPath="StatusLabel">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border HorizontalAlignment="Left">
+                                    <Border.Style>
+                                        <Style BasedOn="{StaticResource BadgeDefault}" TargetType="Border">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding StatusBadge}" Value="Info">
+                                                    <Setter Property="Background" Value="{StaticResource StatusActiveFillBrush}" />
+                                                    <Setter Property="BorderBrush" Value="{StaticResource StatusActiveBorderBrush}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding StatusBadge}" Value="Success">
+                                                    <Setter Property="Background" Value="{StaticResource StatusSuccessFillBrush}" />
+                                                    <Setter Property="BorderBrush" Value="{StaticResource StatusSuccessBorderBrush}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding StatusBadge}" Value="None">
+                                                    <Setter Property="Background" Value="{StaticResource StatusNeutralFillBrush}" />
+                                                    <Setter Property="BorderBrush" Value="{StaticResource StatusNeutralBorderBrush}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock FontSize="{StaticResource FontSizeCaption}"
+                                               FontWeight="Medium"
+                                               Text="{Binding StatusLabel}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding StatusBadge}" Value="Info">
+                                                        <Setter Property="Foreground" Value="{StaticResource StatusActiveTextBrush}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding StatusBadge}" Value="Success">
+                                                        <Setter Property="Foreground" Value="{StaticResource StatusSuccessTextBrush}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding StatusBadge}" Value="None">
+                                                        <Setter Property="Foreground" Value="{StaticResource StatusNeutralTextBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!--  Money: display text is formatted, sorting uses the raw amounts  -->
+                    <DataGridTextColumn Width="1.2*"
+                                        Binding="{Binding ChargesDisplay}"
+                                        ElementStyle="{StaticResource RightAlignedCell}"
+                                        Header="Charges"
+                                        SortMemberPath="TotalCharges" />
+
+                    <DataGridTextColumn Width="1.2*"
+                                        Binding="{Binding PaidDisplay}"
+                                        ElementStyle="{StaticResource RightAlignedCell}"
+                                        Header="Paid / credited"
+                                        SortMemberPath="TotalPaid" />
+
+                    <!--  Balance: red = owes, amber = overpaid (credit), green = nothing owed, grey = void  -->
+                    <DataGridTemplateColumn Width="1.2*"
+                                            Header="Balance"
+                                            SortMemberPath="Balance">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"
+                                           FontWeight="SemiBold"
+                                           Text="{Binding BalanceDisplay}">
+                                    <TextBlock.Style>
+                                        <Style BasedOn="{StaticResource TextBody}" TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding BalanceBadge}" Value="Danger">
+                                                    <Setter Property="Foreground" Value="{StaticResource StatusDangerTextBrush}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding BalanceBadge}" Value="Warning">
+                                                    <Setter Property="Foreground" Value="{StaticResource StatusWarningTextBrush}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding BalanceBadge}" Value="Success">
+                                                    <Setter Property="Foreground" Value="{StaticResource StatusSuccessTextBrush}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding BalanceBadge}" Value="None">
+                                                    <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn Width="150"
+                                        Binding="{Binding LastActivityDisplay}"
+                                        Header="Last activity"
+                                        SortMemberPath="LastActivityAt" />
+
+                    <!--  Operations  -->
+                    <DataGridTemplateColumn Width="Auto"
+                                            CanUserSort="False"
+                                            Header="Operations">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.OpenFolioDetailsCommand}"
+                                            CommandParameter="{Binding FolioId}"
+                                            Style="{StaticResource ButtonRowActionView}"
+                                            ToolTip="View Folio">
+                                        <Path Width="14"
+                                              Height="14"
+                                              Data="{StaticResource IconEyeOn}"
+                                              Fill="{StaticResource WhiteBrush}"
+                                              Stretch="Uniform" />
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!--  Empty state: nothing to show AND not loading  -->
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Vertical">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsEmpty}" Value="True" />
+                                    <Condition Binding="{Binding IsLoading}" Value="False" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+
+                <Path Width="48"
+                      Height="48"
+                      Margin="0,0,0,12"
+                      HorizontalAlignment="Center"
+                      Data="{StaticResource IconBilling}"
+                      Fill="{StaticResource TextMutedBrush}"
+                      Stretch="Uniform" />
+                <TextBlock HorizontalAlignment="Center"
+                           FontWeight="SemiBold"
+                           Style="{StaticResource TextBody}"
+                           Text="No folios found" />
+                <TextBlock Margin="0,4,0,0"
+                           HorizontalAlignment="Center"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           Style="{StaticResource TextBody}"
+                           Text="Try another status or search, or open a new folio." />
+            </StackPanel>
+
+            <!--  Loading overlay (single instance, on top)  -->
+            <Border Background="{StaticResource Surface1Brush}"
+                    Opacity="0.85"
+                    Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Vertical">
+                    <loadingSpinnerControl:LoadingSpinner Diameter="100"
+                                                          IsLoading="{Binding IsLoading}"
+                                                          Thickness="3" />
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               Style="{StaticResource TextBody}"
+                               Text="Loading folios..." />
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</views:MvxWpfView>

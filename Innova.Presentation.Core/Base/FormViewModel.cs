@@ -29,7 +29,6 @@ namespace Innova.Presentation.Core.Base
             MessageBox = messageBox;
 
             SaveCommand = new MvxAsyncCommand(OnSaveAsync, () => IsSaveEnabled);
-
             CancelCommand = new MvxAsyncCommand(OnCancelAsync);
         }
 
