@@ -1,4 +1,29 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:folioFormsV="clr-namespace:Innova.Presentation.WPF.Views.Billing.Folio.Forms"
+                    xmlns:folioFormsVm="clr-namespace:Innova.Presentation.Core.Billing.Folio.Forms;assembly=Innova.Presentation.Core"
+                    xmlns:folioListV="clr-namespace:Innova.Presentation.WPF.Views.Billing.Folio.Lists"
+                    xmlns:folioListVm="clr-namespace:Innova.Presentation.Core.Billing.Folio.Lists;assembly=Innova.Presentation.Core"
+                    xmlns:groupBookingListV="clr-namespace:Innova.Presentation.WPF.Views.Reservations.GroupBooking.Lists"
+                    xmlns:groupBookingListVm="clr-namespace:Innova.Presentation.Core.Reservations.GroupBooking.Lists;assembly=Innova.Presentation.Core"
+                    xmlns:guestDetailsV="clr-namespace:Innova.Presentation.WPF.Views.GuestManagement.Details"
+                    xmlns:guestDetailsVm="clr-namespace:Innova.Presentation.Core.GuestManagement.Details;assembly=Innova.Presentation.Core"
+                    xmlns:guestFormsV="clr-namespace:Innova.Presentation.WPF.Views.GuestManagement.Forms"
+                    xmlns:guestFormsVm="clr-namespace:Innova.Presentation.Core.GuestManagement.Forms;assembly=Innova.Presentation.Core"
+                    xmlns:guestListV="clr-namespace:Innova.Presentation.WPF.Views.GuestManagement.Lists"
+                    xmlns:guestsListVm="clr-namespace:Innova.Presentation.Core.GuestManagement.Lists;assembly=Innova.Presentation.Core"
+                    xmlns:reservationListV="clr-namespace:Innova.Presentation.WPF.Views.Reservations.Reservations.Lists"
+                    xmlns:reservationListVm="clr-namespace:Innova.Presentation.Core.Reservations.Reservation.Lists;assembly=Innova.Presentation.Core"
+                    xmlns:roomListV="clr-namespace:Innova.Presentation.WPF.Views.RoomInventory.Room.Lists"
+                    xmlns:roomListVm="clr-namespace:Innova.Presentation.Core.RoomInventory.Room.Lists;assembly=Innova.Presentation.Core"
+                    xmlns:roomTypeAllotmentListV="clr-namespace:Innova.Presentation.WPF.Views.RoomInventory.RoomTypeAllotment.Lists"
+                    xmlns:roomTypeAllotmentListVm="clr-namespace:Innova.Presentation.Core.RoomInventory.RoomTypeAllotment.Lists;assembly=Innova.Presentation.Core"
+                    xmlns:roomTypeListV="clr-namespace:Innova.Presentation.WPF.Views.RoomInventory.RoomType.Lists"
+                    xmlns:roomTypeListVm="clr-namespace:Innova.Presentation.Core.RoomInventory.RoomType.Lists;assembly=Innova.Presentation.Core"
+                    xmlns:stayListV="clr-namespace:Innova.Presentation.WPF.Views.FrontDesk.Stay.Lists"
+                    xmlns:stayListVm="clr-namespace:Innova.Presentation.Core.FrontDesk.Stay.Lists;assembly=Innova.Presentation.Core"
+                    xmlns:taskListV="clr-namespace:Innova.Presentation.WPF.Views.HouseKeeping.HouseKeeping.Lists"
+                    xmlns:taskListVm="clr-namespace:Innova.Presentation.Core.HouseKeeping.HouseKeeping.Lists;assembly=Innova.Presentation.Core">
 
     <!--
         ══════════════════════════════════════════════════════════════════
@@ -44,16 +69,71 @@
     <!--     <dashboard:DashboardView /> -->
     <!-- </DataTemplate> -->
     <!--    -->
-    <!--  ~1~  Patient Registration  @1@  -->
-    <!-- <DataTemplate DataType="{x:Type patientsListVm:PatientListViewModel}"> -->
-    <!--     <patientListV:PatientListView /> -->
-    <!-- </DataTemplate> -->
-    <!--    -->
-    <!--  ~1~  Scheduling  @1@  -->
-    <!-- <DataTemplate DataType="{x:Type scheduleListVm:AppointmentListViewModel}"> -->
-    <!--     <scheduleListV:AppointmentListView /> -->
-    <!-- </DataTemplate> -->
-    <!--    -->
+    <!--  Guests Registration  -->
+    <DataTemplate DataType="{x:Type guestsListVm:GuestListViewModel}">
+        <guestListV:GuestListView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type guestDetailsVm:GuestDetailsViewModel}">
+        <guestDetailsV:GuestDetailsView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type guestFormsVm:RegisterGuestViewModel}">
+        <guestFormsV:RegisterGuestView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type guestFormsVm:UpdateGuestViewModel}">
+        <guestFormsV:UpdateGuestView />
+    </DataTemplate>
+
+    <!--  Room Inventory  -->
+
+    <!--  Room Sub-Item  -->
+    <DataTemplate DataType="{x:Type roomListVm:RoomListViewModel}">
+        <roomListV:RoomListView />
+    </DataTemplate>
+
+    <!--  RoomType Sub-Item  -->
+    <DataTemplate DataType="{x:Type roomTypeListVm:RoomTypeListViewModel}">
+        <roomTypeListV:RoomTypeListView />
+    </DataTemplate>
+
+    <!--  RoomTypeAllotment Sub-Item  -->
+    <DataTemplate DataType="{x:Type roomTypeAllotmentListVm:RoomTypeAllotmentListViewModel}">
+        <roomTypeAllotmentListV:RoomTypeAllotmentListView />
+    </DataTemplate>
+
+    <!--  Reservations  -->
+
+    <!--  Reservation Sub-Item  -->
+    <DataTemplate DataType="{x:Type reservationListVm:ReservationListViewModel}">
+        <reservationListV:ReservationListView />
+    </DataTemplate>
+
+    <!--  GroupBooking Sub-Item  -->
+    <DataTemplate DataType="{x:Type groupBookingListVm:GroupBookingListViewModel}">
+        <groupBookingListV:GroupBookingListView />
+    </DataTemplate>
+
+    <!--  FrontDesk  -->
+    <DataTemplate DataType="{x:Type stayListVm:StayListViewModel}">
+        <stayListV:StayListView />
+    </DataTemplate>
+
+    <!--  HouseKeeping  -->
+    <DataTemplate DataType="{x:Type taskListVm:HouseKeepingTaskListViewModel}">
+        <taskListV:HouseKeepingTaskListView />
+    </DataTemplate>
+
+    <!--  HouseKeeping  -->
+    <DataTemplate DataType="{x:Type folioListVm:FolioListViewModel}">
+        <folioListV:FolioListView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type folioFormsVm:OpenFolioViewModel}">
+        <folioFormsV:OpenFolioView />
+    </DataTemplate>
+
     <!--  ~1~  Consultation  @1@  -->
     <!-- <DataTemplate DataType="{x:Type consultationListVm:ConsultationListViewModel}"> -->
     <!--     <consultationListV:ConsultationListView /> -->
@@ -87,18 +167,18 @@
     <!--     <dialogViews:ErrorDialogView /> -->
     <!-- </DataTemplate> -->
 
-    <!--  Patient details + forms, all modal  -->
-    <!-- <DataTemplate DataType="{x:Type patientDetailsVm:PatientDetailsViewModel}"> -->
-    <!--     <patientDetailsV:PatientDetailsView /> -->
+    <!--  Guests details + forms, all modal  -->
+    <!-- <DataTemplate DataType="{x:Type patientDetailsVm:GuestsDetailsViewModel}"> -->
+    <!--     <patientDetailsV:GuestsDetailsView /> -->
     <!-- </DataTemplate> -->
-    <!-- <DataTemplate DataType="{x:Type patientFormsVm:RegisterPatientViewModel}"> -->
-    <!--     <patiengFormsV:RegisterPatientView /> -->
+    <!-- <DataTemplate DataType="{x:Type patientFormsVm:RegisterGuestsViewModel}"> -->
+    <!--     <patiengFormsV:RegisterGuestsView /> -->
     <!-- </DataTemplate> -->
-    <!-- <DataTemplate DataType="{x:Type patientFormsVm:UpdatePatientViewModel}"> -->
-    <!--     <patiengFormsV:UpdatePatientView /> -->
+    <!-- <DataTemplate DataType="{x:Type patientFormsVm:UpdateGuestsViewModel}"> -->
+    <!--     <patiengFormsV:UpdateGuestsView /> -->
     <!-- </DataTemplate> -->
-    <!-- <DataTemplate DataType="{x:Type patientJourneyVm:PatientJourneyViewModel}"> -->
-    <!--     <patientJourneyV:PatientJourneyView /> -->
+    <!-- <DataTemplate DataType="{x:Type patientJourneyVm:GuestsJourneyViewModel}"> -->
+    <!--     <patientJourneyV:GuestsJourneyView /> -->
     <!-- </DataTemplate> -->
 
 </ResourceDictionary>
