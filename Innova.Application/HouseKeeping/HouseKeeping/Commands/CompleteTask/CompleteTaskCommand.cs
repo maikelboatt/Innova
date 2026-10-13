@@ -2,5 +2,5 @@
 
 namespace Innova.Application.HouseKeeping.HouseKeeping.Commands.CompleteTask
 {
-    public sealed record CompleteTaskCommand( Guid HouseKeepingId, bool InspectionPassed, string? InspectionNotes ):ICommand<Guid>;
+    public sealed record CompleteTaskCommand( Guid HouseKeepingId, bool InspectionPassed, string? InspectionNotes ):ICommand;
 }

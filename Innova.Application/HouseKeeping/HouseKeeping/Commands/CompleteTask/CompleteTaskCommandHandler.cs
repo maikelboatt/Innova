@@ -7,9 +7,9 @@ using Innova.Domain.HouseKeeping.ValueObjects;
 namespace Innova.Application.HouseKeeping.HouseKeeping.Commands.CompleteTask
 {
     public sealed class CompleteTaskCommandHandler( IHouseKeepingService taskService, IDomainEventDispatcher eventDispatcher )
-        :ICommandHandler<CompleteTaskCommand, Guid>
+        :ICommandHandler<CompleteTaskCommand, Unit>
     {
-        public async Task<Guid> HandleAsync( CompleteTaskCommand command, CancellationToken ct = default )
+        public async Task<Unit> HandleAsync( CompleteTaskCommand command, CancellationToken ct = default )
         {
             HouseKeepingTaskId taskId = HouseKeepingTaskId.From(command.HouseKeepingId);
             InspectionResult result = InspectionResult.Of(command.InspectionPassed, command.InspectionNotes);
@@ -19,7 +19,7 @@ namespace Innova.Application.HouseKeeping.HouseKeeping.Commands.CompleteTask
             await eventDispatcher.DispatchAsync(task.DomainEvents, ct);
             task.ClearDomainEvents();
 
-            return task.Id.Value;
+            return Unit.Value;
         }
     }
 }
