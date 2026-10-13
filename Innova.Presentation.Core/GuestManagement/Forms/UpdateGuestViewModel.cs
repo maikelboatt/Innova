@@ -1,4 +1,5 @@
-﻿using Innova.Application.Abstractions.Messaging;
+﻿using System.Collections.ObjectModel;
+using Innova.Application.Abstractions.Messaging;
 using Innova.Application.Dispatchers;
 using Innova.Application.GuestManagement.Guest.Commands.ChangeGuestIdentityDocument;
 using Innova.Application.GuestManagement.Guest.Commands.UpdateGuestContactDetails;
@@ -11,7 +12,7 @@ using MvvmCross.ViewModels;
 
 namespace Innova.Presentation.Core.GuestManagement.Forms
 {
-    public sealed class GuestUpdateViewModel:FormViewModel, IMvxViewModel<Guid>
+    public sealed class UpdateGuestViewModel:FormViewModel, IMvxViewModel<Guid>
     {
         private readonly IModalService _modalService;
         private readonly QueryDispatcher _queryDispatcher;
@@ -21,12 +22,12 @@ namespace Innova.Presentation.Core.GuestManagement.Forms
         private string _fullName = string.Empty;
         public Guid _guestId;
         private string _identityDocumentNumber = string.Empty;
-        private string _identityDocumentType = string.Empty;
+        private IdentityDocumentType? _identityDocumentType;
         private string _lastName = string.Empty;
         private string? _middleName = string.Empty;
         private string _phoneNumber = string.Empty;
 
-        public GuestUpdateViewModel( CommandDispatcher commandDispatcher,
+        public UpdateGuestViewModel( CommandDispatcher commandDispatcher,
                                      IBusyIndicatorService busyIndicator,
                                      INotificationService notifications,
                                      IMessageBoxService messageBox,
@@ -80,7 +81,7 @@ namespace Innova.Presentation.Core.GuestManagement.Forms
             }
         }
 
-        public string IdentityDocumentType
+        public IdentityDocumentType? IdentityDocumentType
         {
             get => _identityDocumentType;
             set
@@ -104,6 +105,9 @@ namespace Innova.Presentation.Core.GuestManagement.Forms
             }
         }
 
+        public ObservableCollection<IdentityDocumentType> IdentityDocumentTypes { get; } = [.. Enum.GetValues<IdentityDocumentType>()];
+
+
         public void Prepare( Guid parameter )
         {
             _guestId = parameter;
@@ -125,7 +129,7 @@ namespace Innova.Presentation.Core.GuestManagement.Forms
 
                 PhoneNumber = dto.PhoneNumber;
                 Email = dto.Email;
-                IdentityDocumentType = dto.IdentityDocumentType;
+                IdentityDocumentType = Enum.Parse<IdentityDocumentType>(dto.IdentityDocumentType);
                 IdentityDocumentNumber = dto.IdentityDocumentNumber;
 
                 HasUnsavedChanges = false;
@@ -139,15 +143,25 @@ namespace Innova.Presentation.Core.GuestManagement.Forms
 
         protected override async Task OnSaveAsync()
         {
-            UpdateGuestContactDetailsCommand cmd = new(_guestId, PhoneNumber, Email);
-            ChangeGuestIdentityDocumentCommand documentCommand = new(_guestId, Enum.Parse<IdentityDocumentType>(IdentityDocumentType), IdentityDocumentNumber);
+            if (!IdentityDocumentType.HasValue)
+                return;
 
-            Unit? result = await ExecuteCommandAsync<UpdateGuestContactDetailsCommand, Unit>(cmd);
-            Unit? result2 = await ExecuteCommandAsync<ChangeGuestIdentityDocumentCommand, Unit>(documentCommand);
+            UpdateGuestContactDetailsCommand contactCommand = new(
+                _guestId,
+                PhoneNumber,
+                Email);
+
+            ChangeGuestIdentityDocumentCommand documentCommand = new(
+                _guestId,
+                IdentityDocumentType.Value,
+                IdentityDocumentNumber);
+
+            await ExecuteCommandAsync<UpdateGuestContactDetailsCommand, Unit>(contactCommand);
+
+            await ExecuteCommandAsync<ChangeGuestIdentityDocumentCommand, Unit>(documentCommand);
 
             HasUnsavedChanges = false;
             _modalService.Close();
-
         }
 
         protected override Task OnCancelConfirmedAsync()

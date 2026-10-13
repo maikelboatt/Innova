@@ -2,6 +2,8 @@
 using Innova.Application.GuestManagement.Guest.DTO;
 using Innova.Application.GuestManagement.Guest.Queries;
 using Innova.Presentation.Core.Base;
+using Innova.Presentation.Core.GuestManagement.Details;
+using Innova.Presentation.Core.GuestManagement.Forms;
 using Innova.Presentation.Core.Services.Abstractions;
 using MvvmCross.Commands;
 
@@ -54,6 +56,7 @@ namespace Innova.Presentation.Core.GuestManagement.Lists
                 .. dtos
                     .Select(dto => new GuestListItemViewModel(dto))
             ];
+            ApplyFilter();
         }
 
         // ══════════════════════════════════════════════════════════
@@ -80,19 +83,19 @@ namespace Innova.Presentation.Core.GuestManagement.Lists
 
         private async Task OnNewGuestAsync()
         {
-            // await _modalService.ShowAsync<GuestRegisterViewModel>();
+            await _modalService.ShowAsync<RegisterGuestViewModel>();
             await RefreshCommand.ExecuteAsync();
         }
 
         private async Task OnOpenGuestDetailsAsync( Guid guestId )
         {
-            // await _modalService.ShowAsync<GuestDetailsViewModel,guestId>();
+            await _modalService.ShowAsync<GuestDetailsViewModel, Guid>(guestId);
             await RefreshCommand.ExecuteAsync();
         }
 
         private async Task OnOpenGuestEditAsync( Guid guestId )
         {
-            // await  _modalService.ShowAsync<GuestUpdateViewModel,guestId>();
+            await _modalService.ShowAsync<UpdateGuestViewModel, Guid>(guestId);
             await RefreshCommand.ExecuteAsync();
         }
 
@@ -107,7 +110,7 @@ namespace Innova.Presentation.Core.GuestManagement.Lists
         protected override async Task OnItemSelectedAsync( GuestListItemViewModel item )
         {
             await base.OnItemSelectedAsync(item);
-            // _modalService.ShowAsync<GuestDetailsViewModel, Guid>(item.GuestId);
+            await _modalService.ShowAsync<GuestDetailsViewModel, Guid>(item.GuestId);
 
             await RefreshCommand.ExecuteAsync(); // Refresh the list after returning from details
         }

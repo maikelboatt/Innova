@@ -97,11 +97,11 @@
 
                 <DataGrid.Columns>
 
-                    <DataGridTextColumn Width="2*"
+                    <DataGridTextColumn Width="1*"
                                         Binding="{Binding FullName}"
                                         Header="Name" />
 
-                    <DataGridTextColumn Width="60"
+                    <DataGridTextColumn Width="130"
                                         Binding="{Binding DateOfBirth}"
                                         Header="Date of birth" />
 
@@ -123,7 +123,7 @@
 
 
                     <!--  Status badge  -->
-                    <DataGridTemplateColumn Width="80" Header="Status">
+                    <DataGridTemplateColumn Width="100" Header="Status">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Border HorizontalAlignment="Left">
@@ -214,6 +214,42 @@
 
                 </DataGrid.Columns>
             </DataGrid>
+
+            <!--  Empty state: only when there is nothing to show AND we are not loading  -->
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Vertical">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsEmpty}" Value="True" />
+                                    <Condition Binding="{Binding IsLoading}" Value="False" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+
+                <Path Width="48"
+                      Height="48"
+                      Margin="0,0,0,12"
+                      HorizontalAlignment="Center"
+                      Data="{StaticResource IconGuests}"
+                      Fill="{StaticResource TextMutedBrush}"
+                      Stretch="Uniform" />
+                <TextBlock HorizontalAlignment="Center"
+                           FontWeight="SemiBold"
+                           Style="{StaticResource TextBody}"
+                           Text="No guests found" />
+                <TextBlock Margin="0,4,0,0"
+                           HorizontalAlignment="Center"
+                           Style="{StaticResource TextBodySecondary}"
+                           Text="Try a different search, or register a new guest." />
+            </StackPanel>
 
             <!--  Loading skeleton overlay  -->
             <Border Background="{StaticResource Surface1Brush}"

@@ -3,6 +3,7 @@ using Innova.Application.GuestManagement.Guest.Commands.DeactivateGuest;
 using Innova.Application.GuestManagement.Guest.DTO;
 using Innova.Application.GuestManagement.Guest.Queries;
 using Innova.Presentation.Core.Base;
+using Innova.Presentation.Core.GuestManagement.Forms;
 using Innova.Presentation.Core.Services.Abstractions;
 using MvvmCross.Commands;
 
@@ -88,12 +89,12 @@ namespace Innova.Presentation.Core.GuestManagement.Details
         }
 
         public string StatusLabel => IsActive
-                                         ? "Inactive"
-                                         : "Active";
+                                         ? "Active"
+                                         : "Inactive";
 
         public string StatusBadge => IsActive
-                                         ? "Danger"
-                                         : "Success";
+                                         ? "Success"
+                                         : "Danger";
 
         public IMvxAsyncCommand EditCommand { get; }
         public IMvxAsyncCommand DeactivateCommand { get; }
@@ -118,7 +119,7 @@ namespace Innova.Presentation.Core.GuestManagement.Details
 
         private async Task OnEditAsync()
         {
-            // await ModalService.NavigateAsync<GuestUpdateViewModel, Guid>(Key);
+            await ModalService.NavigateAsync<UpdateGuestViewModel, Guid>(Key);
         }
 
         private static int CalculateAge( DateOnly dateOfBirth )

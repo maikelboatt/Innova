@@ -1,4 +1,5 @@
-﻿using Innova.Application.Dispatchers;
+﻿using System.Collections.ObjectModel;
+using Innova.Application.Dispatchers;
 using Innova.Application.GuestManagement.Guest.Commands.RegisterGuest;
 using Innova.Domain.GuestManagement.ValueObjects;
 using Innova.Presentation.Core.Base;
@@ -6,7 +7,7 @@ using Innova.Presentation.Core.Services.Abstractions;
 
 namespace Innova.Presentation.Core.GuestManagement.Forms
 {
-    public sealed class GuestRegisterViewModel:FormViewModel
+    public sealed class RegisterGuestViewModel:FormViewModel
     {
         private readonly IModalService _modalService;
         private DateTime? _dateOfBirth;
@@ -14,12 +15,12 @@ namespace Innova.Presentation.Core.GuestManagement.Forms
 
         private string _firstName = string.Empty;
         private string _identityDocumentNumber = string.Empty;
-        private string _identityDocumentType = string.Empty;
+        private IdentityDocumentType? _identityDocumentType;
         private string _lastName = string.Empty;
         private string? _middleName = string.Empty;
         private string _phoneNumber = string.Empty;
 
-        public GuestRegisterViewModel( CommandDispatcher commandDispatcher,
+        public RegisterGuestViewModel( CommandDispatcher commandDispatcher,
                                        IBusyIndicatorService busyIndicator,
                                        INotificationService notifications,
                                        IMessageBoxService messageBox,
@@ -31,6 +32,8 @@ namespace Innova.Presentation.Core.GuestManagement.Forms
         {
             _modalService = modalService;
             IsEditMode = false;
+
+            RecalculateSaveEnabled();
         }
 
         // ── Identity fields ──────────────────────────────────────────
@@ -110,7 +113,7 @@ namespace Innova.Presentation.Core.GuestManagement.Forms
             }
         }
 
-        public string IdentityDocumentType
+        public IdentityDocumentType? IdentityDocumentType
         {
             get => _identityDocumentType;
             set
@@ -136,6 +139,8 @@ namespace Innova.Presentation.Core.GuestManagement.Forms
             }
         }
 
+        public ObservableCollection<IdentityDocumentType> IdentityDocumentTypes { get; } = [.. Enum.GetValues<IdentityDocumentType>()];
+
         // ══════════════════════════════════════════════════════════════
         // RecalculateSaveEnabled — lightweight client-side gate on the
         // Save button. This is NOT a substitute for FluentValidation;
@@ -151,7 +156,7 @@ namespace Innova.Presentation.Core.GuestManagement.Forms
                 && DateOfBirth.HasValue
                 && !string.IsNullOrWhiteSpace(PhoneNumber)
                 && !string.IsNullOrWhiteSpace(Email)
-                && !string.IsNullOrWhiteSpace(IdentityDocumentType)
+                && IdentityDocumentType.HasValue
                 && !string.IsNullOrWhiteSpace(IdentityDocumentNumber);
         }
 
@@ -168,7 +173,7 @@ namespace Innova.Presentation.Core.GuestManagement.Forms
                 DateOnly.FromDateTime(DateOfBirth!.Value),
                 PhoneNumber,
                 Email,
-                Enum.Parse<IdentityDocumentType>(IdentityDocumentType),
+                IdentityDocumentType!.Value,
                 IdentityDocumentNumber);
 
             await ExecuteCommandAsync<RegisterGuestCommand, Guid>(cmd);
