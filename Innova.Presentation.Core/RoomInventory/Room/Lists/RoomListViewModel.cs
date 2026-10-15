@@ -2,6 +2,7 @@
 using Innova.Application.RoomInventory.DTO;
 using Innova.Application.RoomInventory.Queries;
 using Innova.Presentation.Core.Base;
+using Innova.Presentation.Core.RoomInventory.Room.Details;
 using Innova.Presentation.Core.Services.Abstractions;
 using MvvmCross.Commands;
 
@@ -34,13 +35,11 @@ namespace Innova.Presentation.Core.RoomInventory.Room.Lists
 
             NewRoomCommand = new MvxAsyncCommand(OnNewRoomAsync);
             OpenRoomDetailsCommand = new MvxAsyncCommand<Guid>(OnOpenRoomDetailsAsync);
-            OpenRoomEditCommand = new MvxAsyncCommand<Guid>(OnOpenRoomEditAsync);
         }
 
         // ── Commands ──────────────────────────────────────────────
         public IMvxAsyncCommand NewRoomCommand { get; }
         public IMvxAsyncCommand<Guid> OpenRoomDetailsCommand { get; }
-        public IMvxAsyncCommand<Guid> OpenRoomEditCommand { get; }
 
         // ── Loading ───────────────────────────────────────────────
         protected override async Task LoadAsync()
@@ -96,13 +95,7 @@ namespace Innova.Presentation.Core.RoomInventory.Room.Lists
 
         private async Task OnOpenRoomDetailsAsync( Guid roomId )
         {
-            // await _modalService.ShowAsync<RoomDetailsViewModel, Guid>(roomId);
-            await RefreshCommand.ExecuteAsync();
-        }
-
-        private async Task OnOpenRoomEditAsync( Guid roomId )
-        {
-            // await _modalService.ShowAsync<RoomUpdateViewModel, Guid>(roomId);
+            await _modalService.ShowAsync<RoomDetailsViewModel, Guid>(roomId);
             await RefreshCommand.ExecuteAsync();
         }
 
@@ -115,8 +108,7 @@ namespace Innova.Presentation.Core.RoomInventory.Room.Lists
         {
             await base.OnItemSelectedAsync(item);
 
-            // await _modalService.ShowAsync<RoomDetailsViewModel, Guid>(
-            //     item.RoomId);
+            await _modalService.ShowAsync<RoomDetailsViewModel, Guid>(item.RoomId);
 
             await RefreshCommand.ExecuteAsync();
         }

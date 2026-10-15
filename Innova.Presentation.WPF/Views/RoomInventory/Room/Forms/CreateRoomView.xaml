@@ -1,0 +1,101 @@
+﻿<views:MvxWpfView x:Class="Innova.Presentation.WPF.Views.RoomInventory.Room.Forms.CreateRoomView"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:forms="clr-namespace:Innova.Presentation.Core.RoomInventory.Room.Forms;assembly=Innova.Presentation.Core"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+                  d:DataContext="{d:DesignInstance Type=forms:CreateRoomViewModel,
+                                                   IsDesignTimeCreatable=True}"
+                  d:DesignHeight="auto"
+                  d:DesignWidth="auto"
+                  mc:Ignorable="d">
+
+    <views:MvxWpfView.Resources>
+
+        <!--  Supporting text. Own style (not TextBodySecondary) so it uses the primary font.  -->
+
+    </views:MvxWpfView.Resources>
+
+    <Grid Width="560" Background="{StaticResource Surface3Brush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!--  ── Header ───────────────────────────────────────────  -->
+        <StackPanel Grid.Row="0" Margin="24,20,24,4">
+            <TextBlock Style="{StaticResource TextHeading}" Text="Create New Room" />
+        </StackPanel>
+
+        <!--  ── Scrollable form body ────────────────────────────────  -->
+        <ScrollViewer Grid.Row="1"
+                      MaxHeight="560"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="24,8,24,8">
+
+                <TextBlock Margin="0,12,0,8"
+                           Style="{StaticResource TextSubtitle}"
+                           Text="Room Details" />
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="12" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Margin="0,0,0,4"
+                                   Style="{StaticResource TextLabel}"
+                                   Text="Room Number" />
+                        <TextBox Style="{StaticResource TextBoxDefault}" Text="{Binding RoomNumber, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+
+                </Grid>
+
+                <TextBlock Margin="0,20,0,8"
+                           Style="{StaticResource TextSubtitle}"
+                           Text="Location" />
+
+                <Grid>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Margin="0,0,0,4"
+                                   Style="{StaticResource TextLabel}"
+                                   Text="Floor Level" />
+
+                        <TextBox Style="{StaticResource TextBoxDefault}" Text="{Binding FloorLevel, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <TextBlock Margin="0,4,0,4"
+                                   Style="{StaticResource TextLabel}"
+                                   Text="Wing" />
+
+                        <TextBox Style="{StaticResource TextBoxDefault}" Text="{Binding Wing, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+
+                </Grid>
+
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!--  ── Footer actions ──────────────────────────────────────  -->
+        <Border Grid.Row="2"
+                BorderBrush="{StaticResource BorderDefaultBrush}"
+                BorderThickness="0,1,0,0">
+            <StackPanel Margin="24,14,24,14"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                <Button Margin="0,0,8,0"
+                        Command="{Binding CancelCommand}"
+                        Content="Cancel"
+                        Style="{StaticResource ButtonGhost}" />
+                <Button Command="{Binding SaveCommand}"
+                        Content="Create Room"
+                        IsEnabled="{Binding IsSaveEnabled}"
+                        Style="{StaticResource ButtonPrimary}" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</views:MvxWpfView>

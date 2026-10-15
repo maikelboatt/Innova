@@ -6,7 +6,9 @@ using Innova.Application.RoomInventory.Room.Commands.ReturnRoomToService;
 using Innova.Application.RoomInventory.Room.Commands.TakeRoomOutOfService;
 using Innova.Domain.HouseKeeping.ValueObjects;
 using Innova.Presentation.Core.Base;
+using Innova.Presentation.Core.FrontDesk.Stay.Details;
 using Innova.Presentation.Core.HouseKeeping.HouseKeeping.Forms;
+using Innova.Presentation.Core.RoomInventory.RoomType.Details;
 using Innova.Presentation.Core.Services.Abstractions;
 using MvvmCross.Commands;
 
@@ -104,6 +106,17 @@ namespace Innova.Presentation.Core.RoomInventory.Room.Details
             set => SetProperty(ref _status, value);
         }
 
+        public string StatusLabel => Status;
+
+        public string StatusBadge => Status switch
+                                     {
+                                         "Occupied"     => "Success",
+                                         "Vacant"       => "Neutral",
+                                         "Dirty"        => "Warning",
+                                         "OutOfService" => "Danger",
+                                         _              => "Neutral"
+                                     };
+
         public bool CanMarkOutOfService => Status is "Vacant" or "Dirty";
         public bool CanReturnToService => Status is "Occupied" or "OutOfService";
 
@@ -148,12 +161,12 @@ namespace Innova.Presentation.Core.RoomInventory.Room.Details
 
         private async Task OnGetActiveStay()
         {
-            // await ModalService.NavigateAsync<StayDetailsViewModel, Guid>(Key);
+            await ModalService.NavigateAsync<StayDetailsViewModel, Guid>(Key);
         }
 
         private async Task OnOpenRoomType()
         {
-            // await ModalService.NavigateAsync<RoomTypeDetailsViewModel, Guid>(RoomTypeId);
+            await ModalService.NavigateAsync<RoomTypeDetailsViewModel, Guid>(RoomTypeId);
         }
 
         private async Task OnOpenHouseKeepingSchedule()
