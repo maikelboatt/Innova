@@ -37,7 +37,7 @@
 
                 <TextBlock Margin="0,12,0,8"
                            Style="{StaticResource TextSubtitle}"
-                           Text="Room Details" />
+                           Text="Room Type Details" />
 
                 <Grid>
                     <Grid.ColumnDefinitions>

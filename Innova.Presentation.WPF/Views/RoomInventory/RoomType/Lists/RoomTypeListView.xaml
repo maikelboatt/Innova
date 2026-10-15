@@ -94,18 +94,14 @@
                                         Header="Rate" />
 
 
-                    <!--
-                        Operations: View only. A Room has no edit operation (number, floor and type are
-                        immutable; only its status changes) and status changes live in the details modal,
-                        so there is deliberately no Edit button here.
-                    -->
                     <DataGridTemplateColumn Width="Auto"
                                             CanUserSort="False"
                                             Header="Operations">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.OpenRoomTypeDetailsCommand}"
+                                    <Button Margin="0,0,4,0"
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.OpenRoomTypeDetailsCommand}"
                                             CommandParameter="{Binding RoomTypeId}"
                                             Style="{StaticResource ButtonRowActionView}"
                                             ToolTip="View Details">
@@ -123,6 +119,18 @@
                                         <Path Width="14"
                                               Height="14"
                                               Data="{StaticResource IconEdit}"
+                                              Fill="{StaticResource WhiteBrush}"
+                                              Stretch="Uniform" />
+                                    </Button>
+
+                                    <Button Margin="4,0,6,0"
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.CreateNewRoomCommand}"
+                                            CommandParameter="{Binding RoomTypeId}"
+                                            Style="{StaticResource ButtonRowActionBook}"
+                                            ToolTip="Create Room">
+                                        <Path Width="14"
+                                              Height="14"
+                                              Data="{StaticResource RoomIcon}"
                                               Fill="{StaticResource WhiteBrush}"
                                               Stretch="Uniform" />
                                     </Button>

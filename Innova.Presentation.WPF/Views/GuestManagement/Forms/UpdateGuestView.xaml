@@ -22,7 +22,7 @@
             <TextBlock Style="{StaticResource TextHeading}" Text="Edit Guest" />
             <TextBlock Margin="0,2,0,0"
                        Style="{StaticResource TextBodySecondary}"
-                       Text="{Binding FullNameDisplay}" />
+                       Text="{Binding FullName}" />
         </StackPanel>
 
         <ScrollViewer Grid.Row="1"

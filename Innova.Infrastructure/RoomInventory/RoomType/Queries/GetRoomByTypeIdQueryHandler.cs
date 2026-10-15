@@ -24,7 +24,7 @@ namespace Innova.Infrastructure.RoomInventory.RoomType.Queries
                         sql,
                         new
                         {
-                            query.RoomTypeId
+                            Id = query.RoomTypeId
                         },
                         connectionProvider.Transaction,
                         cancellationToken: ct));

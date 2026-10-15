@@ -2,6 +2,7 @@
 using Innova.Application.RoomInventory.DTO;
 using Innova.Application.RoomInventory.Queries;
 using Innova.Presentation.Core.Base;
+using Innova.Presentation.Core.RoomInventory.RoomType.Forms;
 using Innova.Presentation.Core.Services.Abstractions;
 using MvvmCross.Commands;
 
@@ -59,7 +60,7 @@ namespace Innova.Presentation.Core.RoomInventory.RoomType.Details
 
         private async Task OnOpenRoomTypeEdit()
         {
-            // await   ModalService.NavigateAsync<RoomTypeEditViewModel, Guid>(Key);
+            await ModalService.NavigateAsync<UpdateRoomTypeViewModel, Guid>(Key);
         }
 
         protected override async Task LoadAsync()
