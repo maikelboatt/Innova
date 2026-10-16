@@ -337,6 +337,35 @@
         <EmbeddedResource Include="Billing\Folio\Sql\OwnerOptions.sql">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </EmbeddedResource>
+        <None Remove="Persistence\Migrations\0014_SeedAdminUser.sql"/>
+        <EmbeddedResource Include="Persistence\Migrations\0014_SeedAdminUser.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Persistence\Migrations\0015_CreateRefundSchema.sql"/>
+        <EmbeddedResource Include="Persistence\Migrations\0015_CreateRefundSchema.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Billing\Folio\Sql\GetRefundsByFolioId.sql"/>
+        <None Remove="Billing\Folio\Sql\GetRefundsByFolio.sql"/>
+        <EmbeddedResource Include="Billing\Folio\Sql\GetRefundsByFolio.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Billing\Folio\Sql\DeleteRefunds.sql"/>
+        <EmbeddedResource Include="Billing\Folio\Sql\DeleteRefunds.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Billing\Folio\Sql\InsertRefund.sql"/>
+        <EmbeddedResource Include="Billing\Folio\Sql\InsertRefund.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Persistence\Migrations\0016_SeedDemoRefunds.sql"/>
+        <EmbeddedResource Include="Persistence\Migrations\0016_SeedDemoRefunds.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <None Remove="Shared\Sql\GetRecentAudit.sql" />
+        <EmbeddedResource Include="Shared\Sql\GetRecentAudit.sql">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
     </ItemGroup>
 
 </Project>
