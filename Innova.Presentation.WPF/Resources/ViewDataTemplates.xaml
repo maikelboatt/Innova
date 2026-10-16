@@ -6,6 +6,9 @@
                     xmlns:folioFormsVm="clr-namespace:Innova.Presentation.Core.Billing.Folio.Forms;assembly=Innova.Presentation.Core"
                     xmlns:folioListV="clr-namespace:Innova.Presentation.WPF.Views.Billing.Folio.Lists"
                     xmlns:folioListVm="clr-namespace:Innova.Presentation.Core.Billing.Folio.Lists;assembly=Innova.Presentation.Core"
+                    xmlns:forms="clr-namespace:Innova.Presentation.WPF.Views.Identity.Forms"
+                    xmlns:groupBookingFormV="clr-namespace:Innova.Presentation.WPF.Views.Reservations.GroupBooking.Forms"
+                    xmlns:groupBookingFormVm="clr-namespace:Innova.Presentation.Core.Reservations.GroupBooking.Forms;assembly=Innova.Presentation.Core"
                     xmlns:groupBookingListV="clr-namespace:Innova.Presentation.WPF.Views.Reservations.GroupBooking.Lists"
                     xmlns:groupBookingListVm="clr-namespace:Innova.Presentation.Core.Reservations.GroupBooking.Lists;assembly=Innova.Presentation.Core"
                     xmlns:guestDetailsV="clr-namespace:Innova.Presentation.WPF.Views.GuestManagement.Details"
@@ -14,6 +17,11 @@
                     xmlns:guestFormsVm="clr-namespace:Innova.Presentation.Core.GuestManagement.Forms;assembly=Innova.Presentation.Core"
                     xmlns:guestListV="clr-namespace:Innova.Presentation.WPF.Views.GuestManagement.Lists"
                     xmlns:guestsListVm="clr-namespace:Innova.Presentation.Core.GuestManagement.Lists;assembly=Innova.Presentation.Core"
+                    xmlns:identity="clr-namespace:Innova.Presentation.WPF.Views.Identity"
+                    xmlns:identityFormsVm="clr-namespace:Innova.Presentation.Core.Identity.Forms;assembly=Innova.Presentation.Core"
+                    xmlns:identityVm="clr-namespace:Innova.Presentation.Core.Identity;assembly=Innova.Presentation.Core"
+                    xmlns:reservationFormV="clr-namespace:Innova.Presentation.WPF.Views.Reservations.Reservations.Forms"
+                    xmlns:reservationFormVm="clr-namespace:Innova.Presentation.Core.Reservations.Reservation.Forms;assembly=Innova.Presentation.Core"
                     xmlns:reservationListV="clr-namespace:Innova.Presentation.WPF.Views.Reservations.Reservations.Lists"
                     xmlns:reservationListVm="clr-namespace:Innova.Presentation.Core.Reservations.Reservation.Lists;assembly=Innova.Presentation.Core"
                     xmlns:roomDetailsV="clr-namespace:Innova.Presentation.WPF.Views.RoomInventory.Room.Details"
@@ -30,6 +38,8 @@
                     xmlns:roomTypeFormsVm="clr-namespace:Innova.Presentation.Core.RoomInventory.RoomType.Forms;assembly=Innova.Presentation.Core"
                     xmlns:roomTypeListV="clr-namespace:Innova.Presentation.WPF.Views.RoomInventory.RoomType.Lists"
                     xmlns:roomTypeListVm="clr-namespace:Innova.Presentation.Core.RoomInventory.RoomType.Lists;assembly=Innova.Presentation.Core"
+                    xmlns:settings="clr-namespace:Innova.Presentation.WPF.Views.Settings"
+                    xmlns:settingsVm="clr-namespace:Innova.Presentation.Core.Settings;assembly=Innova.Presentation.Core"
                     xmlns:stayListV="clr-namespace:Innova.Presentation.WPF.Views.FrontDesk.Stay.Lists"
                     xmlns:stayListVm="clr-namespace:Innova.Presentation.Core.FrontDesk.Stay.Lists;assembly=Innova.Presentation.Core"
                     xmlns:taskListV="clr-namespace:Innova.Presentation.WPF.Views.HouseKeeping.HouseKeeping.Lists"
@@ -61,24 +71,24 @@
     <!--  ── Main content area templates (via IContentService) ────  -->
 
     <!--  Login  -->
-    <!-- <DataTemplate DataType="{x:Type identityVm:LoginViewModel}"> -->
-    <!--     <identityV:LoginView /> -->
-    <!-- </DataTemplate> -->
+    <DataTemplate DataType="{x:Type identityVm:LoginViewModel}">
+        <identity:LoginView />
+    </DataTemplate>
     <!--    -->
-    <!--  ~1~  Register User  @1@  -->
-    <!-- <DataTemplate DataType="{x:Type identityFormsVm:RegisterUserViewModel}"> -->
-    <!--     <identityFormsV:RegisterUserView /> -->
-    <!-- </DataTemplate> -->
-    <!--    -->
-    <!--  ~1~  Change Password  @1@  -->
-    <!-- <DataTemplate DataType="{x:Type identityFormsVm:ChangePasswordViewModel}"> -->
-    <!--     <identityFormsV:ChangePasswordView /> -->
-    <!-- </DataTemplate> -->
-    <!--    -->
+    <!--  Register User  -->
+    <DataTemplate DataType="{x:Type identityFormsVm:RegisterUserViewModel}">
+        <forms:RegisterUserView />
+    </DataTemplate>
+
+    <!--  Change Password  -->
+    <DataTemplate DataType="{x:Type identityFormsVm:ChangePasswordViewModel}">
+        <forms:ChangePasswordView />
+    </DataTemplate>
+
     <!-- <DataTemplate DataType="{x:Type dashboardVm:DashboardViewModel}"> -->
     <!--     <dashboard:DashboardView /> -->
     <!-- </DataTemplate> -->
-    <!--    -->
+
     <!--  Guests Registration  -->
     <DataTemplate DataType="{x:Type guestsListVm:GuestListViewModel}">
         <guestListV:GuestListView />
@@ -140,9 +150,17 @@
         <reservationListV:ReservationListView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type reservationFormVm:BookReservationViewModel}">
+        <reservationFormV:BookReservationView />
+    </DataTemplate>
+
     <!--  GroupBooking Sub-Item  -->
     <DataTemplate DataType="{x:Type groupBookingListVm:GroupBookingListViewModel}">
         <groupBookingListV:GroupBookingListView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type groupBookingFormVm:OpenGroupBookingViewModel}">
+        <groupBookingFormV:OpenGroupBookingView />
     </DataTemplate>
 
     <!--  FrontDesk  -->
@@ -188,11 +206,10 @@
     <!--     <doctorListV:DoctorListView /> -->
     <!-- </DataTemplate> -->
     <!--    -->
-    <!--  ~1~  Settings  @1@  -->
-    <!-- <DataTemplate DataType="{x:Type settingsVm:SettingsViewModel}"> -->
-    <!--     <settingsV:SettingsView /> -->
-    <!-- </DataTemplate> -->
-    <!--  ── Modal / dialog templates (via IModalService) ─────────  -->
+    <!--  Settings  -->
+    <DataTemplate DataType="{x:Type settingsVm:SettingsViewModel}">
+        <settings:SettingsView />
+    </DataTemplate>
 
     <!-- <DataTemplate DataType="{x:Type dialogs:ConfirmationDialogViewModel}"> -->
     <!--     <dialogViews:ConfirmationDialogView /> -->
