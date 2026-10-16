@@ -7,6 +7,7 @@ using Innova.Application.Abstractions.Messaging;
 using Innova.Application.Abstractions.Persistence;
 using Innova.Application.Abstractions.Services;
 using Innova.Application.Behaviours;
+using Innova.Application.Billing.Folio.Commands.IssueRefund;
 using Innova.Application.Billing.Folio.Commands.OpenFolio;
 using Innova.Application.Billing.Folio.Commands.PostAdjustment;
 using Innova.Application.Billing.Folio.Commands.PostCharge;
@@ -347,9 +348,10 @@ namespace Innova.Infrastructure
             ioCProvider.RegisterType<IHouseKeepingService, HouseKeepingService>();
             ioCProvider.RegisterType<IBillingAssemblyService, BillingAssemblyService>();
 
-            ioCProvider.RegisterType<ICurrentUserContext, CurrentUserContext>();
             ioCProvider.RegisterType<IPasswordHasher, PasswordHasher>();
             ioCProvider.RegisterType<IAuditLogger, AuditLogger>();
+
+            ioCProvider.RegisterSingleton<ICurrentUserContext>(new CurrentUserContext());
         }
 
 #endregion
@@ -573,6 +575,12 @@ namespace Innova.Infrastructure
 
             BuildPipeline(
                 ioCProvider,
+                () => new IssueRefundCommandHandler(
+                    ioCProvider.Resolve<IBillingAssemblyService>(),
+                    ioCProvider.Resolve<IDomainEventDispatcher>()));
+
+            BuildPipeline(
+                ioCProvider,
                 () => new SettleFolioCommandHandler(
                     ioCProvider.Resolve<IBillingAssemblyService>(),
                     ioCProvider.Resolve<IDomainEventDispatcher>()));
@@ -774,21 +782,22 @@ namespace Innova.Infrastructure
                     // Layer 1 — innermost actual handler 
                     ICommandHandler<TCommand, TResult> inner = handlerFactory();
 
-                    // Layer 2 — transaction, using the SAME unitOfWork instance
-                    ICommandHandler<TCommand, TResult> transacted =
-                        new TransactionCommandHandler<TCommand, TResult>(inner, unitOfWork);
+                    // Layer 2 - authorization
+                    ICommandHandler<TCommand, TResult> authorized =
+                        new AuthorizationCommandHandler<TCommand, TResult>(
+                            inner,
+                            iocProvider.Resolve<IUserRepository>(),
+                            iocProvider.Resolve<ICurrentUserContext>());
 
-                    // Layer 3 — validation
+                    // Layer 3 — transaction, using the SAME unitOfWork instance
+                    ICommandHandler<TCommand, TResult> transacted =
+                        new TransactionCommandHandler<TCommand, TResult>(authorized, unitOfWork);
+
+                    // Layer 4 — validation
                     IEnumerable<IValidator<TCommand>> validators = ResolveValidators<TCommand>(iocProvider);
 
                     ICommandHandler<TCommand, TResult> validated =
                         new ValidatingCommandHandler<TCommand, TResult>(transacted, validators);
-
-                    // Layer 4 - authorization
-                    ICommandHandler<TCommand, TResult> authorized = new AuthorizationCommandHandler<TCommand, TResult>(
-                        validated,
-                        iocProvider.Resolve<IUserRepository>(),
-                        iocProvider.Resolve<ICurrentUserContext>());
 
                     // Layer 5 — logging
                     ILogger<LoggingCommandHandler<TCommand, TResult>> logger =
@@ -796,7 +805,7 @@ namespace Innova.Infrastructure
                             .Resolve<ILoggerFactory>()
                             .CreateLogger<LoggingCommandHandler<TCommand, TResult>>();
 
-                    return new LoggingCommandHandler<TCommand, TResult>(authorized, logger);
+                    return new LoggingCommandHandler<TCommand, TResult>(validated, logger);
                 }
                 finally
                 {
