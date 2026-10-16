@@ -2,6 +2,7 @@
 using Innova.Application.Billing.Folio.Queries;
 using Innova.Application.Dispatchers;
 using Innova.Presentation.Core.Base;
+using Innova.Presentation.Core.Billing.Folio.Details;
 using Innova.Presentation.Core.Billing.Folio.Forms;
 using Innova.Presentation.Core.Services.Abstractions;
 using MvvmCross.Commands;
@@ -113,11 +114,12 @@ namespace Innova.Presentation.Core.Billing.Folio.Lists
             await RefreshCommand.ExecuteAsync();
         }
 
-        private Task OnOpenFolioDetailsAsync( Guid folioId ) =>
+        private async Task OnOpenFolioDetailsAsync( Guid folioId )
+        {
             // Next screen: a details modal to post charges, record payments, settle and void.
-            //   await _modalService.ShowAsync<FolioDetailsViewModel, Guid>(folioId);
-            //   await RefreshCommand.ExecuteAsync();   // the folio's totals change from there
-            Task.CompletedTask;
+            await _modalService.ShowAsync<FolioDetailsViewModel, Guid>(folioId);
+            await RefreshCommand.ExecuteAsync(); // the folio's totals change from there
+        }
 
         protected override async Task OnItemSelectedAsync( FolioListItemViewModel item )
         {

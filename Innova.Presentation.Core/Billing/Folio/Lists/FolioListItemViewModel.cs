@@ -26,9 +26,9 @@ namespace Innova.Presentation.Core.Billing.Folio.Lists
 
             TotalCharges = dto.TotalCharges;
 
-            // Payments and adjustments (goodwill credits, corrections) both reduce what is owed,
-            // so the list shows them together: Charges - Paid/credited = Balance.
-            TotalPaid = dto.TotalPayments + dto.TotalAdjustments;
+            // Payments (net of anything refunded) and adjustments (goodwill credits, corrections) both reduce what
+            // is owed, so the list shows them together: Charges - Paid/credited = Balance.
+            TotalPaid = dto.TotalPayments - dto.TotalRefunds + dto.TotalAdjustments;
             Balance = dto.Balance;
 
             ChargesDisplay = FormatMoney(dto.Currency, dto.TotalCharges);

@@ -8,5 +8,5 @@ namespace Innova.Application.Billing.Folio.Commands.PostAdjustment
         decimal Amount,
         string Currency,
         AdjustmentType Type,
-        string Reason ):ICommand<Unit>;
+        string Reason ):ICommand;
 }

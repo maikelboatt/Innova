@@ -44,16 +44,29 @@ namespace Innova.Infrastructure.Billing.Folio.Mapping
                 PostedAt = adjustment.PostedAt
             };
 
+        public static RefundRow ToRefundRow( Domain.Billing.Aggregates.Folio folio, Refund refund ) => new()
+                                                                                                       {
+                                                                                                           FolioId = folio.Id.Value,
+                                                                                                           Amount = refund.Amount.Amount,
+                                                                                                           Currency = refund.Amount.Currency,
+                                                                                                           Method = refund.Method.ToString(),
+                                                                                                           Reference = refund.Reference,
+                                                                                                           Reason = refund.Reason,
+                                                                                                           RefundedAt = refund.RefundedAt
+                                                                                                       };
+
         public static Domain.Billing.Aggregates.Folio ToDomain( FolioRow folioRow,
                                                                 IEnumerable<ChargeRow> chargeRows,
                                                                 IEnumerable<PaymentRow> paymentRows,
-                                                                IEnumerable<AdjustmentRow> adjustmentRows )
+                                                                IEnumerable<AdjustmentRow> adjustmentRows,
+                                                                IEnumerable<RefundRow> refundRows )
         {
             FolioOwner owner = FolioOwner.Of(Enum.Parse<FolioOwnerType>(folioRow.OwnerType), folioRow.OwnerId);
 
             IEnumerable<Charge> charges = chargeRows.Select(ToDomain);
             IEnumerable<Payment> payments = paymentRows.Select(ToDomain);
             IEnumerable<Adjustment> adjustments = adjustmentRows.Select(ToDomain);
+            IEnumerable<Refund> refunds = refundRows.Select(ToDomain);
 
             return Domain.Billing.Aggregates.Folio.Reconstitute(
                 FolioId.From(folioRow.Id),
@@ -62,7 +75,8 @@ namespace Innova.Infrastructure.Billing.Folio.Mapping
                 MapStringToStatus(folioRow.Status),
                 charges,
                 payments,
-                adjustments);
+                adjustments,
+                refunds);
         }
 
 
@@ -85,6 +99,15 @@ namespace Innova.Infrastructure.Billing.Folio.Mapping
                 row.Currency),
             Enum.Parse<AdjustmentType>(row.Type),
             row.Reason);
+
+        public static Refund ToDomain( RefundRow row ) => Refund.Reconstitute(
+            Money.Of(
+                row.Amount,
+                row.Currency),
+            Enum.Parse<PaymentMethod>(row.Method),
+            row.Reference,
+            row.Reason,
+            row.RefundedAt);
 
 
         private static FolioStatus MapStringToStatus( string status ) => status switch

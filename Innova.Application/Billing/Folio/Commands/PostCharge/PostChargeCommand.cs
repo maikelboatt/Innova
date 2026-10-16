@@ -7,5 +7,5 @@ namespace Innova.Application.Billing.Folio.Commands.PostCharge
         decimal Amount,
         string Currency,
         string Category,
-        string Description ):ICommand<Unit>;
+        string Description ):ICommand;
 }

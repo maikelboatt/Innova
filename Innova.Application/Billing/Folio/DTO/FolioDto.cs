@@ -9,5 +9,6 @@
         decimal Balance,
         IReadOnlyCollection<ChargeDto> Charges,
         IReadOnlyCollection<PaymentDto> Payments,
+        IReadOnlyCollection<RefundDto> Refunds,
         IReadOnlyCollection<AdjustmentDto> Adjustments );
 }

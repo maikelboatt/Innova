@@ -8,5 +8,5 @@ namespace Innova.Application.Billing.Folio.Commands.RecordPayment
         decimal Amount,
         string Currency,
         PaymentMethod Method,
-        string? Reference ):ICommand<Unit>;
+        string? Reference ):ICommand;
 }

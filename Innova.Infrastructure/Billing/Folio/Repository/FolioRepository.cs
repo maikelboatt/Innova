@@ -27,6 +27,16 @@ namespace Innova.Infrastructure.Billing.Folio.Repository
 
             using SqlMapper.GridReader multi = await connectionProvider.Connection.QueryMultipleAsync(command);
 
+            IEnumerable<RefundRow> refundRows = await connectionProvider.Connection.QueryAsync<RefundRow>(
+                                                    new CommandDefinition(
+                                                        SqlLoader.Load(Assembly, "Innova.Infrastructure.Billing.Folio.Sql.GetRefundsByFolio.sql"),
+                                                        new
+                                                        {
+                                                            FolioId = id
+                                                        },
+                                                        connectionProvider.Transaction,
+                                                        cancellationToken: ct));
+
             FolioRow? folioRow = await multi.ReadSingleOrDefaultAsync<FolioRow>();
 
             if (folioRow is null)
@@ -42,7 +52,8 @@ namespace Innova.Infrastructure.Billing.Folio.Repository
                 folioRow,
                 charges,
                 payments,
-                adjustments);
+                adjustments,
+                refundRows);
         }
 
         public async Task<IReadOnlyCollection<Domain.Billing.Aggregates.Folio>> GetByOwnerAsync( FolioOwnerType ownerType,
@@ -61,6 +72,7 @@ namespace Innova.Infrastructure.Billing.Folio.Repository
                 connectionProvider.Transaction,
                 cancellationToken: ct);
 
+
             using SqlMapper.GridReader multi = await connectionProvider.Connection.QueryMultipleAsync(command);
 
             List<FolioRow> folioRows = [.. await multi.ReadAsync<FolioRow>()];
@@ -70,6 +82,7 @@ namespace Innova.Infrastructure.Billing.Folio.Repository
             List<PaymentRow> paymentRows = [.. await multi.ReadAsync<PaymentRow>()];
 
             List<AdjustmentRow> adjustmentRows = [.. await multi.ReadAsync<AdjustmentRow>()];
+            List<RefundRow> refundRows = [.. await multi.ReadAsync<RefundRow>()];
 
             return folioRows
                    .Select(folio =>
@@ -77,7 +90,9 @@ namespace Innova.Infrastructure.Billing.Folio.Repository
                                    folio,
                                    chargeRows.Where(charge => charge.FolioId == folio.Id),
                                    paymentRows.Where(payment => payment.FolioId == folio.Id),
-                                   adjustmentRows.Where(adjustment => adjustment.FolioId == folio.Id)))
+                                   adjustmentRows.Where(adjustment => adjustment.FolioId == folio.Id),
+                                   refundRows.Where(refund => refund.FolioId == folio.Id)
+                               ))
                    .ToList()
                    .AsReadOnly();
         }
@@ -157,6 +172,28 @@ namespace Innova.Infrastructure.Billing.Folio.Repository
                         adjustmentRow.Type,
                         adjustmentRow.Reason,
                         adjustmentRow.PostedAt
+                    },
+                    ct);
+            }
+
+            foreach (Refund refund in folio.Refunds)
+            {
+                RefundRow refundRow =
+                    FolioMapper.ToRefundRow(
+                        folio,
+                        refund);
+
+                await ExecuteAsync(
+                    "Innova.Infrastructure.Billing.Folio.Sql.InsertRefund.sql",
+                    new
+                    {
+                        refundRow.FolioId,
+                        refundRow.Amount,
+                        refundRow.Currency,
+                        refundRow.Method,
+                        refundRow.Reference,
+                        refundRow.Reason,
+                        refundRow.RefundedAt
                     },
                     ct);
             }
@@ -259,6 +296,28 @@ namespace Innova.Infrastructure.Billing.Folio.Repository
                         adjustmentRow.Type,
                         adjustmentRow.Reason,
                         adjustmentRow.PostedAt
+                    },
+                    ct);
+            }
+
+            foreach (Refund refund in folio.Refunds)
+            {
+                RefundRow refundRow =
+                    FolioMapper.ToRefundRow(
+                        folio,
+                        refund);
+
+                await ExecuteAsync(
+                    "Innova.Infrastructure.Billing.Folio.Sql.InsertRefund.sql",
+                    new
+                    {
+                        refundRow.FolioId,
+                        refundRow.Amount,
+                        refundRow.Currency,
+                        refundRow.Method,
+                        refundRow.Reference,
+                        refundRow.Reason,
+                        refundRow.RefundedAt
                     },
                     ct);
             }

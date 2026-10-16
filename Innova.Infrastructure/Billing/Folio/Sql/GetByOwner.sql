@@ -51,3 +51,18 @@ FROM billing.Adjustment a
 WHERE f.OwnerType = @OwnerType
   AND f.OwnerId = @OwnerId
 ORDER BY a.FolioId, a.PostedAt, a.Id;
+
+SELECT r.Id,
+       r.FolioId,
+       r.Amount,
+       r.Currency,
+       r.Method,
+       r.Reference,
+       r.Reason,
+       r.RefundedAt
+FROM billing.Refund r
+         INNER JOIN billing.Folio f
+                    ON f.Id = r.FolioId
+WHERE f.OwnerType = @OwnerType
+  AND f.OwnerId = @OwnerId
+ORDER BY r.FolioId, r.PostedAt, r.Id;

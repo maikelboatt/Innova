@@ -34,6 +34,16 @@ namespace Innova.Infrastructure.Billing.Folio.Queries
             if (folioRow is null)
                 return null;
 
+            IEnumerable<RefundRow> refundRows = await connectionProvider.Connection.QueryAsync<RefundRow>(
+                                                    new CommandDefinition(
+                                                        SqlLoader.Load(Assembly, "Innova.Infrastructure.Billing.Folio.Sql.GetRefundsByFolio.sql"),
+                                                        new
+                                                        {
+                                                            query.FolioId
+                                                        },
+                                                        connectionProvider.Transaction,
+                                                        cancellationToken: cancellationToken));
+
             IEnumerable<ChargeRow> chargeRows = await multi.ReadAsync<ChargeRow>();
 
             IEnumerable<PaymentRow> paymentRows = await multi.ReadAsync<PaymentRow>();
@@ -44,7 +54,8 @@ namespace Innova.Infrastructure.Billing.Folio.Queries
                 folioRow,
                 chargeRows,
                 paymentRows,
-                adjustmentRows);
+                adjustmentRows,
+                refundRows);
         }
     }
 }

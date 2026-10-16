@@ -8,7 +8,8 @@ namespace Innova.Infrastructure.Billing.Folio.Queries
         public static FolioDto ToDto( FolioRow folio,
                                       IEnumerable<ChargeRow> charges,
                                       IEnumerable<PaymentRow> payments,
-                                      IEnumerable<AdjustmentRow> adjustments )
+                                      IEnumerable<AdjustmentRow> adjustments,
+                                      IEnumerable<RefundRow> refunds )
         {
             IReadOnlyCollection<ChargeDto> chargeDtos = charges
                                                         .Select(charge => new ChargeDto(
@@ -40,6 +41,17 @@ namespace Innova.Infrastructure.Billing.Folio.Queries
                                                                 .ToList()
                                                                 .AsReadOnly();
 
+            IReadOnlyCollection<RefundDto> refundDtos = refunds
+                                                        .Select(refund => new RefundDto(
+                                                                    refund.Amount,
+                                                                    refund.Currency,
+                                                                    refund.Method,
+                                                                    refund.Reference,
+                                                                    refund.Reason,
+                                                                    refund.RefundedAt))
+                                                        .ToList()
+                                                        .AsReadOnly();
+
             decimal balance = charges.Sum(x => x.Amount) - payments.Sum(x => x.Amount) - adjustments.Sum(x => x.Amount);
 
             return new FolioDto(
@@ -51,6 +63,7 @@ namespace Innova.Infrastructure.Billing.Folio.Queries
                 balance,
                 chargeDtos,
                 paymentDtos,
+                refundDtos,
                 adjustmentDtos);
         }
 

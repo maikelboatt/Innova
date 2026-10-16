@@ -2,7 +2,6 @@
 {
     public enum AdjustmentType
     {
-        Refund,
         GoodwillCredit,
         BillingCorrection
     }

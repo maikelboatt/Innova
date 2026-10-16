@@ -27,6 +27,13 @@ namespace Innova.Application.Abstractions.Services
                                          string reason,
                                          CancellationToken ct = default );
 
+        Task<Folio> IssueRefundAsync( Guid folioId,
+                                      Money amount,
+                                      PaymentMethod method,
+                                      string? reference,
+                                      string reason,
+                                      CancellationToken ct = default );
+
         // No Stay required — opens a fresh Guid-owned folio and charges the
         // fee directly. Used for reservations marked no shows and cancelled.
         Task<Folio> PostGuestFeeAsync( Guid guestId,
