@@ -1,0 +1,302 @@
+﻿<views:MvxWpfView x:Class="Innova.Presentation.WPF.Views.Reservations.Reservations.Forms.BookReservationView"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:forms="clr-namespace:Innova.Presentation.Core.Reservations.Reservation.Forms;assembly=Innova.Presentation.Core"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+                  d:DataContext="{d:DesignInstance Type=forms:BookReservationViewModel,
+                                                   IsDesignTimeCreatable=True}"
+                  d:DesignHeight="auto"
+                  d:DesignWidth="auto"
+                  mc:Ignorable="d">
+
+    <views:MvxWpfView.Resources>
+
+        <!--  Supporting text  -->
+        <Style x:Key="HelpText"
+               BasedOn="{StaticResource TextBody}"
+               TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+        </Style>
+
+        <!--  Form date picker  -->
+        <Style x:Key="FormDatePicker" TargetType="DatePicker">
+            <Setter Property="Height" Value="36" />
+            <Setter Property="Padding" Value="6,0" />
+            <Setter Property="FontFamily" Value="{StaticResource FontPrimary}" />
+            <Setter Property="FontSize" Value="{StaticResource FontSizeBody}" />
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+            <Setter Property="Background" Value="{StaticResource Surface2Brush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderDefaultBrush}" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+    </views:MvxWpfView.Resources>
+
+    <Grid Width="560" Background="{StaticResource Surface3Brush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!--  Header  -->
+        <StackPanel Grid.Row="0" Margin="24,20,24,4">
+
+            <TextBlock Style="{StaticResource TextHeading}" Text="Book Reservation" />
+
+            <TextBlock Margin="0,2,0,0"
+                       Style="{StaticResource HelpText}"
+                       Text="Select a room type and your intended stay dates." />
+
+        </StackPanel>
+
+        <!--  Scrollable form body  -->
+        <ScrollViewer Grid.Row="1"
+                      MaxHeight="560"
+                      VerticalScrollBarVisibility="Auto">
+
+            <StackPanel Margin="24,8,24,8">
+
+                <!--  Room details  -->
+                <TextBlock Margin="0,12,0,8"
+                           Style="{StaticResource TextSubtitle}"
+                           Text="Room Details" />
+
+                <StackPanel>
+
+                    <TextBlock Margin="0,0,0,4"
+                               Style="{StaticResource TextLabel}"
+                               Text="Room Type *" />
+
+                    <ComboBox Height="36"
+                              DisplayMemberPath="Name"
+                              ItemsSource="{Binding RoomTypes}"
+                              SelectedItem="{Binding SelectedRoomType, UpdateSourceTrigger=PropertyChanged}"
+                              Style="{StaticResource ComboBoxDefault}" />
+
+                    <TextBlock Margin="0,4,0,0"
+                               Style="{StaticResource TextCaption}"
+                               Text="Choose the type of room required for this reservation." />
+
+                    <TextBlock Margin="0,8,0,0"
+                               HorizontalAlignment="Center"
+                               Style="{StaticResource TextBodySecondary}"
+                               Text="Loading room types..."
+                               Visibility="{Binding IsLoadingRoomTypes, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                </StackPanel>
+
+                <!--  Stay dates  -->
+                <TextBlock Margin="0,20,0,8"
+                           Style="{StaticResource TextSubtitle}"
+                           Text="Stay Dates" />
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+
+                        <TextBlock Margin="0,0,0,4"
+                                   Style="{StaticResource TextLabel}"
+                                   Text="Check-in *" />
+
+                        <DatePicker SelectedDate="{Binding CheckInDate, UpdateSourceTrigger=PropertyChanged}"
+                                    SelectedDateFormat="Short"
+                                    Style="{StaticResource FormDatePicker}" />
+
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+
+                        <TextBlock Margin="0,0,0,4"
+                                   Style="{StaticResource TextLabel}"
+                                   Text="Check-out *" />
+
+                        <DatePicker SelectedDate="{Binding CheckOutDate, UpdateSourceTrigger=PropertyChanged}"
+                                    SelectedDateFormat="Short"
+                                    Style="{StaticResource FormDatePicker}" />
+
+                    </StackPanel>
+
+                </Grid>
+
+                <Border Margin="0,12,0,0"
+                        Padding="12"
+                        Background="{StaticResource Surface2Brush}"
+                        CornerRadius="6">
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock VerticalAlignment="Center"
+                                   Style="{StaticResource TextBody}"
+                                   Text="Number of nights" />
+
+                        <TextBlock Grid.Column="1"
+                                   VerticalAlignment="Center"
+                                   FontWeight="SemiBold"
+                                   Style="{StaticResource TextBody}"
+                                   Text="{Binding NumberOfNights}" />
+
+                    </Grid>
+
+                </Border>
+
+                <!--  Rate and currency  -->
+                <TextBlock Margin="0,20,0,8"
+                           Style="{StaticResource TextSubtitle}"
+                           Text="Rate and Currency" />
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="120" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+
+                        <TextBlock Margin="0,0,0,4"
+                                   Style="{StaticResource TextLabel}"
+                                   Text="Nightly Rate" />
+
+                        <TextBox IsReadOnly="True"
+                                 Style="{StaticResource TextBoxDefault}"
+                                 Text="{Binding NightlyRateAmount, StringFormat={}{0:N2}, Mode=OneWay}" />
+
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+
+                        <TextBlock Margin="0,0,0,4"
+                                   Style="{StaticResource TextLabel}"
+                                   Text="Currency *" />
+
+                        <TextBox CharacterCasing="Upper"
+                                 MaxLength="3"
+                                 Style="{StaticResource TextBoxDefault}"
+                                 Text="{Binding Currency, UpdateSourceTrigger=PropertyChanged}" />
+
+                    </StackPanel>
+
+                </Grid>
+
+                <!--  Currency warning  -->
+                <Border Margin="0,8,0,0"
+                        Padding="10"
+                        Background="{StaticResource Surface2Brush}"
+                        BorderBrush="{StaticResource BorderDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Visibility="{Binding HasCurrencyWarning, Converter={StaticResource BoolToVisibilityConverter}}">
+
+                    <TextBlock Style="{StaticResource TextBody}" Text="{Binding CurrencyWarning}" />
+
+                </Border>
+
+                <!--  Estimated total  -->
+                <Border Margin="0,16,0,0"
+                        Padding="16"
+                        Background="{StaticResource Surface2Brush}"
+                        CornerRadius="6">
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+
+                            <TextBlock Style="{StaticResource TextLabel}" Text="Estimated Reservation Total" />
+
+                            <TextBlock Margin="0,4,0,0"
+                                       Style="{StaticResource TextCaption}"
+                                       Text="Based on the selected nightly rate and number of nights." />
+
+                        </StackPanel>
+
+                        <TextBlock Grid.Column="1"
+                                   Margin="12,0,0,0"
+                                   VerticalAlignment="Center"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   Text="{Binding EstimatedTotalDisplay}" />
+
+                    </Grid>
+
+                </Border>
+
+                <!--  Cancellation policy  -->
+                <TextBlock Margin="0,20,0,8"
+                           Style="{StaticResource TextSubtitle}"
+                           Text="Cancellation Policy" />
+
+                <Border Padding="12"
+                        Background="{StaticResource Surface2Brush}"
+                        CornerRadius="6">
+
+                    <StackPanel>
+
+                        <TextBlock Style="{StaticResource TextBody}" Text="{Binding CancellationPolicyDescription}" />
+
+                    </StackPanel>
+
+                </Border>
+
+                <!--  Validation  -->
+                <TextBlock Margin="0,12,0,0"
+                           Style="{StaticResource TextError}"
+                           Text="{Binding ValidationMessage}"
+                           Visibility="{Binding HasValidationMessage, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+            </StackPanel>
+
+        </ScrollViewer>
+
+        <!--  Footer actions  -->
+        <Grid Grid.Row="2" Margin="24,12,24,24">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
+                    MinWidth="100"
+                    Command="{Binding ToGroupBookingCommand}"
+                    Content="Open Group Booking"
+                    Style="{StaticResource ButtonSecondary}" />
+
+            <Button Grid.Column="2"
+                    MinWidth="100"
+                    Command="{Binding CancelCommand}"
+                    Content="Cancel"
+                    Style="{StaticResource ButtonGhost}" />
+
+            <Button Grid.Column="4"
+                    MinWidth="120"
+                    Command="{Binding SaveCommand}"
+                    Content="Book Reservation"
+                    IsEnabled="{Binding IsSaveEnabled}"
+                    Style="{StaticResource ButtonPrimary}" />
+
+        </Grid>
+
+    </Grid>
+
+</views:MvxWpfView>
