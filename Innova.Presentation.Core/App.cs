@@ -1,4 +1,4 @@
-﻿using Innova.Presentation.Core.Shell;
+﻿using Innova.Presentation.Core.Identity;
 using MvvmCross.ViewModels;
 
 namespace Innova.Presentation.Core
@@ -7,7 +7,7 @@ namespace Innova.Presentation.Core
     {
         public override void Initialize()
         {
-            RegisterAppStart<ShellViewModel>();
+            RegisterAppStart<LoginViewModel>();
         }
     }
 }
