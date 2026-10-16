@@ -11,6 +11,7 @@ namespace Innova.Domain.Billing.Aggregates
         private readonly List<Adjustment> _adjustments = [];
         private readonly List<Charge> _charges = [];
         private readonly List<Payment> _payments = [];
+        private readonly List<Refund> _refunds = [];
 
 
         private Folio()
@@ -33,14 +34,30 @@ namespace Innova.Domain.Billing.Aggregates
         public string Currency { get; } = "GHS";
         public FolioStatus Status { get; private set; }
 
-        public Money Balance => _charges
-                                .Aggregate(Money.Zero(Currency), ( acc, c ) => acc.Add(c.Amount))
-                                .Subtract(_payments.Aggregate(Money.Zero(Currency), ( acc, p ) => acc.Add(p.Amount)))
-                                .Subtract(_adjustments.Aggregate(Money.Zero(Currency), ( acc, a ) => acc.Add(a.Amount)));
+        public Money Balance => Total(_charges.Select(c => c.Amount))
+                                .Subtract(Total(_adjustments.Select(a => a.Amount)))
+                                .Subtract(Total(_payments.Select(p => p.Amount)))
+                                .Add(Total(_refunds.Select(r => r.Amount)));
 
         public IReadOnlyCollection<Charge> Charges => _charges.AsReadOnly();
         public IReadOnlyCollection<Payment> Payments => _payments.AsReadOnly();
         public IReadOnlyCollection<Adjustment> Adjustments => _adjustments.AsReadOnly();
+        public IReadOnlyCollection<Refund> Refunds => _refunds.AsReadOnly();
+
+        public Money Refundable
+        {
+            get
+            {
+                decimal credit = Math.Max(0m, -Balance.Amount);
+                decimal netReceived = Total(_payments.Select(p => p.Amount))
+                                          .Amount - Total(_refunds.Select(r => r.Amount))
+                                          .Amount;
+
+                return Money.Of(Math.Max(0m, Math.Min(credit, netReceived)), Currency);
+            }
+        }
+
+        private Money Total( IEnumerable<Money> amounts ) => amounts.Aggregate(Money.Zero(Currency), ( sum, next ) => sum.Add(next));
 
         public static Folio Open( FolioOwner owner, string currency )
         {
@@ -67,7 +84,8 @@ namespace Innova.Domain.Billing.Aggregates
                                           FolioStatus status,
                                           IEnumerable<Charge> charges,
                                           IEnumerable<Payment> payments,
-                                          IEnumerable<Adjustment> adjustments )
+                                          IEnumerable<Adjustment> adjustments,
+                                          IEnumerable<Refund> refunds )
         {
             Folio folio = new(
                 folioId,
@@ -78,10 +96,10 @@ namespace Innova.Domain.Billing.Aggregates
             folio._charges.AddRange(charges);
             folio._payments.AddRange(payments);
             folio._adjustments.AddRange(adjustments);
+            folio._refunds.AddRange(refunds);
 
             return folio;
         }
-
 
         public void PostCharge( Charge charge )
         {
@@ -140,6 +158,35 @@ namespace Innova.Domain.Billing.Aggregates
                     adjustment.Type.ToString(),
                     adjustment.Reason,
                     adjustment.PostedAt));
+        }
+
+        public void IssueRefund( Refund refund )
+        {
+            EnsureOpen();
+
+            if (refund.Amount.Currency != Currency)
+                throw new DomainException("Refund currency does not match this folio's currency.");
+
+            Money refundable = Refundable;
+
+            if (refund.Amount.Amount > refundable.Amount)
+                throw new DomainException(
+                    $"Only {refundable.Amount:N2} {Currency} can be refunded on this folio: "
+                    + "the lesser of its credit balance and the cash actually received.");
+
+            _refunds.Add(refund);
+
+            RaiseDomainEvent(
+                new FolioRefundIssued(
+                    Id.Value,
+                    Owner.OwnerId,
+                    Owner.Type.ToString(),
+                    refund.Amount.Amount,
+                    refund.Amount.Currency,
+                    refund.Method.ToString(),
+                    refund.Reference,
+                    refund.Reason,
+                    refund.RefundedAt));
         }
 
         public void Void()
