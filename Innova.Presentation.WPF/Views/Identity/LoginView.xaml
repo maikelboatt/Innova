@@ -1,0 +1,88 @@
+﻿<views:MvxWpfView x:Class="Innova.Presentation.WPF.Views.Identity.LoginView"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:identity="clr-namespace:Innova.Presentation.Core.Identity;assembly=Innova.Presentation.Core"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+                  d:DataContext="{d:DesignInstance Type=identity:LoginViewModel,
+                                                   IsDesignTimeCreatable=True}"
+                  d:DesignHeight="500"
+                  d:DesignWidth="400"
+                  mc:Ignorable="d">
+    <Grid Background="{StaticResource Surface1Brush}">
+        <Border Width="360"
+                Padding="32"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="{StaticResource Surface2Brush}"
+                CornerRadius="12">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding LoginCommand}" />
+                </Grid.InputBindings>
+
+                <!--  Close button, absolute top-right of the card  -->
+                <Button Grid.Row="0"
+                        Margin="0,-16,-16,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Click="CloseButton_OnClick"
+                        Style="{StaticResource ButtonIcon}"
+                        ToolTip="Close">
+                    <Path Width="14"
+                          Height="14"
+                          Data="{StaticResource IconClose}"
+                          Fill="{StaticResource TextMutedBrush}"
+                          Stretch="Uniform" />
+                </Button>
+
+                <StackPanel Grid.Row="1">
+                    <Border Width="48"
+                            Height="48"
+                            HorizontalAlignment="Center"
+                            Background="{StaticResource PrimaryBlue600Brush}"
+                            CornerRadius="10">
+                        <TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="22"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource WhiteBrush}"
+                                   Text="M" />
+                    </Border>
+                    <TextBlock Margin="0,16,0,24"
+                               HorizontalAlignment="Center"
+                               Style="{StaticResource TextHeading}"
+                               Text="Sign in to Innova" />
+
+                    <TextBlock Margin="0,0,0,4"
+                               Style="{StaticResource TextLabel}"
+                               Text="Username" />
+                    <TextBox Style="{StaticResource TextBoxDefault}" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Margin="0,12,0,4"
+                               Style="{StaticResource TextLabel}"
+                               Text="Password" />
+                    <PasswordBox x:Name="PasswordInput" Style="{StaticResource PasswordBoxDefault}" />
+
+                    <TextBlock Margin="0,8,0,0"
+                               Style="{StaticResource TextError}"
+                               Text="{Binding ErrorMessage}"
+                               Visibility="{Binding HasError, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                    <Button Margin="0,20,0,0"
+                            HorizontalAlignment="Stretch"
+                            Command="{Binding LoginCommand}"
+                            Content="Sign In"
+                            Style="{StaticResource ButtonPrimary}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</views:MvxWpfView>

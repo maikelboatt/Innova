@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Data;
+using System.Reflection;
 using Dapper;
 using Innova.Domain.Identity.Repositories;
 using Innova.Domain.Shared.ValueObjects;
@@ -15,8 +16,11 @@ namespace Innova.Infrastructure.Identity.User.Repository
         public async Task<Domain.Identity.Aggregates.User?> GetByIdAsync( UserId userId, CancellationToken ct = default )
         {
             string sql = SqlLoader.Load(Assembly, "Innova.Infrastructure.Identity.User.Sql.GetById.sql");
+            IDbConnection connection = connectionProvider.Connection
+                                       ?? throw new InvalidOperationException(
+                                           "The database connection is null in UserRepository.");
 
-            UserRow? row = await connectionProvider.Connection.QuerySingleOrDefaultAsync<UserRow>(
+            UserRow? row = await connection.QuerySingleOrDefaultAsync<UserRow>(
                                new CommandDefinition(
                                    sql,
                                    new

@@ -1,5 +1,4 @@
-﻿// MediCore.Application/Authorization/CommandRoleRequirements.cs
-//
+﻿//
 // Single, centralized authorization policy. A command type absent
 // from this map is treated as "any authenticated user" — not
 // "denied by default" — since retrofitting every existing command
@@ -9,6 +8,39 @@
 // AuthorizationCommandHandler still requires SOME signed-in user
 // regardless of whether a command appears here.
 
+using Innova.Application.Billing.Folio.Commands.OpenFolio;
+using Innova.Application.Billing.Folio.Commands.PostAdjustment;
+using Innova.Application.Billing.Folio.Commands.PostCharge;
+using Innova.Application.Billing.Folio.Commands.RecordPayment;
+using Innova.Application.Billing.Folio.Commands.SettleFolio;
+using Innova.Application.Billing.Folio.Commands.VoidFolio;
+using Innova.Application.FrontDesk.Stay.Commands.AddOccupant;
+using Innova.Application.FrontDesk.Stay.Commands.CheckIn;
+using Innova.Application.FrontDesk.Stay.Commands.CheckOut;
+using Innova.Application.GuestManagement.Guest.Commands.ChangeGuestIdentityDocument;
+using Innova.Application.GuestManagement.Guest.Commands.DeactivateGuest;
+using Innova.Application.GuestManagement.Guest.Commands.ReactivateGuest;
+using Innova.Application.GuestManagement.Guest.Commands.RegisterGuest;
+using Innova.Application.GuestManagement.Guest.Commands.UpdateGuestContactDetails;
+using Innova.Application.HouseKeeping.HouseKeeping.Commands.AssignTask;
+using Innova.Application.HouseKeeping.HouseKeeping.Commands.CompleteTask;
+using Innova.Application.HouseKeeping.HouseKeeping.Commands.ScheduleTask;
+using Innova.Application.Identity.Commands.DeactivateUser;
+using Innova.Application.Identity.Commands.ReactivateUser;
+using Innova.Application.Identity.Commands.RegisterUser;
+using Innova.Application.Reservations.GroupBooking.Commands.AttachReservationToGroup;
+using Innova.Application.Reservations.GroupBooking.Commands.DetachReservationFromGroup;
+using Innova.Application.Reservations.GroupBooking.Commands.OpenGroupBooking;
+using Innova.Application.Reservations.Reservation.Commands.BookReservation;
+using Innova.Application.Reservations.Reservation.Commands.CancelReservation;
+using Innova.Application.Reservations.Reservation.Commands.ConfirmReservation;
+using Innova.Application.Reservations.Reservation.Commands.MarkNoShow;
+using Innova.Application.RoomInventory.Room.Commands.CreateRoom;
+using Innova.Application.RoomInventory.Room.Commands.ReturnRoomToService;
+using Innova.Application.RoomInventory.Room.Commands.TakeRoomOutOfService;
+using Innova.Application.RoomInventory.RoomTypeAllotment.Commands.CreateRoomTypeAllotment;
+using Innova.Application.RoomInventory.RoomTypeDefinition.Commands.DefineRoomType;
+using Innova.Application.RoomInventory.RoomTypeDefinition.Commands.UpdateRoomType;
 using Innova.Domain.Identity.ValueObjects;
 
 // ...existing usings, plus:
@@ -20,44 +52,52 @@ namespace Innova.Application.Authorization
         public static readonly IReadOnlyDictionary<Type, IReadOnlyCollection<Role>> Map =
             new Dictionary<Type, IReadOnlyCollection<Role>>
             {
-                // // Patient Registration
-                // [typeof(RegisterPatientCommand)] = [Role.Admin, Role.Receptionist],
-                // [typeof(UpdatePatientCommand)] = [Role.Admin, Role.Receptionist],
-                // [typeof(UnregisterPatientCommand)] = [Role.Admin, Role.Receptionist],
-                // [typeof(RestorePatientCommand)] = [Role.Admin, Role.Receptionist],
-                //
-                // // Scheduling
-                // [typeof(BookAppointmentCommand)] = [Role.Admin, Role.Receptionist],
-                // [typeof(RescheduleAppointmentCommand)] = [Role.Admin, Role.Receptionist],
-                // [typeof(CancelAppointmentCommand)] = [Role.Admin, Role.Receptionist],
-                // [typeof(MarkAppointmentNoShowCommand)] = [Role.Admin, Role.Receptionist],
-                // [typeof(CompleteAppointmentCommand)] = [Role.Admin, Role.Doctor],
-                //
-                // // Consultation
-                // [typeof(OpenConsultationCommand)] = [Role.Admin, Role.Doctor],
-                // [typeof(StartConsultationCommand)] = [Role.Admin, Role.Doctor],
-                // [typeof(CompleteConsultationCommand)] = [Role.Admin, Role.Doctor],
-                // [typeof(CancelConsultationCommand)] = [Role.Admin, Role.Doctor],
-                // [typeof(UpdateClinicalNotesCommand)] = [Role.Admin, Role.Doctor],
-                //
-                // // Pharmacy
-                // [typeof(IssuePrescriptionCommand)] = [Role.Admin, Role.Doctor],
-                // [typeof(ValidatePrescriptionCommand)] = [Role.Admin, Role.Pharmacist],
-                // [typeof(BeginDispensingCommand)] = [Role.Admin, Role.Pharmacist],
-                // [typeof(DispenseMedicationCommand)] = [Role.Admin, Role.Pharmacist],
-                // [typeof(FulfillPrescriptionCommand)] = [Role.Admin, Role.Pharmacist],
-                // [typeof(RejectPrescriptionCommand)] = [Role.Admin, Role.Pharmacist],
-                // [typeof(UpdateDrugPriceCommand)] = [Role.Admin],
-                //
-                // // Billing 
-                // [typeof(IssueBillCommand)] = [Role.Admin, Role.BillingStaff],
-                // [typeof(AddStandardPaymentCommand)] = [Role.Admin, Role.BillingStaff],
-                // [typeof(CancelBillCommand)] = [Role.Admin, Role.BillingStaff],
-                //
-                // // Identity
-                // [typeof(RegisterUserCommand)] = [Role.Admin],
-                // [typeof(DeactivateUserCommand)] = [Role.Admin],
-                // [typeof(ReactivateUserCommand)] = [Role.Admin]
+                // Guest Management
+                [typeof(RegisterGuestCommand)] = [Role.Admin, Role.Receptionist, Role.Manager],
+                [typeof(UpdateGuestContactDetailsCommand)] = [Role.Admin, Role.Receptionist, Role.Manager],
+                [typeof(ChangeGuestIdentityDocumentCommand)] = [Role.Admin, Role.Receptionist, Role.Manager],
+                [typeof(DeactivateGuestCommand)] = [Role.Admin, Role.Receptionist, Role.Manager],
+                [typeof(ReactivateGuestCommand)] = [Role.Admin, Role.Receptionist, Role.Manager],
+
+                // Room Inventory
+                [typeof(CreateRoomCommand)] = [Role.Admin, Role.Manager],
+                [typeof(ReturnRoomToServiceCommand)] = [Role.Admin, Role.Receptionist, Role.Manager],
+                [typeof(TakeRoomOutOfServiceCommand)] = [Role.Admin, Role.Receptionist, Role.Manager],
+                [typeof(DefineRoomTypeCommand)] = [Role.Admin, Role.Manager],
+                [typeof(UpdateRoomTypeCommand)] = [Role.Admin, Role.Manager],
+                [typeof(CreateRoomTypeAllotmentCommand)] = [Role.Admin, Role.Manager],
+
+                // Reservations
+                [typeof(BookReservationCommand)] = [Role.Admin, Role.Receptionist, Role.Manager],
+                [typeof(ConfirmReservationCommand)] = [Role.Admin, Role.Receptionist, Role.Manager],
+                [typeof(CancelReservationCommand)] = [Role.Admin, Role.Receptionist, Role.Manager],
+                [typeof(MarkReservationNoShowCommand)] = [Role.Admin, Role.Receptionist, Role.Manager],
+                [typeof(OpenGroupBookingCommand)] = [Role.Admin, Role.Receptionist, Role.Manager],
+                [typeof(AttachReservationToGroupCommand)] = [Role.Admin, Role.Receptionist, Role.Manager],
+                [typeof(DetachReservationFromGroupCommand)] = [Role.Admin, Role.Receptionist, Role.Manager],
+
+                // Front Desk
+                [typeof(AddOccupantCommand)] = [Role.Admin, Role.Receptionist, Role.Manager],
+                [typeof(CheckInCommand)] = [Role.Admin, Role.Receptionist, Role.Manager],
+                [typeof(CheckOutCommand)] = [Role.Admin, Role.Receptionist, Role.Manager],
+
+                // HouseKeeping
+                [typeof(ScheduleTaskCommand)] = [Role.Admin, Role.HousekeepingStaff, Role.Manager],
+                [typeof(AssignTaskCommand)] = [Role.Admin, Role.HousekeepingStaff, Role.Manager],
+                [typeof(CompleteTaskCommand)] = [Role.Admin, Role.HousekeepingStaff, Role.Manager],
+
+                // Billing
+                [typeof(OpenFolioCommand)] = [Role.Admin, Role.BillingStaff, Role.Manager],
+                [typeof(PostChargeCommand)] = [Role.Admin, Role.BillingStaff, Role.Manager],
+                [typeof(PostAdjustmentCommand)] = [Role.Admin, Role.BillingStaff, Role.Manager],
+                [typeof(RecordPaymentCommand)] = [Role.Admin, Role.BillingStaff, Role.Manager],
+                [typeof(SettleFolioCommand)] = [Role.Admin, Role.BillingStaff, Role.Manager],
+                [typeof(VoidFolioCommand)] = [Role.Admin, Role.BillingStaff, Role.Manager],
+
+                // Identity
+                [typeof(RegisterUserCommand)] = [Role.Admin],
+                [typeof(DeactivateUserCommand)] = [Role.Admin],
+                [typeof(ReactivateUserCommand)] = [Role.Admin]
             };
     }
 }
