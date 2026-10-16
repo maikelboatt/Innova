@@ -15,7 +15,7 @@ namespace Innova.Infrastructure.Shared.Queries
 
         public Task<IEnumerable<AuditLogDto>> HandleAsync( GetRecentAuditLogQuery query, CancellationToken ct = default )
         {
-            string sql = SqlLoader.Load(Assembly, "Innova.Infrastructure.Shared.Sql.GetRecentAuditLog.sql");
+            string sql = SqlLoader.Load(Assembly, "Innova.Infrastructure.Shared.Sql.GetRecentAudit.sql");
 
             Task<IEnumerable<AuditLogDto>> rows = connectionProvider.Connection.QueryAsync<AuditLogDto>(
                 new CommandDefinition(
