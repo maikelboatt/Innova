@@ -1,7 +1,6 @@
 ﻿using Innova.Application.Abstractions.Services;
 using Innova.Application.Billing.Folio;
 using Innova.Application.Billing.Folio.Exceptions;
-using Innova.Application.FrontDesk.Stay.Exceptions;
 using Innova.Domain.Billing.Aggregates;
 using Innova.Domain.Billing.Repositories;
 using Innova.Domain.Billing.ValueObjects;
@@ -60,6 +59,27 @@ namespace Innova.Application.Services
             Folio folio = await GetByIdAsync(folioId, ct);
 
             folio.PostAdjustment(Adjustment.Of(amount, type, reason));
+
+            await folioRepository.UpdateAsync(folio, ct);
+
+            return folio;
+        }
+
+        public async Task<Folio> IssueRefundAsync( Guid folioId,
+                                                   Money amount,
+                                                   PaymentMethod method,
+                                                   string? reference,
+                                                   string reason,
+                                                   CancellationToken ct = default )
+        {
+            Folio folio = await GetByIdAsync(folioId, ct);
+
+            folio.IssueRefund(
+                Refund.Of(
+                    amount,
+                    method,
+                    reference,
+                    reason));
 
             await folioRepository.UpdateAsync(folio, ct);
 
