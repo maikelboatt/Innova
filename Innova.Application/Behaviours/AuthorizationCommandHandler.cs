@@ -1,8 +1,10 @@
 ﻿using Innova.Application.Abstractions.Messaging;
 using Innova.Application.Abstractions.Services;
+using Innova.Application.Authorization;
 using Innova.Application.Exceptions;
 using Innova.Domain.Identity.Aggregates;
 using Innova.Domain.Identity.Repositories;
+using Innova.Domain.Identity.ValueObjects;
 using Innova.Domain.Shared.ValueObjects;
 
 namespace Innova.Application.Behaviours
@@ -19,15 +21,15 @@ namespace Innova.Application.Behaviours
             if (command is IAllowAnonymousCommand)
                 return await inner.HandleAsync(command, ct);
 
-            // if (!currentUser.IsAuthenticated)
-            //     throw new UnauthorizedCommandException("You must be signed in to perform this action.");
+            if (!currentUser.IsAuthenticated)
+                throw new UnauthorizedCommandException("You must be signed in to perform this action.");
 
-            // if (CommandRoleRequirements.Map.TryGetValue(typeof(TCommand), out IReadOnlyCollection<Role>? allowedRoles)
-            //     && !allowedRoles.Contains(currentUser.Role!))
-            // {
-            //     throw new UnauthorizedCommandException(
-            //         $"Your role ({currentUser.Role}) is not permitted to perform this action.");
-            // }
+            if (CommandRoleRequirements.Map.TryGetValue(typeof(TCommand), out IReadOnlyCollection<Role>? allowedRoles)
+                && !allowedRoles.Contains(currentUser.Role!))
+            {
+                throw new UnauthorizedCommandException(
+                    $"Your role ({currentUser.Role}) is not permitted to perform this action.");
+            }
 
             UserId userId = UserId.From(currentUser.UserId!.Value);
 
