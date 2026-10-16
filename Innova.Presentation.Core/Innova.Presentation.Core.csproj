@@ -17,14 +17,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Billing\Folio\Details\"/>
         <Folder Include="FrontDesk\Stay\Forms\"/>
-        <Folder Include="Reservations\GroupBooking\Forms\"/>
-        <Folder Include="Reservations\Reservation\Forms\"/>
         <Folder Include="RoomInventory\RoomTypeAllotment\Details\"/>
         <Folder Include="RoomInventory\RoomTypeAllotment\Forms\"/>
-        <Folder Include="RoomInventory\RoomType\Forms\"/>
-        <Folder Include="RoomInventory\Room\Forms\"/>
     </ItemGroup>
 
 </Project>
