@@ -187,7 +187,7 @@
                                     <Button Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.OpenGuestEditCommand}"
                                             CommandParameter="{Binding GuestId}"
                                             Style="{StaticResource ButtonRowActionEdit}"
-                                            ToolTip="Edit Patient">
+                                            ToolTip="Edit Guest">
                                         <Path Width="14"
                                               Height="14"
                                               Data="{StaticResource IconEdit}"
@@ -199,7 +199,7 @@
                                             Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.BookReservationCommand}"
                                             CommandParameter="{Binding GuestId}"
                                             Style="{StaticResource ButtonRowActionBook}"
-                                            ToolTip="Book Appointment">
+                                            ToolTip="Book Reservation">
                                         <Path Width="14"
                                               Height="14"
                                               Data="{StaticResource IconCalendar}"

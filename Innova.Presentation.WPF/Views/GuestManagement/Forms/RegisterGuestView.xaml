@@ -10,6 +10,29 @@
                   d:DesignHeight="auto"
                   d:DesignWidth="auto"
                   mc:Ignorable="d">
+
+    <views:MvxWpfView.Resources>
+
+        <!--  Supporting text. Own style (not TextBodySecondary) so it uses the primary font.  -->
+        <Style x:Key="HelpText"
+               BasedOn="{StaticResource TextBody}"
+               TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="FormDatePicker" TargetType="DatePicker">
+            <Setter Property="Height" Value="36" />
+            <Setter Property="Padding" Value="6,0" />
+            <Setter Property="FontFamily" Value="{StaticResource FontPrimary}" />
+            <Setter Property="FontSize" Value="{StaticResource FontSizeBody}" />
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+            <Setter Property="Background" Value="{StaticResource Surface2Brush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderDefaultBrush}" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+    </views:MvxWpfView.Resources>
+
     <Grid Width="560" Background="{StaticResource Surface3Brush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -18,10 +41,12 @@
         </Grid.RowDefinitions>
 
         <!--  ── Header ───────────────────────────────────────────  -->
-        <TextBlock Grid.Row="0"
-                   Margin="24,20,24,4"
-                   Style="{StaticResource TextHeading}"
-                   Text="Create New Guest" />
+        <StackPanel Grid.Row="0" Margin="24,20,24,4">
+            <TextBlock Style="{StaticResource TextHeading}" Text="Register New Guest" />
+            <TextBlock Margin="0,2,0,0"
+                       Style="{StaticResource HelpText}"
+                       Text="Fields marked * are required." />
+        </StackPanel>
 
         <!--  ── Scrollable form body ────────────────────────────────  -->
         <ScrollViewer Grid.Row="1"
@@ -45,56 +70,50 @@
                     <StackPanel Grid.Column="0">
                         <TextBlock Margin="0,0,0,4"
                                    Style="{StaticResource TextLabel}"
-                                   Text="First Name" />
-                        <TextBox Style="{StaticResource TextBoxDefault}" Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" />
+                                   Text="First Name *" />
+                        <TextBox Style="{StaticResource TextBoxDefault}"
+                                 Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="2">
                         <TextBlock Margin="0,0,0,4"
                                    Style="{StaticResource TextLabel}"
                                    Text="Middle Name" />
-                        <TextBox Style="{StaticResource TextBoxDefault}" Text="{Binding MiddleName, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox Style="{StaticResource TextBoxDefault}"
+                                 Text="{Binding MiddleName, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="4">
                         <TextBlock Margin="0,0,0,4"
                                    Style="{StaticResource TextLabel}"
-                                   Text="Last Name" />
-                        <TextBox Style="{StaticResource TextBoxDefault}" Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" />
+                                   Text="Last Name *" />
+                        <TextBox Style="{StaticResource TextBoxDefault}"
+                                 Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
                 </Grid>
 
                 <StackPanel Margin="0,12,0,0">
                     <TextBlock Margin="0,0,0,4"
                                Style="{StaticResource TextLabel}"
-                               Text="Date of Birth" />
-                    <DatePicker MinHeight="36" SelectedDate="{Binding DateOfBirth}" />
+                               Text="Date of Birth *" />
+                    <DatePicker Width="190"
+                                HorizontalAlignment="Left"
+                                DisplayDate="{Binding CalendarStartDate, Mode=OneTime}"
+                                DisplayDateEnd="{Binding MaxDateOfBirth, Mode=OneWay}"
+                                SelectedDate="{Binding DateOfBirth}"
+                                SelectedDateFormat="Short"
+                                Style="{StaticResource FormDatePicker}" />
+                    <TextBlock Margin="0,4,0,0"
+                               Style="{StaticResource TextError}"
+                               Text="{Binding DateOfBirthError}"
+                               Visibility="{Binding HasDateOfBirthError, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
 
                 <TextBlock Margin="0,20,0,8"
                            Style="{StaticResource TextSubtitle}"
                            Text="Contact" />
 
-                <StackPanel>
-                    <TextBlock Margin="0,0,0,4"
-                               Style="{StaticResource TextLabel}"
-                               Text="Phone Number" />
-                    <TextBox Style="{StaticResource TextBoxDefault}" Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
-
-                <StackPanel Margin="0,12,0,0">
-                    <TextBlock Margin="0,0,0,4"
-                               Style="{StaticResource TextLabel}"
-                               Text="Email" />
-                    <TextBox Style="{StaticResource TextBoxDefault}" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
-
-
-                <TextBlock Margin="0,20,0,8"
-                           Style="{StaticResource TextSubtitle}"
-                           Text="Identity Document" />
-
-                <Grid Margin="0,12,0,0">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="12" />
@@ -104,19 +123,62 @@
                     <StackPanel Grid.Column="0">
                         <TextBlock Margin="0,0,0,4"
                                    Style="{StaticResource TextLabel}"
-                                   Text="Document Number" />
-                        <TextBox Style="{StaticResource TextBoxDefault}" Text="{Binding IdentityDocumentNumber, UpdateSourceTrigger=PropertyChanged}" />
+                                   Text="Phone Number *" />
+                        <TextBox Style="{StaticResource TextBoxDefault}"
+                                 Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Margin="0,4,0,0"
+                                   Style="{StaticResource TextCaption}"
+                                   Text="Include the country code, for example +233 24 123 4567." />
                     </StackPanel>
 
                     <StackPanel Grid.Column="2">
                         <TextBlock Margin="0,0,0,4"
                                    Style="{StaticResource TextLabel}"
-                                   Text="Document Type" />
-                        <ComboBox ItemsSource="{Binding IdentityDocumentTypes}"
-                                  SelectedItem="{Binding IdentityDocumentType, UpdateSourceTrigger=PropertyChanged}"
-                                  Style="{StaticResource ComboBoxDefault}" />
+                                   Text="Email" />
+                        <TextBox Style="{StaticResource TextBoxDefault}"
+                                 Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Margin="0,4,0,0"
+                                   Style="{StaticResource TextError}"
+                                   Text="{Binding EmailError}"
+                                   Visibility="{Binding HasEmailError, Converter={StaticResource BoolToVisibilityConverter}}" />
                     </StackPanel>
                 </Grid>
+
+                <TextBlock Margin="0,20,0,8"
+                           Style="{StaticResource TextSubtitle}"
+                           Text="Identity Document" />
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Margin="0,0,0,4"
+                                   Style="{StaticResource TextLabel}"
+                                   Text="Document Type *" />
+                        <ComboBox DisplayMemberPath="Label"
+                                  ItemsSource="{Binding IdentityDocumentTypes}"
+                                  SelectedValue="{Binding IdentityDocumentType}"
+                                  SelectedValuePath="Value"
+                                  Style="{StaticResource ComboBoxDefault}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Margin="0,0,0,4"
+                                   Style="{StaticResource TextLabel}"
+                                   Text="Document Number *" />
+                        <TextBox CharacterCasing="Upper"
+                                 Style="{StaticResource TextBoxDefault}"
+                                 Text="{Binding IdentityDocumentNumber, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock Margin="0,6,0,0"
+                           Style="{StaticResource TextCaption}"
+                           Text="A guest is identified by their document, so the same document cannot be registered twice." />
 
             </StackPanel>
         </ScrollViewer>
@@ -133,7 +195,8 @@
                         Content="Cancel"
                         Style="{StaticResource ButtonGhost}" />
                 <Button Command="{Binding SaveCommand}"
-                        Content="Create Guest"
+                        Content="Register Guest"
+                        IsEnabled="{Binding IsSaveEnabled}"
                         Style="{StaticResource ButtonPrimary}" />
             </StackPanel>
         </Border>

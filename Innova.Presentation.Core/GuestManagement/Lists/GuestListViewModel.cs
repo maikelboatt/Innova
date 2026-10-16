@@ -4,6 +4,7 @@ using Innova.Application.GuestManagement.Guest.Queries;
 using Innova.Presentation.Core.Base;
 using Innova.Presentation.Core.GuestManagement.Details;
 using Innova.Presentation.Core.GuestManagement.Forms;
+using Innova.Presentation.Core.Reservations.Reservation.Forms;
 using Innova.Presentation.Core.Services.Abstractions;
 using MvvmCross.Commands;
 
@@ -101,7 +102,7 @@ namespace Innova.Presentation.Core.GuestManagement.Lists
 
         private async Task OnBookReservationAsync( Guid guestId )
         {
-            // await  _modalService.ShowAsync<ReservationBookViewModel,guestId>();
+            await _modalService.ShowAsync<BookReservationViewModel, Guid>(guestId);
         }
 
         // ══════════════════════════════════════════════════════════
