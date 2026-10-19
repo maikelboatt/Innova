@@ -1,0 +1,331 @@
+﻿<views:MvxWpfView x:Class="Innova.Presentation.WPF.Views.Reservations.Reservations.Details.ReservationDetailsView"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:details="clr-namespace:Innova.Presentation.Core.Reservations.Reservation.Details;assembly=Innova.Presentation.Core"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+                  d:DataContext="{d:DesignInstance Type=details:ReservationDetailsViewModel,
+                                                   IsDesignTimeCreatable=True}"
+                  d:DesignHeight="auto"
+                  d:DesignWidth="auto"
+                  mc:Ignorable="d">
+
+    <Grid Width="520" Background="{StaticResource Surface3Brush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!--  Header  -->
+        <Grid Grid.Row="0" Margin="24,20,24,4">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+
+                <StackPanel Orientation="Horizontal">
+
+                    <TextBlock Style="{StaticResource TextHeading}" Text="Reservation Details" />
+
+                    <!--  Status badge  -->
+                    <Border Margin="10,2,0,0" VerticalAlignment="Center">
+
+                        <Border.Style>
+                            <Style BasedOn="{StaticResource BadgeDefault}" TargetType="Border">
+
+                                <Style.Triggers>
+
+                                    <DataTrigger Binding="{Binding StatusBadge}" Value="Success">
+                                        <Setter Property="Background" Value="{StaticResource StatusSuccessFillBrush}" />
+                                        <Setter Property="BorderBrush" Value="{StaticResource StatusSuccessBorderBrush}" />
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding StatusBadge}" Value="Warning">
+                                        <Setter Property="Background" Value="{StaticResource StatusWarningFillBrush}" />
+                                        <Setter Property="BorderBrush" Value="{StaticResource StatusWarningBorderBrush}" />
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding StatusBadge}" Value="Danger">
+                                        <Setter Property="Background" Value="{StaticResource StatusDangerFillBrush}" />
+                                        <Setter Property="BorderBrush" Value="{StaticResource StatusDangerBorderBrush}" />
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding StatusBadge}" Value="Neutral">
+                                        <Setter Property="Background" Value="{StaticResource Surface2Brush}" />
+                                        <Setter Property="BorderBrush" Value="{StaticResource BorderDefaultBrush}" />
+                                    </DataTrigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <TextBlock FontSize="{StaticResource FontSizeCaption}"
+                                   FontWeight="Medium"
+                                   Text="{Binding StatusLabel}">
+
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+
+                                    <Style.Triggers>
+
+                                        <DataTrigger Binding="{Binding StatusBadge}" Value="Success">
+                                            <Setter Property="Foreground" Value="{StaticResource StatusSuccessTextBrush}" />
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding StatusBadge}" Value="Warning">
+                                            <Setter Property="Foreground" Value="{StaticResource StatusWarningTextBrush}" />
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding StatusBadge}" Value="Danger">
+                                            <Setter Property="Foreground" Value="{StaticResource StatusDangerTextBrush}" />
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding StatusBadge}" Value="Neutral">
+                                            <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+                                        </DataTrigger>
+
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+
+                        </TextBlock>
+
+                    </Border>
+
+                </StackPanel>
+
+                <TextBlock Margin="0,4,0,0"
+                           Style="{StaticResource TextBodySecondary}"
+                           Text="{Binding GuestName}" />
+
+            </StackPanel>
+
+            <!--  Close  -->
+            <Button Grid.Column="1"
+                    VerticalAlignment="Top"
+                    Command="{Binding CloseCommand}"
+                    Style="{StaticResource ButtonIcon}">
+
+                <Path Width="14"
+                      Height="14"
+                      Data="{StaticResource IconClose}"
+                      Fill="{StaticResource TextMutedBrush}"
+                      Stretch="Uniform" />
+
+            </Button>
+
+        </Grid>
+
+        <!--  Read-only body  -->
+        <ScrollViewer Grid.Row="1"
+                      MaxHeight="520"
+                      VerticalScrollBarVisibility="Auto">
+
+            <StackPanel Margin="24,8,24,8">
+
+                <!--  Guest information  -->
+                <TextBlock Margin="0,12,0,8"
+                           Style="{StaticResource TextSubtitle}"
+                           Text="Guest Information" />
+
+                <TextBlock Style="{StaticResource TextLabel}" Text="Guest Name" />
+
+                <TextBlock Margin="0,2,0,10"
+                           Style="{StaticResource TextBody}"
+                           Text="{Binding GuestName}" />
+
+                <TextBlock Style="{StaticResource TextLabel}" Text="Guest ID" />
+
+                <TextBlock Margin="0,2,0,10"
+                           Style="{StaticResource TextBody}"
+                           Text="{Binding GuestId}" />
+
+                <!--  Stay dates  -->
+                <TextBlock Margin="0,20,0,8"
+                           Style="{StaticResource TextSubtitle}"
+                           Text="Stay Dates" />
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+
+                        <TextBlock Style="{StaticResource TextLabel}" Text="Check-in" />
+
+                        <TextBlock Margin="0,2,0,10"
+                                   Style="{StaticResource TextBody}"
+                                   Text="{Binding CheckIn, StringFormat={}{0:dd MMM yyyy}}" />
+
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+
+                        <TextBlock Style="{StaticResource TextLabel}" Text="Check-out" />
+
+                        <TextBlock Margin="0,2,0,10"
+                                   Style="{StaticResource TextBody}"
+                                   Text="{Binding CheckOut, StringFormat={}{0:dd MMM yyyy}}" />
+
+                    </StackPanel>
+
+                </Grid>
+
+                <!--  Room information  -->
+                <TextBlock Margin="0,20,0,8"
+                           Style="{StaticResource TextSubtitle}"
+                           Text="Room Information" />
+
+                <TextBlock Style="{StaticResource TextLabel}" Text="Requested Room Type" />
+
+                <TextBlock Margin="0,2,0,4"
+                           Style="{StaticResource TextBody}"
+                           Text="{Binding RoomTypeName}" />
+
+                <Button Margin="0,0,0,10"
+                        HorizontalAlignment="Left"
+                        Command="{Binding OpenRoomTypeCommand}"
+                        Content="View Room Type"
+                        Style="{StaticResource ButtonSecondary}" />
+
+                <TextBlock Style="{StaticResource TextLabel}" Text="Room Type ID" />
+
+                <TextBlock Margin="0,2,0,10"
+                           Style="{StaticResource TextBody}"
+                           Text="{Binding RoomTypeRequested}" />
+
+                <!--  Rate information  -->
+                <TextBlock Margin="0,20,0,8"
+                           Style="{StaticResource TextSubtitle}"
+                           Text="Rate Information" />
+
+                <Border Padding="16"
+                        Background="{StaticResource Surface2Brush}"
+                        CornerRadius="6">
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+
+                            <TextBlock Style="{StaticResource TextLabel}" Text="Nightly Rate" />
+
+                            <TextBlock Margin="0,4,0,0"
+                                       Style="{StaticResource TextCaption}"
+                                       Text="Rate recorded for this reservation." />
+
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center">
+
+                            <TextBlock FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       Text="{Binding NightlyRateAmount, StringFormat={}{0:N2}}" />
+
+                            <TextBlock HorizontalAlignment="Right"
+                                       Style="{StaticResource TextCaption}"
+                                       Text="{Binding NightlyRateCurrency}" />
+
+                        </StackPanel>
+
+                    </Grid>
+
+                </Border>
+
+                <!--  Group booking  -->
+                <TextBlock Margin="0,20,0,8"
+                           Style="{StaticResource TextSubtitle}"
+                           Text="Group Booking" />
+
+                <TextBlock Style="{StaticResource TextLabel}" Text="Associated Group Booking ID" />
+
+                <TextBlock Margin="0,2,0,10"
+                           Style="{StaticResource TextBody}"
+                           Text="{Binding GroupBookingId, TargetNullValue=Not associated with a group booking, FallbackValue=Not associated with a group booking}" />
+
+                <Button HorizontalAlignment="Left"
+                        Command="{Binding OpenAssociatedGroupBookingCommand}"
+                        Content="View Group Booking"
+                        IsEnabled="{Binding GroupBookingId, Converter={StaticResource GuidToBooleanConverter}}"
+                        Style="{StaticResource ButtonSecondary}" />
+
+            </StackPanel>
+
+        </ScrollViewer>
+
+        <!--  Footer actions  -->
+        <Border Grid.Row="2"
+                BorderBrush="{StaticResource BorderDefaultBrush}"
+                BorderThickness="0,1,0,0">
+
+            <Grid Margin="24,14,24,14">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="12" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!--  Close  -->
+                <Button Grid.Row="0"
+                        Grid.Column="0"
+                        Command="{Binding CloseCommand}"
+                        Content="Close"
+                        Style="{StaticResource ButtonGhost}" />
+
+                <!--  Confirm  -->
+                <Button Grid.Row="0"
+                        Grid.Column="2"
+                        Command="{Binding ConfirmReservationCommand}"
+                        Content="Confirm"
+                        IsEnabled="{Binding CanConfirmReservation}"
+                        Style="{StaticResource ButtonSuccess}" />
+
+                <!--  Cancel reservation  -->
+                <Button Grid.Row="0"
+                        Grid.Column="4"
+                        Command="{Binding CancelReservationCommand}"
+                        Content="Cancel Reservation"
+                        IsEnabled="{Binding CanCancelReservation}"
+                        Style="{StaticResource ButtonDangerOutline}" />
+
+                <!--  Mark no-show  -->
+                <Button Grid.Row="2"
+                        Grid.Column="2"
+                        Margin="0,8,0,0"
+                        Command="{Binding MarkReservationNoShowCommand}"
+                        Content="Mark No-Show"
+                        IsEnabled="{Binding CanMarkReservationNoShow}"
+                        Style="{StaticResource ButtonDangerOutline}" />
+
+            </Grid>
+
+        </Border>
+
+    </Grid>
+
+</views:MvxWpfView>

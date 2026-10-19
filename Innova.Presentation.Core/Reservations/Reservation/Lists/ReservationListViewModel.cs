@@ -2,6 +2,7 @@
 using Innova.Application.Reservations.DTO;
 using Innova.Application.Reservations.Queries;
 using Innova.Presentation.Core.Base;
+using Innova.Presentation.Core.Reservations.Reservation.Details;
 using Innova.Presentation.Core.Services.Abstractions;
 using MvvmCross.Commands;
 
@@ -27,20 +28,17 @@ namespace Innova.Presentation.Core.Reservations.Reservation.Lists
 
             Title = "Reservations";
 
-            NewReservationCommand = new MvxAsyncCommand(OnNewReservationAsync);
             OpenReservationDetailsCommand = new MvxAsyncCommand<Guid>(OnOpenReservationDetailsAsync);
             OpenReservationEditCommand = new MvxAsyncCommand<Guid>(OnOpenReservationEditAsync);
         }
 
-        public IMvxAsyncCommand NewReservationCommand { get; }
         public IMvxAsyncCommand<Guid> OpenReservationDetailsCommand { get; }
         public IMvxAsyncCommand<Guid> OpenReservationEditCommand { get; }
 
         protected override async Task LoadAsync()
         {
             IReadOnlyCollection<ReservationDto> dtos =
-                await _queryDispatcher.DispatchAsync(
-                    new GetAllReservationsQuery());
+                await _queryDispatcher.DispatchAsync(new GetAllReservationsQuery());
 
             _allReservations =
             [
@@ -78,16 +76,10 @@ namespace Innova.Presentation.Core.Reservations.Reservation.Lists
             SetItems(filtered);
         }
 
-        private async Task OnNewReservationAsync()
-        {
-            // await _modalService.ShowAsync<ReservationCreateViewModel>();
-            await RefreshCommand.ExecuteAsync();
-        }
-
         private async Task OnOpenReservationDetailsAsync( Guid reservationId )
         {
-            // await _modalService
-            //     .ShowAsync<ReservationDetailsViewModel, Guid>(reservationId);
+            await _modalService
+                .ShowAsync<ReservationDetailsViewModel, Guid>(reservationId);
 
             await RefreshCommand.ExecuteAsync();
         }
@@ -105,9 +97,8 @@ namespace Innova.Presentation.Core.Reservations.Reservation.Lists
         {
             await base.OnItemSelectedAsync(item);
 
-            // await _modalService
-            //     .ShowAsync<ReservationDetailsViewModel, Guid>(
-            //         item.ReservationId);
+            await _modalService
+                .ShowAsync<ReservationDetailsViewModel, Guid>(item.ReservationId);
 
             await RefreshCommand.ExecuteAsync();
         }

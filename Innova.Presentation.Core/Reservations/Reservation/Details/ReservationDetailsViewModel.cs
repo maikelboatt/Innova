@@ -44,7 +44,6 @@ namespace Innova.Presentation.Core.Reservations.Reservation.Details
 
             OpenReservationEditCommand = new MvxAsyncCommand(OnOpenReservationEdit);
             OpenRoomTypeCommand = new MvxAsyncCommand(OnOpenRoomType);
-            StayCheckInCommand = new MvxAsyncCommand(OnOpenStayCheckIn);
             OpenAssociatedGroupBookingCommand = new MvxAsyncCommand(OnOpenAssociatedGroupBooking);
             ConfirmReservationCommand = new MvxAsyncCommand(OnConfirmReservation);
             CancelReservationCommand = new MvxAsyncCommand(OnCancelReservation);
@@ -52,13 +51,11 @@ namespace Innova.Presentation.Core.Reservations.Reservation.Details
         }
 
         public bool CanConfirmReservation => Status is "Tentative";
-        public bool CanCancelReservation => Status is "Tentative";
+        public bool CanCancelReservation => Status is "Tentative" or "Confirmed";
         public bool CanMarkReservationNoShow => Status is "Confirmed";
-        public bool CanCheckIn => Status is "Confirmed";
 
         public IMvxAsyncCommand OpenReservationEditCommand { get; }
         public IMvxAsyncCommand OpenRoomTypeCommand { get; }
-        public IMvxAsyncCommand StayCheckInCommand { get; }
         public IMvxAsyncCommand OpenAssociatedGroupBookingCommand { get; }
         public IMvxAsyncCommand ConfirmReservationCommand { get; }
         public IMvxAsyncCommand CancelReservationCommand { get; }
@@ -115,6 +112,19 @@ namespace Innova.Presentation.Core.Reservations.Reservation.Details
             set => SetProperty(ref _status, value);
         }
 
+        public string StatusLabel => Status;
+
+        public string StatusBadge => Status switch
+                                     {
+                                         "Tentative"  => "Warning",
+                                         "Confirmed"  => "Success",
+                                         "CheckedIn"  => "Success",
+                                         "CheckedOut" => "Neutral",
+                                         "Cancelled"  => "Danger",
+                                         "NoShow"     => "Danger",
+                                         _            => "Neutral"
+                                     };
+
         private async Task OnOpenReservationEdit()
         {
             // await ModalService.NavigateAsync<ReservationEditViewModel, Guid>(Key);
@@ -122,10 +132,14 @@ namespace Innova.Presentation.Core.Reservations.Reservation.Details
 
         private async Task OnOpenAssociatedGroupBooking()
         {
-            if (GroupBookingId.HasValue)
-                await ModalService.NavigateAsync<ReservationDetailsViewModel, Guid>(GroupBookingId.Value);
+            if (!GroupBookingId.HasValue || GroupBookingId.Value == Guid.Empty)
+            {
+                Notifications.ShowWarning(
+                    $"Reservation {Key} is not associated with a group booking.");
 
-            Notifications.ShowWarning($"This reservation {Key} has not group booking association");
+            }
+
+            // await ModalService.NavigateAsync<GroupBookingDetailsViewModel, Guid>( GroupBookingId.Value);
         }
 
         private async Task OnConfirmReservation()
@@ -172,12 +186,6 @@ namespace Innova.Presentation.Core.Reservations.Reservation.Details
             await ModalService.NavigateAsync<RoomTypeDetailsViewModel, Guid>(RoomTypeRequested);
         }
 
-        private async Task OnOpenStayCheckIn()
-        {
-            // await ModalService.NavigateAsync<StayCheckInViewModel, Guid>(Key);
-        }
-
-
         protected override async Task LoadAsync()
         {
             ReservationDto dto = await _queryDispatcher.DispatchAsync(new GetReservationByIdQuery(Key));
@@ -201,7 +209,6 @@ namespace Innova.Presentation.Core.Reservations.Reservation.Details
             RaisePropertyChanged(nameof(CanConfirmReservation));
             RaisePropertyChanged(nameof(CanCancelReservation));
             RaisePropertyChanged(nameof(CanMarkReservationNoShow));
-            RaisePropertyChanged(nameof(CanCheckIn));
         }
     }
 }

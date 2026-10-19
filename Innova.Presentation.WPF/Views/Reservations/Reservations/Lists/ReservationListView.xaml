@@ -32,10 +32,6 @@
                        Style="{StaticResource TextHeading}"
                        Text="{Binding Title}" />
 
-            <Button Grid.Column="1"
-                    Command="{Binding NewReservationCommand}"
-                    Content="+ New Reservation"
-                    Style="{StaticResource ButtonPrimary}" />
         </Grid>
 
         <!--  ── Toolbar: search + refresh ───────────────────────────  -->
