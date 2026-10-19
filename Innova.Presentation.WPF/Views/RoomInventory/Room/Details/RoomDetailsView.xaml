@@ -10,196 +10,294 @@
                   d:DesignHeight="auto"
                   d:DesignWidth="auto"
                   mc:Ignorable="d">
+
     <Grid Width="620" Background="{StaticResource Surface3Brush}">
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+
         <!--  Header  -->
         <Grid Grid.Row="0" Margin="24,20,24,4">
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
+
             <StackPanel Grid.Column="0">
+
                 <StackPanel Orientation="Horizontal">
+
                     <TextBlock Style="{StaticResource TextHeading}" Text="{Binding RoomNumber}" />
+
                     <Border Margin="10,2,0,0" VerticalAlignment="Center">
+
                         <Border.Style>
                             <Style BasedOn="{StaticResource BadgeDefault}" TargetType="Border">
+
                                 <Style.Triggers>
+
                                     <DataTrigger Binding="{Binding StatusBadge}" Value="Success">
                                         <Setter Property="Background" Value="{StaticResource StatusSuccessFillBrush}" />
                                         <Setter Property="BorderBrush" Value="{StaticResource StatusSuccessBorderBrush}" />
                                     </DataTrigger>
+
                                     <DataTrigger Binding="{Binding StatusBadge}" Value="Warning">
                                         <Setter Property="Background" Value="{StaticResource StatusWarningFillBrush}" />
                                         <Setter Property="BorderBrush" Value="{StaticResource StatusWarningBorderBrush}" />
                                     </DataTrigger>
+
                                     <DataTrigger Binding="{Binding StatusBadge}" Value="Danger">
                                         <Setter Property="Background" Value="{StaticResource StatusDangerFillBrush}" />
                                         <Setter Property="BorderBrush" Value="{StaticResource StatusDangerBorderBrush}" />
                                     </DataTrigger>
+
                                     <DataTrigger Binding="{Binding StatusBadge}" Value="Neutral">
                                         <Setter Property="Background" Value="{StaticResource Surface2Brush}" />
                                         <Setter Property="BorderBrush" Value="{StaticResource BorderDefaultBrush}" />
                                     </DataTrigger>
+
                                 </Style.Triggers>
                             </Style>
                         </Border.Style>
+
                         <TextBlock FontSize="{StaticResource FontSizeCaption}"
                                    FontWeight="Medium"
                                    Text="{Binding StatusLabel}">
+
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
+
                                     <Style.Triggers>
+
                                         <DataTrigger Binding="{Binding StatusBadge}" Value="Success">
                                             <Setter Property="Foreground" Value="{StaticResource StatusSuccessTextBrush}" />
                                         </DataTrigger>
+
                                         <DataTrigger Binding="{Binding StatusBadge}" Value="Warning">
                                             <Setter Property="Foreground" Value="{StaticResource StatusWarningTextBrush}" />
                                         </DataTrigger>
+
                                         <DataTrigger Binding="{Binding StatusBadge}" Value="Danger">
                                             <Setter Property="Foreground" Value="{StaticResource StatusDangerTextBrush}" />
                                         </DataTrigger>
+
                                         <DataTrigger Binding="{Binding StatusBadge}" Value="Neutral">
                                             <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
                                         </DataTrigger>
+
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
+
                         </TextBlock>
                     </Border>
                 </StackPanel>
+
                 <TextBlock Margin="0,4,0,0"
                            Style="{StaticResource TextBodySecondary}"
                            Text="{Binding RoomTypeName}" />
+
             </StackPanel>
+
             <Button Grid.Column="1"
                     VerticalAlignment="Top"
                     Command="{Binding CloseCommand}"
                     Style="{StaticResource ButtonIcon}">
+
                 <Path Width="14"
                       Height="14"
                       Data="{StaticResource IconClose}"
                       Fill="{StaticResource TextMutedBrush}"
                       Stretch="Uniform" />
+
             </Button>
+
         </Grid>
-        <!--  Read-only body  -->
+
+        <!--  Details  -->
         <ScrollViewer Grid.Row="1"
-                      MaxHeight="520"
+                      MaxHeight="580"
                       VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="24,8,24,8">
-                <!--  Room information  -->
-                <TextBlock Margin="0,12,0,8"
+
+            <StackPanel Margin="24,8,24,16">
+
+                <!--  Room Information  -->
+                <TextBlock Margin="0,12,0,12"
                            Style="{StaticResource TextSubtitle}"
                            Text="Room Information" />
+
                 <TextBlock Style="{StaticResource TextLabel}" Text="Room Number" />
-                <TextBlock Margin="0,2,0,10"
+
+                <TextBlock Margin="0,2,0,12"
                            Style="{StaticResource TextBody}"
                            Text="{Binding RoomNumber}" />
+
                 <TextBlock Style="{StaticResource TextLabel}" Text="Room Type" />
-                <TextBlock Margin="0,2,0,10"
-                           Style="{StaticResource TextBody}"
-                           Text="{Binding RoomTypeName}" />
+
+                <Grid Margin="0,4,0,12">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               VerticalAlignment="Center"
+                               Style="{StaticResource TextBody}"
+                               Text="{Binding RoomTypeName}" />
+
+                    <Button Grid.Column="1"
+                            Margin="12,0,0,0"
+                            Command="{Binding OpenRoomTypeCommand}"
+                            Content="View Room Type"
+                            Style="{StaticResource ButtonSecondary}" />
+
+                </Grid>
+
                 <!--  Location  -->
-                <TextBlock Margin="0,20,0,8"
+                <TextBlock Margin="0,20,0,12"
                            Style="{StaticResource TextSubtitle}"
                            Text="Location" />
+
                 <Grid>
+
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
+
                     <StackPanel Grid.Column="0" Margin="0,0,12,0">
+
                         <TextBlock Style="{StaticResource TextLabel}" Text="Floor" />
+
                         <TextBlock Margin="0,2,0,10"
                                    Style="{StaticResource TextBody}"
                                    Text="{Binding FloorLevel}" />
+
                     </StackPanel>
+
                     <StackPanel Grid.Column="1">
+
                         <TextBlock Style="{StaticResource TextLabel}" Text="Wing" />
+
                         <TextBlock Margin="0,2,0,10"
                                    Style="{StaticResource TextBody}"
                                    Text="{Binding FloorWing, TargetNullValue=Not specified, FallbackValue=Not specified}" />
+
                     </StackPanel>
+
                 </Grid>
+
+                <!--  Room Status and Service Actions  -->
+                <TextBlock Margin="0,20,0,12"
+                           Style="{StaticResource TextSubtitle}"
+                           Text="Room Status" />
+
+                <TextBlock Style="{StaticResource TextLabel}" Text="Current Status" />
+
+                <TextBlock Margin="0,2,0,12"
+                           Style="{StaticResource TextBody}"
+                           Text="{Binding StatusLabel}" />
+
+                <StackPanel Orientation="Horizontal">
+
+                    <Button Margin="0,0,10,0"
+                            Command="{Binding ReturnRoomToServiceCommand}"
+                            Content="Return to Service"
+                            IsEnabled="{Binding CanReturnToService}"
+                            Style="{StaticResource ButtonSuccess}" />
+
+                    <Button Command="{Binding TakeRoomOutOfServiceCommand}"
+                            Content="Take Out of Service"
+                            IsEnabled="{Binding CanMarkOutOfService}"
+                            Style="{StaticResource ButtonDangerOutline}" />
+
+                </StackPanel>
+
+                <!--  Front Desk  -->
+                <TextBlock Margin="0,24,0,12"
+                           Style="{StaticResource TextSubtitle}"
+                           Text="Front Desk" />
+
+                <TextBlock Margin="0,0,0,10"
+                           Style="{StaticResource TextBodySecondary}"
+                           Text="View the stay currently associated with this room." />
+
+                <Button HorizontalAlignment="Left"
+                        Command="{Binding GetActiveStayCommand}"
+                        Content="View Active Stay"
+                        Style="{StaticResource ButtonSecondary}" />
+
+                <!--  Housekeeping  -->
+                <TextBlock Margin="0,24,0,12"
+                           Style="{StaticResource TextSubtitle}"
+                           Text="Housekeeping" />
+
+                <TextBlock Margin="0,0,0,12"
+                           Style="{StaticResource TextBodySecondary}"
+                           Text="Schedule a housekeeping task for this room." />
+
+                <StackPanel>
+
+                    <Button HorizontalAlignment="Left"
+                            Command="{Binding ShowTaskTypeCommand}"
+                            Content="Select Task Type"
+                            Style="{StaticResource ButtonSecondary}" />
+
+                    <ComboBox Width="240"
+                              Margin="0,12,0,0"
+                              HorizontalAlignment="Left"
+                              ItemsSource="{Binding TaskTypes}"
+                              SelectedItem="{Binding SelectedType}">
+
+                        <ComboBox.Style>
+                            <Style BasedOn="{StaticResource ComboBoxDefault}" TargetType="ComboBox">
+
+                                <Setter Property="Visibility" Value="Collapsed" />
+
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ShowTaskType}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+
+                            </Style>
+                        </ComboBox.Style>
+
+                    </ComboBox>
+
+                    <Button Margin="0,12,0,0"
+                            HorizontalAlignment="Left"
+                            Command="{Binding ScheduleHouseKeepingCommand}"
+                            Content="Schedule Housekeeping"
+                            Style="{StaticResource ButtonSuccess}" />
+
+                </StackPanel>
+
             </StackPanel>
+
         </ScrollViewer>
-        <!--  Footer actions  -->
+
+        <!--  Footer  -->
         <Border Grid.Row="2"
                 BorderBrush="{StaticResource BorderDefaultBrush}"
                 BorderThickness="0,1,0,0">
+
             <Grid Margin="24,14,24,14">
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <Button Grid.Row="0"
-                        Grid.Column="0"
+                <Button HorizontalAlignment="Right"
                         Command="{Binding CloseCommand}"
                         Content="Close"
                         Style="{StaticResource ButtonGhost}" />
 
-                <Button Grid.Row="0"
-                        Grid.Column="2"
-                        Command="{Binding ReturnRoomToServiceCommand}"
-                        Content="Return To Service"
-                        IsEnabled="{Binding CanReturnToService}"
-                        Style="{StaticResource ButtonSuccess}" />
-
-                <Button Grid.Row="0"
-                        Grid.Column="4"
-                        Command="{Binding TakeRoomOutOfServiceCommand}"
-                        Content="Take Out Of Service"
-                        IsEnabled="{Binding CanMarkOutOfService}"
-                        Style="{StaticResource ButtonDangerOutline}" />
-
-
-                <Button Grid.Row="2"
-                        Grid.Column="0"
-                        Margin="0,5,0,4"
-                        Command="{Binding GetActiveStayCommand}"
-                        Content="Active Stay"
-                        Style="{StaticResource ButtonSecondary}" />
-
-                <Button Grid.Row="2"
-                        Grid.Column="2"
-                        Margin="0,5,0,4"
-                        Command="{Binding OpenRoomTypeCommand}"
-                        Content="Room Type"
-                        Style="{StaticResource ButtonPrimary}" />
-
-                <Button Grid.Row="2"
-                        Grid.Column="4"
-                        Margin="0,5,0,4"
-                        Command="{Binding ShowTaskTypeCommand}"
-                        Content="Task Type"
-                        Style="{StaticResource ButtonSecondary}" />
-
-                <Button Grid.Row="4"
-                        Grid.Column="2"
-                        Margin="0,5,0,4"
-                        Command="{Binding ScheduleHouseKeepingCommand}"
-                        Content="Schedule House keeping"
-                        Style="{StaticResource ButtonSuccess}" />
             </Grid>
+
         </Border>
+
     </Grid>
+
 </views:MvxWpfView>

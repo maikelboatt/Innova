@@ -20,6 +20,8 @@
                     xmlns:identity="clr-namespace:Innova.Presentation.WPF.Views.Identity"
                     xmlns:identityFormsVm="clr-namespace:Innova.Presentation.Core.Identity.Forms;assembly=Innova.Presentation.Core"
                     xmlns:identityVm="clr-namespace:Innova.Presentation.Core.Identity;assembly=Innova.Presentation.Core"
+                    xmlns:reservationDetailsV="clr-namespace:Innova.Presentation.WPF.Views.Reservations.Reservations.Details"
+                    xmlns:reservationDetailsVm="clr-namespace:Innova.Presentation.Core.Reservations.Reservation.Details;assembly=Innova.Presentation.Core"
                     xmlns:reservationFormV="clr-namespace:Innova.Presentation.WPF.Views.Reservations.Reservations.Forms"
                     xmlns:reservationFormVm="clr-namespace:Innova.Presentation.Core.Reservations.Reservation.Forms;assembly=Innova.Presentation.Core"
                     xmlns:reservationListV="clr-namespace:Innova.Presentation.WPF.Views.Reservations.Reservations.Lists"
@@ -148,6 +150,10 @@
     <!--  Reservation Sub-Item  -->
     <DataTemplate DataType="{x:Type reservationListVm:ReservationListViewModel}">
         <reservationListV:ReservationListView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type reservationDetailsVm:ReservationDetailsViewModel}">
+        <reservationDetailsV:ReservationDetailsView />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type reservationFormVm:BookReservationViewModel}">
