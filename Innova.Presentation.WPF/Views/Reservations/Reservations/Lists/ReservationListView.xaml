@@ -110,7 +110,7 @@
                                         Header="Rate" />
 
                     <!--  Status badge  -->
-                    <DataGridTemplateColumn Width="100" Header="Status">
+                    <DataGridTemplateColumn Width="150" Header="Status">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Border HorizontalAlignment="Left">
