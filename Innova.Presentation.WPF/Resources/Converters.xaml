@@ -10,6 +10,7 @@
     <resources:TimeSpanToDisplayConverter x:Key="TimeSpanToDisplayConverter" />
     <resources:ErrorConverter x:Key="ErrorConverter" />
     <resources:IntToVisibilityConverter x:Key="IntToVisibilityConverter" />
+    <resources:GuidToBooleanConverter x:Key="GuidToBooleanConverter" />
     <resources:LongDateConverter x:Key="LongDateConverter" />
     <resources:ShortDateConverter x:Key="ShortDateConverter" />
     <resources:RadioButtonConverter x:Key="RadioButtonConverter" />
