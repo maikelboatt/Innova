@@ -36,7 +36,6 @@
         <Folder Include="Views\HouseKeeping\HouseKeeping\Details\"/>
         <Folder Include="Views\HouseKeeping\HouseKeeping\Forms\"/>
         <Folder Include="Views\Reservations\GroupBooking\Details\"/>
-        <Folder Include="Views\Reservations\Reservations\Details\"/>
     </ItemGroup>
 
     <ItemGroup>
